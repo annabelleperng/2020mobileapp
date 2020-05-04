@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -21,9 +21,10 @@ export default function App() {
   const [remainingSecs, setRemainingSecs] = useState(10);
   const [isActive, setIsActive] = useState(false);
   const { mins, secs } = getRemaining(remainingSecs);
-  toggle = () => {
+
+  const toggle = useCallback(() => {
     setIsActive(!isActive);
-  };
+  });
 
   useEffect(() => {
     let interval = null;
@@ -49,7 +50,7 @@ export default function App() {
       </View>
       <View style={{ flex: 4, backgroundColor: "steelblue" }}>
         <View style={styles.container}>
-          <TouchableOpacity onPress={this.toggle} style={styles.button}>
+          <TouchableOpacity onPress={toggle} style={styles.button}>
             <Text style={styles.buttonText}>
               {isActive ? "PAUSE" : "START"}
             </Text>
