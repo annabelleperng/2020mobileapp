@@ -6,6 +6,7 @@ import {
   Slider,
   Dimensions,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 const screen = Dimensions.get("window");
@@ -22,7 +23,7 @@ export default class Feedback extends Component {
     return val;
   }
 
-  render() {    
+  render() {   
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -37,11 +38,21 @@ export default class Feedback extends Component {
           onValueChange={val => this.setState({ states: [val, this.state.states[1]] })}
           onSlidingComplete={ val => this.getVal(val)}
         />
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Image
+            style={styles.tinyLogoLeft}
+            source={require("./assets/sad_jeno.png")}
+          />
+          <Image
+            style={styles.tinyLogoRight}
+            source={require("./assets/puta.png")}
+          />
+        </View>
         <Text style={styles.welcome}>
-          {this.state.states[0]} {"\n\n"}
+            {this.state.states[0]} {"\n\n"}
         </Text>
+
         <Text style={styles.welcome}>
-          
           How productive did you feel during this focus session?
         </Text>
         <Slider
@@ -53,8 +64,18 @@ export default class Feedback extends Component {
           onValueChange={val => this.setState({ states: [this.state.states[0], val] })}
           onSlidingComplete={ val => this.getVal(val)}
         />
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Image
+            style={styles.tinyLogoLeft}
+            source={require("./assets/sad_jeno.png")}
+          />
+          <Image
+            style={styles.tinyLogoRight}
+            source={require("./assets/puta.png")}
+          />
+        </View>
         <Text style={styles.welcome}>
-          {this.state.states[1]}
+            {this.state.states[1]}
         </Text>
       </View>
     );
@@ -79,8 +100,22 @@ const styles = StyleSheet.create({
     color: '#CA3DD4',
     marginBottom: 5,
   },
-  image: {
-    width: screen.width,
-    height: screen.height,
+  tinyLogoLeft: {
+    width: screen.width / 15,
+    height: screen.width / 15,
+    marginRight: screen.width / 3,
+    alignItems: "flex-end",
+  },
+  tinyLogoRight: {
+    width: screen.width / 15,
+    height: screen.width / 15,
+    marginLeft: screen.width / 3,
+    alignItems: "flex-end",
+  },
+  invisibleNum: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#46DC46',
+    margin: 0,
   },
 });
