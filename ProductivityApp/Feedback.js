@@ -7,10 +7,10 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 
 const screen = Dimensions.get("window");
-
 
 export default class Feedback extends Component {
   constructor(props) {
@@ -21,6 +21,10 @@ export default class Feedback extends Component {
 
   getVal(val){
     return val;
+  }
+
+  onPressSubmit() {
+
   }
 
   render() {   
@@ -75,8 +79,16 @@ export default class Feedback extends Component {
           />
         </View>
         <Text style={styles.welcome}>
-            {this.state.states[1]}
+            {this.state.states[1]} {"\n\n"}
         </Text>
+
+        <TouchableOpacity>
+          <Button
+            onPress={this.onPressSubmit()}
+            title="Submit!"
+            color="#35F2E9" //button bg for android, text for ios
+          />
+        </TouchableOpacity>
       </View>
     );
   }
