@@ -5,50 +5,64 @@
 // Hard coded: Motivation message.
 // Hard coded: Color scheme.
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Component } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
+  Button,
   StatusBar,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import Feedback from "./Feedback";
-import Timer from "./Timer";
-import Details from "./Details";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
 const screen = Dimensions.get("window");
-const Stack = createStackNavigator();
 
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Feedback")}
-      />
-    </View>
-  );
-}
+const formatNumber = (number) => `0${number}`.slice(-2);
+const getRemaining = (time) => {
+  const mins = Math.floor(time / 60);
+  const secs = time - mins * 60;
+  return { mins: formatNumber(mins), secs: formatNumber(secs) };
+};
 
-export default function App() {
-  return (
-    <View style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Feedback">
-          {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
-          <Stack.Screen name="Feedback" component={Feedback} />
-          <Stack.Screen name="Timer" component={Timer} />
-          <Stack.Screen name="Details" component={Details} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
-  );
+export default class Timer extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    // const bitch = 5;
+    // const [remainingSecs, setRemainingSecs] = useState(10);
+    // const [isActive, setIsActive] = useState(false);
+    // const { mins, secs } = getRemaining(remainingSecs);
+
+    // const toggle = useCallback(() => {
+    //   setIsActive(!isActive);
+    // });
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1.5, backgroundColor: "#222" }}>
+          <View style={{ flexDirection: "row", marginTop: 50 }}>
+            <Text style={styles.fullTimeText}>Timer for 00:00:10</Text>
+            <TouchableOpacity>
+              <Image
+                style={styles.tinyLogo}
+                source={require("./assets/offbutton.png")}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ flex: 1.5, backgroundColor: "fff" }}>
+          <TouchableOpacity>
+            <Button
+              onPress={() => this.props.navigation.navigate("Details")}
+              title="Submit!"
+              color="#35F2E9" //button bg for android, text for ios
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
