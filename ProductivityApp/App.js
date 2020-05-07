@@ -19,6 +19,7 @@ import Feedback from "./Feedback";
 import AppSaved from "./AppSaved";
 import Timer from "./Timer";
 import Details from "./Details";
+import TextInput from "./TextInput";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -41,12 +42,13 @@ export default function App() {
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Feedback">
+        <Stack.Navigator initialRouteName="Details">
           {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
           <Stack.Screen name="Feedback" component={Feedback} />
           <Stack.Screen name="Timer" component={Timer} />
           <Stack.Screen name="Details" component={Details} />
           <Stack.Screen name="AppSaved" component={AppSaved} />
+          <Stack.Screen name="TextInput" component={TextInput} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
