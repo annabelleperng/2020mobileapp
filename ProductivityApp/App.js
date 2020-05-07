@@ -16,6 +16,7 @@ import {
   Dimensions,
 } from "react-native";
 import Feedback from "./Feedback";
+import AppSaved from "./AppSaved";
 import Timer from "./Timer";
 import Details from "./Details";
 import { NavigationContainer } from "@react-navigation/native";
@@ -45,6 +46,7 @@ export default function App() {
           <Stack.Screen name="Feedback" component={Feedback} />
           <Stack.Screen name="Timer" component={Timer} />
           <Stack.Screen name="Details" component={Details} />
+          <Stack.Screen name="AppSaved" component={AppSaved} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

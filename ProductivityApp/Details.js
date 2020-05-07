@@ -43,6 +43,16 @@ export default class Details extends Component {
             />
           </TouchableOpacity>
         </View>
+        <View style={{ flex: 1.5, backgroundColor: "#5aceef" }}>
+          <Text>YOURE A BITCHASS HOE!</Text>
+          <TouchableOpacity>
+            <Button
+              onPress={() => this.props.navigation.navigate("AppSaved")}
+              title="Go back to...!"
+              color="#35F2E9" //button bg for android, text for ios
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
