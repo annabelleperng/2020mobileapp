@@ -65,7 +65,6 @@ export default function AppSaved() {
           </TouchableOpacity>
           <Text style={styles.fullTimeText}>Timer for 00:00:10</Text>
         </View> */}
-
         <View style={{ flexDirection: "row", marginTop: 50 }}>
           <Text style={styles.fullTimeText}>Timer for 00:00:10</Text>
           <TouchableOpacity>

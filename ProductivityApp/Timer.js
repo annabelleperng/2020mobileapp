@@ -29,8 +29,19 @@ export default class Timer extends Component {
   constructor(props) {
     super(props);
   }
+  static navigationOptions = {
+    //Setting the header of the screen
+    title: "Timer",
+  };
   render() {
-    // const bitch = 5;
+    const { navigate } = this.props.navigation;
+    const { nav2 } = this.props;
+    console.log("hello");
+    console.log(this.props);
+    console.log(this.props.route.params.JSON_ListView_Clicked_Item);
+    // const { itemId } = this.props.navigation.params;
+    // const { otherParam } = this.props.navigation.params;
+
     // const [remainingSecs, setRemainingSecs] = useState(10);
     // const [isActive, setIsActive] = useState(false);
     // const { mins, secs } = getRemaining(remainingSecs);
@@ -42,7 +53,10 @@ export default class Timer extends Component {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1.5, backgroundColor: "#222" }}>
           <View style={{ flexDirection: "row", marginTop: 50 }}>
-            <Text style={styles.fullTimeText}>Timer for 00:00:10</Text>
+            <Text style={styles.fullTimeText}>Timer for 00:00</Text>
+            <Text style={styles.red}>
+              {this.props.route.params.JSON_ListView_Clicked_Item}
+            </Text>
             <TouchableOpacity>
               <Image
                 style={styles.tinyLogo}
