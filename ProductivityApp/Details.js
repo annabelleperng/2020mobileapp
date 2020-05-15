@@ -54,6 +54,11 @@ export default class Details extends Component {
               title="Go back to feedback!"
               color="#35F2E9" //button bg for android, text for ios
             />
+            <Button
+              onPress={() => this.props.navigation.navigate("AppSaved")}
+              title="Go back to AppSaved!"
+              color="#35F2E9" //button bg for android, text for ios
+            />
           </TouchableOpacity>
         </View>
         <View style={{ flex: 1.5, backgroundColor: "#2edcf2" }}>
