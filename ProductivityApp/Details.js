@@ -16,6 +16,7 @@ import {
   Image,
   TextInput
 } from "react-native";
+//import CombinedButton from "react-native-combined-button";
 
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from "@react-navigation/stack";
@@ -176,24 +177,28 @@ export default class Details extends Component {
         <View
           style={{
             flex: 0.25,
-            backgroundColor: "#0ffcff",
-            justifyContent: "center"
+            justifyContent: "center",
+            alignItems: "left",
+            backgroundColor: "#0ffcff"
           }}
         >
           <TouchableOpacity
+            activeOpacity={0.5}
             onPress={() => this.props.navigation.navigate("Garden")}
           >
             <Image
-              style={styles.tinyLogoRight}
               source={require("./assets/hendery.png")}
               style={{
-                resizeMode: "contain",
                 width: 150,
                 height: 150
               }}
-              alignItems="right"
             />
           </TouchableOpacity>
+          {/* <CombinedButton
+            style={styles.iconBtn}
+            iconPosition="left"
+            icon={require("./assets/hendery.png")}
+          /> */}
           <Text styles={{ color: "lime" }}>Visit your garden!</Text>
         </View>
       </View>
