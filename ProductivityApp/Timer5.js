@@ -23,7 +23,8 @@ export default class StopWatch extends Component {
       minutes_Counter: this.props.route.params.JSON_ListView_Clicked_Item,
       seconds_Counter: "00",
       startDisable: false,
-      start: new Date().toLocaleString(),
+      start: new Date(),
+      startedFirst: false,
       confirm: false,
     };
   }
@@ -37,6 +38,12 @@ export default class StopWatch extends Component {
       var num = (Number(this.state.seconds_Counter) - 1).toString(),
         count = this.state.minutes_Counter;
 
+      if (!this.startDisable) {
+        this.startDisable = true;
+        // console.log("old start = " + this.state.start);
+        this.state.start = new Date();
+        // console.log("new start = " + this.state.start);
+      }
       if (
         Number(this.state.seconds_Counter) == 0 &&
         Number(this.state.minutes_Counter) == 0
@@ -45,9 +52,15 @@ export default class StopWatch extends Component {
         num = "00";
         clearInterval(this.state.timer);
         this.onButtonStop;
-        var diff = this.state.start;
+        var currentTime = new Date();
+        var diff = currentTime.getTime() - this.state.start.getTime();
+        // console.log(diff);
+        // console.log("currentttt start = " + this.state.start);
+        // console.log("currentttt start = " + currentTime);
         this.props.navigation.navigate("Feedback", {
-          JSON_ListView_Clicked_Item: this.state.start,
+          JSON_ListView_Clicked_Item: this.state.start.toLocaleString(),
+          total_time: diff,
+          timer_time: this.props.route.params.JSON_ListView_Clicked_Item,
         });
       }
 
@@ -87,7 +100,7 @@ export default class StopWatch extends Component {
   };
 
   render() {
-    console.log("hello");
+    // console.log("hello");
 
     return (
       //   <View style={styles.MainContainer}>
