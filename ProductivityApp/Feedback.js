@@ -26,6 +26,7 @@ export default class Feedback extends Component {
   onPressSubmit() {}
 
   render() {
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
