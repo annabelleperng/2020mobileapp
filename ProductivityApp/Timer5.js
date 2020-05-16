@@ -23,6 +23,7 @@ export default class StopWatch extends Component {
       minutes_Counter: this.props.route.params.JSON_ListView_Clicked_Item,
       seconds_Counter: "00",
       startDisable: false,
+      start: new Date().toLocaleString(),
       confirm: false,
     };
   }
@@ -44,7 +45,10 @@ export default class StopWatch extends Component {
         num = "00";
         clearInterval(this.state.timer);
         this.onButtonStop;
-        this.props.navigation.navigate("Feedback");
+        var diff = this.state.start;
+        this.props.navigation.navigate("Feedback", {
+          JSON_ListView_Clicked_Item: this.state.start,
+        });
       }
 
       if (
