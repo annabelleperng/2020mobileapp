@@ -17,6 +17,7 @@ export default class Garden extends Component {
   }
 
   render() {
+    const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
       <View
         style={{
@@ -29,7 +30,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: screen.height / 20,
+              marginTop: margin,
               marginLeft: screen.width / 14,
             }}
           >
@@ -52,7 +53,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: screen.height / 20,
+              marginTop: margin,
               marginLeft: screen.width / 14,
             }}
           >
@@ -75,7 +76,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: screen.height / 20,
+              marginTop: margin,
               marginLeft: screen.width / 14,
             }}
           >
@@ -94,8 +95,54 @@ export default class Garden extends Component {
           </View>
         </View>
         <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
-        <View style={{ flex: 2.5, backgroundColor: "#57423e" }}></View>
-        <View style={{ flex: 2.5, backgroundColor: "#0e0e0e" }}></View>
+        <View style={{ flex: 2, backgroundColor: "#57423e" }}></View>
+        <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              //   marginLeft: screen.width / 14,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+              activeOpacity={0.5}
+            >
+              <Image
+                style={styles.menuIcons}
+                source={require("./assets/shoplogo.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+              activeOpacity={0.5}
+            >
+              <Image
+                style={styles.menuIcons2}
+                source={require("./assets/shoplogo.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+              activeOpacity={0.5}
+            >
+              <Image
+                style={styles.menuIcons2}
+                source={require("./assets/shoplogo.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+              activeOpacity={0.5}
+            >
+              <Image
+                style={styles.menuIcons2}
+                source={require("./assets/shoplogo.png")}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     );
   }
@@ -106,10 +153,13 @@ const styles = StyleSheet.create({
     width: screen.width / 3.5,
     height: screen.width / 3.5,
   },
-  menuButton: {
-    width: screen.width / 6,
-    height: screen.width / 6,
-    marginLeft: screen.width / 7,
-    alignItems: "flex-end",
+  menuIcons: {
+    width: screen.width / 9,
+    height: screen.width / 9,
+  },
+  menuIcons2: {
+    width: screen.width / 9,
+    height: screen.width / 9,
+    marginLeft: screen.width / 10,
   },
 });
