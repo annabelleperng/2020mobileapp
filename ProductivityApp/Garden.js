@@ -6,7 +6,7 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
-  Dimensions,
+  Dimensions
 } from "react-native";
 
 const screen = Dimensions.get("window");
@@ -22,7 +22,7 @@ export default class Garden extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         <View style={{ flex: 4, backgroundColor: "#57423e" }}>
@@ -30,7 +30,7 @@ export default class Garden extends Component {
             style={{
               flexDirection: "row",
               marginTop: screen.height / 20,
-              marginLeft: screen.width / 14,
+              marginLeft: screen.width / 14
             }}
           >
             <Image
@@ -53,7 +53,7 @@ export default class Garden extends Component {
             style={{
               flexDirection: "row",
               marginTop: screen.height / 20,
-              marginLeft: screen.width / 14,
+              marginLeft: screen.width / 14
             }}
           >
             <Image
@@ -76,7 +76,7 @@ export default class Garden extends Component {
             style={{
               flexDirection: "row",
               marginTop: screen.height / 20,
-              marginLeft: screen.width / 14,
+              marginLeft: screen.width / 14
             }}
           >
             <Image
@@ -95,7 +95,31 @@ export default class Garden extends Component {
         </View>
         <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
         <View style={{ flex: 2.5, backgroundColor: "#57423e" }}></View>
-        <View style={{ flex: 2.5, backgroundColor: "#0e0e0e" }}></View>
+        <View style={{ flex: 2.5, backgroundColor: "#0e0e0e" }}>
+          <View
+            style={{
+              alignItems: "left",
+              backgroundColor: "#0ffcff",
+              padding: 20
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => this.props.navigation.navigate("Shop")}
+            >
+              <Image
+                source={require("./assets/hendery.png")}
+                style={{
+                  width: 40,
+                  height: 40
+                }}
+              />
+            </TouchableOpacity>
+            <Text styles={{ color: "lime" }}>
+              Visit the hendery sculpture garden!
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -104,12 +128,12 @@ export default class Garden extends Component {
 const styles = StyleSheet.create({
   plants: {
     width: screen.width / 3.5,
-    height: screen.width / 3.5,
+    height: screen.width / 3.5
   },
   menuButton: {
     width: screen.width / 6,
     height: screen.width / 6,
     marginLeft: screen.width / 7,
-    alignItems: "flex-end",
-  },
+    alignItems: "flex-end"
+  }
 });
