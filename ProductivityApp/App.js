@@ -21,6 +21,8 @@ import Timer from "./Timer";
 import Timer5 from "./Timer5";
 import Details from "./Details";
 import TextInput from "./TextInput";
+import Stats from "./Stats";
+import Garden from "./Garden";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -51,6 +53,8 @@ export default function App() {
           <Stack.Screen name="AppSaved" component={AppSaved} />
           <Stack.Screen name="TextInput" component={TextInput} />
           <Stack.Screen name="Timer5" component={Timer5} />
+          <Stack.Screen name="Garden" component={Garden} />
+          <Stack.Screen name="Stats" component={Stats} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

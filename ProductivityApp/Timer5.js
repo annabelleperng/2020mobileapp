@@ -57,7 +57,7 @@ export default class StopWatch extends Component {
         // console.log(diff);
         // console.log("currentttt start = " + this.state.start);
         // console.log("currentttt start = " + currentTime);
-        this.props.navigation.navigate("Feedback", {
+        this.props.navigation.navigate("Stats", {
           JSON_ListView_Clicked_Item: this.state.start.toLocaleString(),
           total_time: diff,
           timer_time: this.props.route.params.JSON_ListView_Clicked_Item,
@@ -106,7 +106,7 @@ export default class StopWatch extends Component {
       //   <View style={styles.MainContainer}>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1.5, backgroundColor: "#000" }}>
-          <View style={{ marginTop: 50 }}>
+          <View style={{ marginTop: screen.height / 25 }}>
             <Text style={styles.fullTimeText}>
               Timer for {this.props.route.params.JSON_ListView_Clicked_Item}
               :00
