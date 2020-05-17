@@ -106,7 +106,14 @@ export default class StopWatch extends Component {
       //   <View style={styles.MainContainer}>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1.5, backgroundColor: "#000" }}>
-          <View style={{ marginTop: screen.height / 25 }}>
+          <View
+            style={{
+              marginTop:
+                Platform.OS == "android"
+                  ? screen.height / 35
+                  : screen.height / 20,
+            }}
+          >
             <Text style={styles.fullTimeText}>
               Timer for {this.props.route.params.JSON_ListView_Clicked_Item}
               :00
