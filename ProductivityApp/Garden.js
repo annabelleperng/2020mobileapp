@@ -30,7 +30,7 @@ export default class Garden extends Component {
             style={{
               flexDirection: "row",
               marginTop: screen.height / 20,
-              marginLeft: screen.width / 15,
+              marginLeft: screen.width / 14,
             }}
           >
             <Image
@@ -39,7 +39,7 @@ export default class Garden extends Component {
             />
             <Image
               style={styles.plants}
-              source={require("./assets/fernsbig.png")}
+              source={require("./assets/tulipsbig.png")}
             />
             <Image
               style={styles.plants}
@@ -48,9 +48,51 @@ export default class Garden extends Component {
           </View>
         </View>
         <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
-        <View style={{ flex: 4, backgroundColor: "#57423e" }}></View>
+        <View style={{ flex: 4, backgroundColor: "#57423e" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: screen.height / 20,
+              marginLeft: screen.width / 14,
+            }}
+          >
+            <Image
+              style={styles.plants}
+              source={require("./assets/fernsbig.png")}
+            />
+            <Image
+              style={styles.plants}
+              source={require("./assets/tulipsbig.png")}
+            />
+            <Image
+              style={styles.plants}
+              source={require("./assets/fernsbig.png")}
+            />
+          </View>
+        </View>
         <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
-        <View style={{ flex: 4, backgroundColor: "#57423e" }}></View>
+        <View style={{ flex: 4, backgroundColor: "#57423e" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: screen.height / 20,
+              marginLeft: screen.width / 14,
+            }}
+          >
+            <Image
+              style={styles.plants}
+              source={require("./assets/fernsbig.png")}
+            />
+            <Image
+              style={styles.plants}
+              source={require("./assets/tulipsbig.png")}
+            />
+            <Image
+              style={styles.plants}
+              source={require("./assets/fernsbig.png")}
+            />
+          </View>
+        </View>
         <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
         <View style={{ flex: 2.5, backgroundColor: "#57423e" }}></View>
         <View style={{ flex: 2.5, backgroundColor: "#0e0e0e" }}></View>
@@ -64,9 +106,9 @@ const styles = StyleSheet.create({
     width: screen.width / 3.5,
     height: screen.width / 3.5,
   },
-  tinyLogo: {
-    width: 50,
-    height: 50,
+  menuButton: {
+    width: screen.width / 6,
+    height: screen.width / 6,
     marginLeft: screen.width / 7,
     alignItems: "flex-end",
   },
