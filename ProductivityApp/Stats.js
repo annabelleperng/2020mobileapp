@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import {
   VictoryBar,
   VictoryChart,
@@ -8,14 +8,16 @@ import {
   VictoryAxis,
 } from "victory-native";
 
+const screen = Dimensions.get("window");
+
 // const data = [
 //   { action: "Sprint time", time: 70, fill: "blue" },
 //   { action: "Break time", time: 20, fill: "red" },
 // ];
 
 const endTime = new Date();
-const hours = endTime.getHours();
-const mins = endTime.getMinutes();
+const endHours = endTime.getHours();
+const endMins = endTime.getMinutes();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -28,32 +30,132 @@ export default class App extends React.Component {
     };
   }
 
-  timeOfDay() {
+  timeOfDay(hours) {
     // "params": Object {
     //   "JSON_ListView_Clicked_Item": "5/16/2020, 12:37:00 AM",
     //   "timer_time": "1", //minutes
     //   "total_time": 70953, //millisecs
     // },
+    if (5 <= hours && hours <= 11) {
+      return "morning";
+    } else if (12 <= hours && hours <= 16) {
+      return "afternoon";
+    } else if (17 <= hours && hours <= 19) {
+      return "evening";
+    } else {
+      return "night";
+    }
+  }
+
+  encourage(start, end) {
+    if (start === end) {
+      return "Grinding through the " + start + "!";
+    } else {
+      return "Grinding from " + start + " 'til " + end + "!";
+    }
   }
 
   render() {
-    const startHours = hours - Math.floor(this.state.total_time / 3600000);
+    const startHours = endHours - Math.floor(this.state.total_time / 3600000);
     const startHours12h = startHours <= 12 ? startHours : startHours % 12;
     const startAMPM = startHours <= 12 ? " AM" : " PM";
     if (startHours == 24) {
       startHours12h = 12;
       startAMPM = " AM";
     }
-    const startMins = mins - Math.floor(this.state.total_time / 60000);
-    const endHours12h = hours <= 12 ? hours : hours % 12;
-    const endAMPM = hours <= 12 ? " AM" : " PM";
-    if (hours == 24) {
+    const startMins = endMins - Math.floor(this.state.total_time / 60000);
+    const endHours12h = endHours <= 12 ? endHours : endHours % 12;
+    const endAMPM = endHours <= 12 ? " AM" : " PM";
+    if (endHours == 24) {
       endHours12h = 12;
       endAMPM = " AM";
     }
+    const startTimeOfDay = this.timeOfDay(startHours);
+    const endTimeOfDay = this.timeOfDay(endHours);
+    // if (12 <= startHours <= 4) {
+    //   var firstTimeOfDay = "./assets/afternoon.png";
+    // } else if (17 <= startHours <= 19) {
+    //   var firstTimeOfDay = "./assets/evening.png";
+    // } else if (startHours >= 20 || startHours < 5) {
+    //   var firstTimeOfDay = "./assets/night.png";
+    // }
 
     return (
       <View style={styles.container}>
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          {this.timeOfDay(startHours) === "morning" ? (
+            <Image
+              style={styles.pic}
+              source={require("./assets/morning.png")}
+            />
+          ) : (
+            <View></View>
+          )}
+          {this.timeOfDay(startHours) === "afternoon" ? (
+            <Image
+              style={styles.pic}
+              source={require("./assets/afternoon.png")}
+            />
+          ) : (
+            <View></View>
+          )}
+          {this.timeOfDay(startHours) === "evening" ? (
+            <Image
+              style={styles.pic}
+              source={require("./assets/evening.png")}
+            />
+          ) : (
+            <View></View>
+          )}
+          {this.timeOfDay(startHours) === "night" ? (
+            <Image style={styles.pic} source={require("./assets/night.png")} />
+          ) : (
+            <View></View>
+          )}
+          {this.timeOfDay(startHours) != this.timeOfDay(endHours) ? (
+            (this.timeOfDay(endHours) === "morning" ? (
+              <Image
+                style={styles.pic}
+                source={require("./assets/morning.png")}
+              />
+            ) : (
+              <View></View>
+            ))(
+              this.timeOfDay(endHours) === "afternoon" ? (
+                <Image
+                  style={styles.pic}
+                  source={require("./assets/afternoon.png")}
+                />
+              ) : (
+                <View></View>
+              )
+            )(
+              this.timeOfDay(endHours) === "evening" ? (
+                <Image
+                  style={styles.pic}
+                  source={require("./assets/evening.png")}
+                />
+              ) : (
+                <View></View>
+              )
+            )(
+              this.timeOfDay(endHours) === "night" ? (
+                <Image
+                  style={styles.pic}
+                  source={require("./assets/night.png")}
+                />
+              ) : (
+                <View></View>
+              )
+            )
+          ) : (
+            <View></View>
+          )}
+        </View>
+
+        <Text style={styles.encourage}>
+          {this.encourage(startTimeOfDay, endTimeOfDay)}
+        </Text>
         <VictoryChart
           domainPadding={{ x: [100, 100], y: [0, 20] }}
           width={360}
@@ -118,7 +220,7 @@ export default class App extends React.Component {
             {" "}
             {(endHours12h < 10 ? "0" + endHours12h : endHours12h) +
               ":" +
-              (mins < 10 ? "0" + mins : mins) +
+              (endMins < 10 ? "0" + endMins : endMins) +
               endAMPM}{" "}
           </Text>
         </View>
@@ -164,5 +266,14 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 25,
     marginBottom: 5,
+  },
+  pic: {
+    width: screen.width / 10,
+    height: screen.width / 10,
+  },
+  encourage: {
+    color: "#74D130",
+    fontSize: 15,
+    marginTop: 3,
   },
 });
