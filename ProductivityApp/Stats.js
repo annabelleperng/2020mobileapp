@@ -13,8 +13,9 @@ import {
 //   { action: "Break time", time: 20, fill: "red" },
 // ];
 
-const startTime = "03:15 PM"; //placeholder
-const endTime = "04:45 PM"; //placeholder
+const endTime = new Date();
+const hours = endTime.getHours();
+const mins = endTime.getMinutes();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -36,6 +37,21 @@ export default class App extends React.Component {
   }
 
   render() {
+    const startHours = hours - Math.floor(this.state.total_time / 3600000);
+    const startHours12h = startHours <= 12 ? startHours : startHours % 12;
+    const startAMPM = startHours <= 12 ? " AM" : " PM";
+    if (startHours == 24) {
+      startHours12h = 12;
+      startAMPM = " AM";
+    }
+    const startMins = mins - Math.floor(this.state.total_time / 60000);
+    const endHours12h = hours <= 12 ? hours : hours % 12;
+    const endAMPM = hours <= 12 ? " AM" : " PM";
+    if (hours == 24) {
+      endHours12h = 12;
+      endAMPM = " AM";
+    }
+
     return (
       <View style={styles.container}>
         <VictoryChart
@@ -59,14 +75,17 @@ export default class App extends React.Component {
             }}
             barRatio={0.8}
             // data={data}
-            data={[
-              { action: "Sprint time", time: 70 },
-              { action: "Break time", time: 20 },
-            ]}
-            // data = {[
-            //   { action: "Sprint time", time: this.state.timer_time },
-            //   { action: "Break time", time: (this.state.total_time / 1000 - this.state.timer_time) },
+            // data={[
+            //   { action: "Sprint time", time: 70 },
+            //   { action: "Break time", time: 20 },
             // ]}
+            data={[
+              { action: "Sprint time", time: this.state.timer_time },
+              {
+                action: "Break time",
+                time: this.state.total_time / 60000 - this.state.timer_time,
+              },
+            ]}
             x="action"
             y="time"
           />
@@ -89,9 +108,19 @@ export default class App extends React.Component {
           }}
         >
           <Text style={styles.leftTimesSmol}>
-            {startTime + "              "}
+            {(startHours12h < 10 ? "0" + startHours12h : startHours12h) +
+              ":" +
+              (startMins < 10 ? "0" + startMins : startMins) +
+              startAMPM +
+              "             "}
           </Text>
-          <Text style={styles.rightTimesSmol}> {endTime} </Text>
+          <Text style={styles.rightTimesSmol}>
+            {" "}
+            {(endHours12h < 10 ? "0" + endHours12h : endHours12h) +
+              ":" +
+              (mins < 10 ? "0" + mins : mins) +
+              endAMPM}{" "}
+          </Text>
         </View>
       </View>
     );
