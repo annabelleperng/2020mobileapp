@@ -101,31 +101,45 @@ export default class Garden extends Component {
                   styles.smallButton,
                   this.state.showCancel ? styles.hidden : {},
                 ]}
-                source={require("./assets/puta.png")}
+                source={require("./assets/invis.png")}
               />
               <Image
                 style={[
                   styles.smallButton,
                   this.state.showCancel ? {} : styles.hidden,
                 ]}
-                source={require("./assets/sad_jeno.png")}
+                source={require("./assets/puta.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                style={styles.smallButton}
-                source={require("./assets/tempdollar.png")}
+                style={[
+                  styles.smallButton,
+                  this.state.showCancel ? styles.hidden : {},
+                ]}
+                source={require("./assets/invis.png")}
+              />
+              <Image
+                style={[
+                  styles.smallButton,
+                  this.state.showCancel ? {} : styles.hidden,
+                ]}
+                source={require("./assets/night.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                style={styles.smallButton}
-                source={require("./assets/tempdollar.png")}
+                style={[
+                  styles.smallButton,
+                  this.state.showCancel ? styles.hidden : {},
+                ]}
+                source={require("./assets/invis.png")}
               />
-            </TouchableOpacity>
-            <TouchableOpacity>
               <Image
-                style={styles.smallButton}
+                style={[
+                  styles.smallButton,
+                  this.state.showCancel ? {} : styles.hidden,
+                ]}
                 source={require("./assets/tempdollar.png")}
               />
             </TouchableOpacity>
