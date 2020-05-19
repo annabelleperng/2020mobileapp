@@ -80,6 +80,8 @@ export default class App extends React.Component {
     //   var firstTimeOfDay = "./assets/night.png";
     // }
 
+    const breakMins = this.state.total_time / 60000 - this.state.timer_time;
+
     return (
       <View style={styles.container}>
         <View style={{ flexDirection: "row", marginTop: 10 }}>
@@ -199,7 +201,10 @@ export default class App extends React.Component {
             marginTop: 30,
           }}
         >
-          <Text style={styles.leftTimes}>Started at {"        "}</Text>
+          <Text style={styles.leftTimes}>
+            {this.state.total_time / 60000 - this.state.timer_time} at{" "}
+            {"        "}
+          </Text>
           <Text style={styles.rightTimes}>Ended at </Text>
         </View>
         <View
@@ -213,8 +218,8 @@ export default class App extends React.Component {
             {(startHours12h < 10 ? "0" + startHours12h : startHours12h) +
               ":" +
               (startMins < 10 ? "0" + startMins : startMins) +
-              startAMPM +
-              "             "}
+              startAMPM}
+            {"          "}
           </Text>
           <Text style={styles.rightTimesSmol}>
             {" "}
