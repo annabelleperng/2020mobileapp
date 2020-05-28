@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import {
   VictoryBar,
   VictoryChart,
-  VictoryTheme,
   VictoryLabel,
   VictoryAxis,
 } from "victory-native";
@@ -159,9 +158,17 @@ export default class App extends React.Component {
           {this.encourage(startTimeOfDay, endTimeOfDay)}
         </Text>
         <VictoryChart
-          domainPadding={{ x: [100, 100], y: [0, 20] }}
+          domainPadding={{
+            x: [100, 100],
+            y: [
+              0,
+              ((this.state.total_time / 60000 - this.state.timer_time) /
+                this.state.timer_time) *
+                90,
+            ],
+          }}
           width={360}
-          theme={VictoryTheme.material}
+          height={320}
         >
           <VictoryLabel
             text="Sprint versus Break Time"
@@ -201,10 +208,7 @@ export default class App extends React.Component {
             marginTop: 30,
           }}
         >
-          <Text style={styles.leftTimes}>
-            {this.state.total_time / 60000 - this.state.timer_time} at{" "}
-            {"        "}
-          </Text>
+          <Text style={styles.leftTimes}>Started at {"        "}</Text>
           <Text style={styles.rightTimes}>Ended at </Text>
         </View>
         <View
