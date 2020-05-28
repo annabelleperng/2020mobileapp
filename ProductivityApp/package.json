@@ -7,18 +7,24 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.10.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.19",
     "expo": "~37.0.3",
+    "expo-secure-store": "~8.1.0",
+    "moment": "^2.26.0",
+    "moment-timezone": "^0.5.31",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-elements": "^2.0.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-material-dropdown": "^0.11.1",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.7.0",
     "react-native-sound": "^0.11.0",
+    "react-native-sqlite-storage": "^5.0.0",
     "react-native-stopwatch-timer": "0.0.21",
     "react-native-svg": "^12.1.0",
     "react-native-web": "~0.11.7",
@@ -27,8 +33,8 @@
     "victory-native": "^34.3.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+    "@babel/core": "^7.8.6",
+    "babel-preset-expo": "~8.1.0"
   },
   "private": true
 }
