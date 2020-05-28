@@ -229,7 +229,7 @@ export default class Garden extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.props.navigation.navigate("GardenTesting")}
               activeOpacity={0.5}
             >
               <Image

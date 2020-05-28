@@ -72,7 +72,7 @@ export default class Details extends Component {
             style={{
               fontFamily: "Marker Felt",
               textAlign: "center",
-              fontSzie: 20,
+              fontSize: 20,
             }}
           >
             {" "}
