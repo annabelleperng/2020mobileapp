@@ -15,6 +15,16 @@ const screen = Dimensions.get("window");
 import SeedUtils from "./SeedUtils";
 const su = new SeedUtils();
 
+import { Audio } from "expo-av";
+const soundObject = new Audio.Sound();
+
+// Audio.Sound.createAsync(
+//   source,
+//   (initialStatus = {}),
+//   (onPlaybackStatusUpdate = null),
+//   (downloadFirst = true)
+// );
+
 let images = {
   "ferns ": require("./assets/fernsbig.png"),
   "tulips ": require("./assets/tulipsbig.png"),
@@ -29,6 +39,10 @@ export default class GardenTesting extends Component {
     this.state = {
       showCancel: false,
       image1: "invis ",
+      temp: false,
+      soundLoaded: false,
+      shouldBePlaying: true,
+      isPlaying: true,
     };
   }
 
@@ -40,8 +54,22 @@ export default class GardenTesting extends Component {
       this.initializeGarden();
       await SecureStore.setItemAsync("garden_initialized", "true");
     }
-    // this.initializeGarden();
+    this.initializeGarden();
     // su.plantSeed(1, "1none");
+    // su.plantSeed(2, "1none");
+    // su.fertilizePlant(2);
+    // const rem = await su.waterPlant(2, 5);
+
+    // this.setState({ temp: rem });
+    // console.log(
+    //   "now 2_waters is " + (await SecureStore.getItemAsync("2_waters"))
+    // );
+    // console.log("remainder was" + rem);
+  };
+
+  componentWillUnmount = () => {
+    console.log("here - unmounted");
+    // this.stopPlaying();
   };
 
   initializeGarden = async () => {
@@ -50,7 +78,7 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_bees", "0");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "0");
+    await SecureStore.setItemAsync("inventory_fertilizer", "1");
     await SecureStore.setItemAsync("1_status", "0");
     await SecureStore.setItemAsync("2_status", "0");
     await SecureStore.setItemAsync("3_status", "0");
@@ -66,6 +94,7 @@ export default class GardenTesting extends Component {
       "%2bitch%1hello%1hi%2i%3am"
     );
     await SecureStore.setItemAsync("garden_initialized", "true");
+    // await su.plantSeed
     console.log("we're here");
     // su.checkStatus(1, "0");
     // su.checkStatus(1, "1");
@@ -83,47 +112,59 @@ export default class GardenTesting extends Component {
     }
   };
 
-  show1 = () => {
-    console.log("\nshow1 called");
-    // console.log("\ncalling checkStatus");
-    // if (su.checkStatus(1, "1") === 1) {
-    //   console.log("ferns it is");
-    //   return "ferns ";
-    //   //   const species = await SecureStore.getItemAsync("1_species");
-    //   //   return species + " ";
-    // } else {
-    //   console.log("ferns it isn't");
-    //   return "ferns ";
-    // }
-    const name = su.getImageName(1);
-    console.log("\nname is " + name + "\n\n");
-    // return "hoiaklfs";
-    return "ferns ";
-    return name;
+  stopPlaying = async () => {
+    try {
+      console.log("called stopPlaying at some point");
+      await soundObject.pauseAsync();
+      this.setState({ isPlaying: false });
+      //   await soundObject.stopAndUnloadAsync();
+    } catch (error) {}
+  };
+
+  pauseSound = async () => {
+    try {
+      console.log("called pauseSound at some point");
+      if (this.state.shouldBePlaying == false) {
+        this.setState({ shouldBePlaying: true });
+      } else {
+        this.setState({ shouldBePlaying: false });
+      }
+
+      //   await soundObject.stopAndUnloadAsync();
+    } catch (error) {}
+  };
+
+  playSound = async () => {
+    try {
+      console.log("called playSound at some point");
+      if (this.state.soundLoaded == false) {
+        await soundObject.loadAsync(require("./assets/plants.mp3"));
+        this.setState({ soundLoaded: true });
+      }
+      if (this.state.shouldBePlaying == true) {
+        await soundObject.playAsync();
+        this.setState({ isPlaying: true });
+      } else {
+        await soundObject.pauseAsync();
+        this.setState({ isPlaying: false });
+      }
+
+      // Your sound is playing!
+    } catch (error) {
+      // An error occurred!
+    }
   };
 
   show12 = async () => {
     console.log("\nshow12 called");
-    // console.log("\ncalling checkStatus");
-    // if (su.checkStatus(1, "1") === 1) {
-    //   console.log("ferns it is");
-    //   return "ferns ";
-    //   //   const species = await SecureStore.getItemAsync("1_species");
-    //   //   return species + " ";
-    // } else {
-    //   console.log("ferns it isn't");
-    //   return "ferns ";
-    // }
-    // console.log("hey;)");
+
     let species = await SecureStore.getItemAsync("1_species");
     console.log("\n\nATTENTION!!!!!!! species for show12 = " + species);
     console.log("uwu");
-    await species;
-    return species + " ";
+    // await species;
+    // return species + " ";
     let name = await su.getImageName(1);
-    // return "hoiaklfs";
-    // return "ferns ";
-    // await name;
+
     console.log("\nname12 is " + name + "\n\n");
     return name;
   };
@@ -140,13 +181,18 @@ export default class GardenTesting extends Component {
 
   render() {
     this.checkInitialized();
+    this.playSound();
+    // if (0 === "0") {
+    //   console.log('0 ==="0"');
+    // }
+    // if (0 == "0") {
+    //   console.log('0=="0"');
+    // }
     // su.removeSeedFromInventory(3);
     console.log("69");
     // const b = su.getImageName("ferns");
-    const v = this.show1();
     const vv = this.show13();
     console.log("96");
-    console.log("\n\n v = " + v);
     console.log("\n\n vv = " + vv);
     // console.log(this.props);
     return (
@@ -157,6 +203,9 @@ export default class GardenTesting extends Component {
       >
         {console.log("you are here" + vv)}
         <TouchableOpacity onPress={this.toggleCancel}>
+          <Image source={images[this.state.image1]} style={styles.plants} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.pauseSound}>
           <Image source={images[this.state.image1]} style={styles.plants} />
         </TouchableOpacity>
       </View>

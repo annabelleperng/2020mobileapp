@@ -88,7 +88,7 @@ export default class Details extends Component {
           }}
         >
           <TextInput
-            value={this.state.minutes}
+            // value={this.state.minutes}
             onChangeText={(minutes) => this.setState({ minutes })}
             placeholder={"Enter Any value"}
             keyboardType="number-pad"
@@ -96,6 +96,11 @@ export default class Details extends Component {
               styles.input,
               { height: Platform.OS == "android" ? 40 : 35 },
             ]}
+          />
+          <Button
+            title="Go to GardenTesting"
+            //Button Title
+            onPress={() => navigate("GardenTesting")}
           />
           {/* <Button
           title="Go to timer, pass minutes 1"
@@ -107,15 +112,6 @@ export default class Details extends Component {
               params: {
                 JSON_ListView_Clicked_Item: this.state.minutes
               }
-            })
-          }
-        />
-        <Button
-          title="Go to timer, pass minutes"
-          //Button Title
-          onPress={() =>
-            navigate("Timer", {
-              JSON_ListView_Clicked_Item: this.state.minutes
             })
           }
         />

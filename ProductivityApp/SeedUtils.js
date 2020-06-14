@@ -46,7 +46,7 @@ export default class SeedUtils extends Component {
     const actualStatusKey = position.toString() + "_status";
     const actualStatus = await SecureStore.getItemAsync(actualStatusKey);
 
-    if ((actualStatus === status) == false) {
+    if ((actualStatus == status) == false) {
       console.log("checkstatus - false");
       console.log("actual status: " + actualStatus);
       console.log("given status: " + status);
@@ -141,11 +141,11 @@ export default class SeedUtils extends Component {
   };
 
   determineSpecies_none = (rarity) => {
-    if (rarity === "1") {
+    if (rarity == "1") {
       const rand = Math.floor(Math.random() * fernsTulips[0].length);
       return fernsTulips[0][rand];
     }
-    if (rarity === "2") {
+    if (rarity == "2") {
       const rand = Math.floor(Math.random() * none[1].length);
       return none[1][rand];
     }
@@ -162,59 +162,114 @@ export default class SeedUtils extends Component {
     return "rose"; //placeholder
   };
 
-  //   getImageName = (species) => {
-  //     return "./assets/" + species + ".png";
-  //   };
-
   getImageName = async (position) => {
     console.log("\n\n\ngetImageName called");
-    if (this.checkStatus(position, "0") === 0) {
-      console.log("NO");
-      return "invis ";
+    if (this.checkStatus(position, "0") === 1) {
+      console.log("NO PLANT HERE");
+      return "invis "; //update later
+    } else if (this.checkStatus(position, "1") === 1) {
+      console.log("SMOL PLANT");
+      return "invis "; //update later
     }
+
     const species = await SecureStore.getItemAsync(position + "_species");
     console.log(species + " candy");
     return species + " ";
-    // return "ferns ";
   };
 
   growSeed = async (position) => {
     return 1;
   };
 
+  /* Fertilizes plant at position if it's not fully grown.
+   * Returns:
+   * -1 if plant cannot be fertilized or does not exist,
+   * 0 if not enough fertilizers to fertilize plant;
+   * 1 if successful
+   */
   fertilizePlant = async (position) => {
+    const fertilizerAmount = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_fertilizer")
+    );
+    if (fertilizerAmount === NaN) {
+      console.log("BAD ERROR: this should never happen");
+      console.log("fertilizer never initialized");
+      return 0;
+    }
+    if (fertilizerAmount < 1) {
+      console.log("error: not enough fertilizer");
+      return 0;
+    }
+
+    if (this.checkStatus(position, "1") === 0) {
+      console.log("error: you shouldn't be able to fertilize this plant.");
+      return -1;
+    }
+
+    await SecureStore.setItemAsync(position + "_status", "2");
+
+    await SecureStore.setItemAsync(
+      "inventory_fertilizer",
+      fertilizerAmount - 1 + ""
+    );
+
+    await SecureStore.setItemAsync(position + "_waters", "13");
+    //and set another value corresponding w/ streak time? todo
+
     return 1;
   };
 
   /* Returns # of waters remaining if not all waters in parameter are used;
-   * returns -100 if plant can't be watered (not present or not fully grown),
-   * returns -1 if not enough waters
+   * returns -1 if plant can't be watered (not present or not fully grown),
+   * returns -1 if not enough waters,
+   * returns remainder of waters if not all parameter waters are used.
    */
   waterPlant = async (position, waters) => {
     if (this.checkStatus(position, "2") != 1) {
       console.log("error: you shouldn't be able to water this plant.");
-      return -100;
+      return -1;
     }
 
-    // waterInventory = await SecureStore.getItemAsync("inventory_water");
-    // if (waterInventory < waters) {
-    //   // not enough waters to water plant
-    //   return -1;
-    // }
+    const plantWaters = Number.parseInt(
+      await SecureStore.getItemAsync(position + "_waters")
+    );
 
-    // plantWaterKey = position.toString() + "_waters";
-    // currentWaters = await SecureStore.getItemAsync(plantWaterKey);
-    // console.log(currentWaters);
-    // newCount = Number.parseInt(currentWaters) + waters;
-    // remainder = 0;
+    const waterInventory = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
 
-    // if (newCount > 15) {
-    //   remainder = newCount - 15;
-    //   newCount = 15;
-    // }
+    if (waterInventory == NaN || plantWaters == NaN || waters < 0) {
+      console.log("something is very wrong - this shouldn't be happening");
+      return -1;
+    }
 
-    // await SecureStore.setItemAsync(plantWaterKey, "" + newCount);
-    // return remainder;
+    if (waterInventory == NaN || waterInventory < waters) {
+      // not enough waters to water plant
+      // (or some weird error)
+      console.log("not enough waters to water plant");
+      return -1;
+    }
+
+    // gave too many waters
+    if (plantWaters + waters > 15) {
+      const used = 15 - plantWaters;
+      await SecureStore.setItemAsync(position + "_waters", "15");
+      await SecureStore.setItemAsync(
+        "inventory_water",
+        waterInventory - used + ""
+      );
+      return waters - used;
+    }
+
+    await SecureStore.setItemAsync(
+      position + "_waters",
+      "" + plantWaters + waters + ""
+    );
+    await SecureStore.setItemAsync(
+      "inventory_water",
+      waterInventory - waters + ""
+    );
+    return 0;
   };
 
   //   fertilizePlant(position) {}

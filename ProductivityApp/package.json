@@ -12,7 +12,8 @@
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.19",
     "expo": "~37.0.3",
-    "expo-secure-store": "~8.1.0",
+    "expo-secure-store": "^8.1.0",
+    "luxon": "^1.24.1",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "react": "~16.9.0",
@@ -27,10 +28,12 @@
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-stopwatch-timer": "0.0.21",
     "react-native-svg": "^12.1.0",
+    "react-native-track-player": "^1.2.3",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.9",
     "victory": "^34.3.5",
-    "victory-native": "^34.3.0"
+    "victory-native": "^34.3.0",
+    "expo-av": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
