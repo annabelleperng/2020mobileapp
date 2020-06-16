@@ -1,5 +1,6 @@
 import DateTime from "luxon/src/datetime.js";
 import Interval from "luxon/src/interval.js";
+import * as SecureStore from "expo-secure-store";
 import React from "react";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 
@@ -9,7 +10,7 @@ export default class App extends React.Component {
   }
 
   updateStreak = async () => {
-    localZone = this.props.route.params.selectedValues;
+    localZone = await SecureStore.getItemAsync("timezone");
     localTime = DateTime.local().setZone(localZone);
     localMidnight = DateTime.fromObject({
       year: localTime.year,
@@ -50,12 +51,13 @@ export default class App extends React.Component {
 
   earnWater = async (mins, streak) => {
     prevCount = await SecureStore.getItemAsync("inventory_water");
+    var added = mins;
     if (streak >= 3) {
       added = mins * (1 + streak / 10);
     }
     newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_water", "" + newCount);
-    return newCount;
+    return added;
   };
 
   getBees = async () => {
@@ -72,12 +74,15 @@ export default class App extends React.Component {
 
   earnBees = async (mins, streak) => {
     prevCount = await SecureStore.getItemAsync("inventory_bees");
+    var added = Math.floor(mins, 30);
     if (streak >= 3) {
-      added = (mins * (1 + streak / 10)) % 30;
+      added = Math.floor(mins * (1 + streak / 10), 30);
     }
+    var progress = 30 - (mins % 30);
+    await SecureStore.setItemAsync("bee_in_progress", "" + progress);
     newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_bees", "" + newCount);
-    return newCount;
+    return added;
   };
 
   getGold = async () => {
@@ -94,12 +99,13 @@ export default class App extends React.Component {
 
   earnGold = async (mins) => {
     prevCount = await SecureStore.getItemAsync("inventory_gold");
+    var added = mins * 5;
     if (streak >= 3) {
       added = mins * (1 + streak / 10) * 5;
     }
     newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
-    return newCount;
+    return added;
   };
 
   obtainSeed = async (rarity, event) => {
