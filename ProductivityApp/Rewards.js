@@ -31,17 +31,17 @@ export default class Rewards extends React.Component {
       percent: 0,
       prevStreak: "",
       currStreak: "",
+      setStreakTemp: 0,
     };
   }
 
   earnStuff = async (mins) => {
-    console.log("start of earnStuff: " + DateTime.local().toString());
-    streak = await SecureStore.getItemAsync("streak_length");
+    console.log("\n\nstart of earnStuff: " + DateTime.local().toString());
+    const streak = await SecureStore.getItemAsync("streak_length");
     console.log(streak);
-    beeProgress = await SecureStore.getItemAsync("bee_in_progress");
+    const beeProgress = await SecureStore.getItemAsync("bee_in_progress");
     console.log(beeProgress);
     this.setState({
-      hasSet: 1,
       timer_time: this.state.timer_time,
       water: await utils.earnWater(mins, streak),
       bees: await utils.earnBees(mins, streak),
@@ -59,22 +59,35 @@ export default class Rewards extends React.Component {
   };
 
   doStuff = async () => {
-    if (hasSet == 0) {
-      console.log("start of doStuff: " + DateTime.local().toString());
-      var prevS = await SecureStore.getItemAsync("streak_length");
+    if (this.state.hasSet == 0) {
+      this.setState({ hasSet: 1 });
+      console.log("hasSet was 0");
+      console.log("\n\nstart of doStuff: " + DateTime.local().toString());
+      const prevS = await SecureStore.getItemAsync("streak_length");
+      console.log("\n\nprevS from doStuff = " + prevS);
       this.setState({ prevStreak: prevS });
       await this.earnStuff(this.state.timer_time);
-      var currS = await SecureStore.getItemAsync("streak_length");
+      const currS = await SecureStore.getItemAsync("streak_length");
+      console.log("\n\ncurrS from doStuff = " + currS);
       this.setState({ prevStreak: currS });
       console.log("end of doStuff: " + DateTime.local().toString());
+    } else {
+      console.log("hasSet was not 0");
     }
   };
 
+  setStreak = async () => {
+    if (this.state.setStreakTemp == 0) {
+      await SecureStore.setItemAsync("streak_length", "3");
+      this.setState({ setStreakTemp: 1 });
+    }
+  };
   render() {
+    this.setStreak();
     console.log("start of render: " + DateTime.local().toString());
     const prevStreak = "3";
     const currStreak = "4";
-    console.log(this.props);
+    // console.log(this.props);
     console.log("im a sneaky bitch");
     this.doStuff();
     return (

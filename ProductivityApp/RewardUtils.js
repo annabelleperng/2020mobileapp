@@ -10,9 +10,9 @@ export default class App extends React.Component {
   }
 
   updateStreak = async () => {
-    localZone = await SecureStore.getItemAsync("timezone");
-    localTime = DateTime.local().setZone(localZone);
-    localMidnight = DateTime.fromObject({
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const localTime = DateTime.local().setZone(localZone);
+    const localMidnight = DateTime.fromObject({
       year: localTime.year,
       month: localTime.month,
       day: localTime.day,
@@ -21,12 +21,12 @@ export default class App extends React.Component {
       second: 0,
       zone: localZone,
     });
-    localPrevMidnight = localMidnight.minus({ days: 1 });
-    prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
-    latestSprintDay = DateTime.fromISO(
+    const localPrevMidnight = localMidnight.minus({ days: 1 });
+    const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+    const latestSprintDay = DateTime.fromISO(
       await SecureStore.getItemAsync("latest_sprint")
     );
-    streakLength = Number.parseInt(
+    const streakLength = Number.parseInt(
       await SecureStore.getItemAsync("streak_length")
     );
     if (prevDay.contains(latestSprintDay)) {
@@ -35,82 +35,87 @@ export default class App extends React.Component {
       streakLength = 0;
     }
     await SecureStore.setItemAsync("streak_length", "" + streakLength);
+    console.log("\n\n\n\n\nUpdated streak to " + streakLength);
   };
 
   getWater = async () => {
-    count = await SecureStore.getItemAsync("inventory_water");
+    const count = await SecureStore.getItemAsync("inventory_water");
     return count;
   };
 
   useWater = async (count) => {
-    prevCount = await SecureStore.getItemAsync("inventory_water");
-    newCount = Number.parseInt(prevCount) - count;
+    const prevCount = await SecureStore.getItemAsync("inventory_water");
+    const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_water", "" + newCount);
     return newCount;
   };
 
   earnWater = async (mins, streak) => {
-    prevCount = await SecureStore.getItemAsync("inventory_water");
+    console.log("EARNWATER");
+    const prevCount = await SecureStore.getItemAsync("inventory_water");
     var added = mins;
     if (streak >= 3) {
       added = mins * (1 + streak / 10);
     }
-    newCount = Number.parseInt(prevCount) + added;
+    const newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_water", "" + newCount);
     return added;
   };
 
   getBees = async () => {
-    count = await SecureStore.getItemAsync("inventory_bees");
+    const count = await SecureStore.getItemAsync("inventory_bees");
     return count;
   };
 
   useBees = async (count) => {
-    prevCount = await SecureStore.getItemAsync("inventory_bees");
-    newCount = Number.parseInt(prevCount) - count;
+    const prevCount = await SecureStore.getItemAsync("inventory_bees");
+    const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_bees", "" + newCount);
     return newCount;
   };
 
   earnBees = async (mins, streak) => {
-    prevCount = await SecureStore.getItemAsync("inventory_bees");
+    console.log("EARNBEES");
+    const prevCount = await SecureStore.getItemAsync("inventory_bees");
     var added = Math.floor(mins, 30);
     if (streak >= 3) {
       added = Math.floor(mins * (1 + streak / 10), 30);
     }
     var progress = 30 - (mins % 30);
     await SecureStore.setItemAsync("bee_in_progress", "" + progress);
-    newCount = Number.parseInt(prevCount) + added;
+    const newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_bees", "" + newCount);
     return added;
   };
 
   getGold = async () => {
-    count = await SecureStore.getItemAsync("inventory_gold");
+    const count = await SecureStore.getItemAsync("inventory_gold");
     return count;
   };
 
   useGold = async (count) => {
-    prevCount = await SecureStore.getItemAsync("inventory_gold");
-    newCount = Number.parseInt(prevCount) - count;
+    const prevCount = await SecureStore.getItemAsync("inventory_gold");
+    const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
     return newCount;
   };
 
-  earnGold = async (mins) => {
-    prevCount = await SecureStore.getItemAsync("inventory_gold");
+  earnGold = async (mins, streak) => {
+    console.log("EARNGOLD");
+    const prevCount = await SecureStore.getItemAsync("inventory_gold");
     var added = mins * 5;
     if (streak >= 3) {
       added = mins * (1 + streak / 10) * 5;
     }
-    newCount = Number.parseInt(prevCount) + added;
+    const newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
     return added;
   };
 
   obtainSeed = async (rarity, event) => {
-    prevStr = await SecureStore.getItemAsync("inventory_seeds");
-    newStr = prevStr + "%" + rarity + event;
+    console.log("OBTAINSEED");
+    const prevStr = await SecureStore.getItemAsync("inventory_seeds");
+    const newStr = prevStr + "%" + rarity + event;
     await SecureStore.setItemAsync("inventory_seeds", "" + newStr);
     return newStr;
   };
