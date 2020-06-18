@@ -1,5 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import {
   VictoryBar,
   VictoryChart,
@@ -233,6 +241,17 @@ export default class App extends React.Component {
               endAMPM}{" "}
           </Text>
         </View>
+        <TouchableOpacity>
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate("Feedback", {
+                timer_time: this.props.route.params.timer_time,
+              })
+            }
+            title="Okay!"
+            color="#35F2E9" //button bg for android, text for ios
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -251,7 +270,6 @@ const styles = StyleSheet.create({
     color: "#CA3DD4",
     fontSize: 30,
     fontWeight: "bold",
-    fontFamily: "sans-serif-light",
     marginBottom: 5,
   },
   rightTimes: {
@@ -259,20 +277,17 @@ const styles = StyleSheet.create({
     color: "#CA3DD4",
     fontSize: 30,
     fontWeight: "bold",
-    fontFamily: "sans-serif-light",
     marginBottom: 1,
   },
   leftTimesSmol: {
     textAlign: "left",
     color: "#4AEAED",
-    fontFamily: "Roboto",
     fontSize: 25,
     marginBottom: 1,
   },
   rightTimesSmol: {
     textAlign: "right",
     color: "#4AEAED",
-    fontFamily: "Roboto",
     fontSize: 25,
     marginBottom: 5,
   },

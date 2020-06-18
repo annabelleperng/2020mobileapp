@@ -24,7 +24,10 @@ import TextInput from "./TextInput";
 import Stats from "./Stats";
 import Garden from "./Garden";
 import Shop from "./Shop";
+import RewardUtils from "./RewardUtils";
 import GardenTesting from "./GardenTesting";
+import Timezone from "./Timezone";
+import Rewards from "./Rewards";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -58,7 +61,10 @@ export default function App() {
           <Stack.Screen name="Garden" component={Garden} />
           <Stack.Screen name="Stats" component={Stats} />
           <Stack.Screen name="Shop" component={Shop} />
+          <Stack.Screen name="RewardUtils" component={RewardUtils} />
           <Stack.Screen name="GardenTesting" component={GardenTesting} />
+          <Stack.Screen name="Timezone" component={Timezone} />
+          <Stack.Screen name="Rewards" component={Rewards} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

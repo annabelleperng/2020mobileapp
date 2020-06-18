@@ -1,82 +1,122 @@
+import DateTime from "luxon/src/datetime.js";
+import Interval from "luxon/src/interval.js";
+import * as SecureStore from "expo-secure-store";
 import React from "react";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
-
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  getWater() {
-    count = await SecureStore.getItemAsync("inventory_water");
-    return count;
-  }
-
-  useWater(count) {
-    prevCount = await SecureStore.getItemAsync("inventory_water");
-    newCount = Number.parseInt(prevCount) - count;
-    await SecureStore.setItemAsync("inventory_water", '' + newCount);
-    return newCount;
-  }
-
-  earnWater(mins, streak) {
-    prevCount = await SecureStore.getItemAsync("inventory_water");
-    if (streak >= 3) {
-        added = mins * (1 + streak / 10)
+  updateStreak = async () => {
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const localTime = DateTime.local().setZone(localZone);
+    const localMidnight = DateTime.fromObject({
+      year: localTime.year,
+      month: localTime.month,
+      day: localTime.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      zone: localZone,
+    });
+    const localPrevMidnight = localMidnight.minus({ days: 1 });
+    const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+    const latestSprintDay = DateTime.fromISO(
+      await SecureStore.getItemAsync("latest_sprint")
+    );
+    const streakLength = Number.parseInt(
+      await SecureStore.getItemAsync("streak_length")
+    );
+    if (prevDay.contains(latestSprintDay)) {
+      streakLength += 1;
+    } else if (prevDay.isAfter(latestSprintDay)) {
+      streakLength = 0;
     }
-    newCount = Number.parseInt(prevCount) + added;
-    await SecureStore.setItemAsync("inventory_water", '' + newCount);
-    return newCount;
-  }
+    await SecureStore.setItemAsync("streak_length", "" + streakLength);
+    console.log("\n\n\n\n\nUpdated streak to " + streakLength);
+  };
 
-  getBees() {
-    count = await SecureStore.getItemAsync("inventory_bees");
+  getWater = async () => {
+    const count = await SecureStore.getItemAsync("inventory_water");
     return count;
-  }
+  };
 
-  useBees(count) {
-    prevCount = await SecureStore.getItemAsync("inventory_bees");
-    newCount = Number.parseInt(prevCount) - count;
-    await SecureStore.setItemAsync("inventory_bees", '' + newCount);
+  useWater = async (count) => {
+    const prevCount = await SecureStore.getItemAsync("inventory_water");
+    const newCount = Number.parseInt(prevCount) - count;
+    await SecureStore.setItemAsync("inventory_water", "" + newCount);
     return newCount;
-  }
+  };
 
-  earnBees(mins, streak) {
-    prevCount = await SecureStore.getItemAsync("inventory_bees");
+  earnWater = async (mins, streak) => {
+    console.log("EARNWATER");
+    const prevCount = await SecureStore.getItemAsync("inventory_water");
+    var added = mins;
     if (streak >= 3) {
-        added = (mins * (1 + streak / 10)) % 30
+      added = mins * (1 + streak / 10);
     }
-    newCount = Number.parseInt(prevCount) + added;
-    await SecureStore.setItemAsync("inventory_bees", '' + newCount);
-    return newCount;
-  }
+    const newCount = Number.parseInt(prevCount) + added;
+    await SecureStore.setItemAsync("inventory_water", "" + newCount);
+    return added;
+  };
 
-  getGold() {
-    count = await SecureStore.getItemAsync("inventory_gold");
+  getBees = async () => {
+    const count = await SecureStore.getItemAsync("inventory_bees");
     return count;
-  }
+  };
 
-  useGold(count) {
-    prevCount = await SecureStore.getItemAsync("inventory_gold");
-    newCount = Number.parseInt(prevCount) - count;
-    await SecureStore.setItemAsync("inventory_gold", '' + newCount);
+  useBees = async (count) => {
+    const prevCount = await SecureStore.getItemAsync("inventory_bees");
+    const newCount = Number.parseInt(prevCount) - count;
+    await SecureStore.setItemAsync("inventory_bees", "" + newCount);
     return newCount;
-  }
+  };
 
-  earnGold(mins) {
-    prevCount = await SecureStore.getItemAsync("inventory_gold");
+  earnBees = async (mins, streak) => {
+    console.log("EARNBEES");
+    const prevCount = await SecureStore.getItemAsync("inventory_bees");
+    var added = Math.floor(mins, 30);
     if (streak >= 3) {
-        added = (mins * (1 + streak / 10)) * 5
+      added = Math.floor(mins * (1 + streak / 10), 30);
     }
-    newCount = Number.parseInt(prevCount) + added;
-    await SecureStore.setItemAsync("inventory_gold", '' + newCount);
-    return newCount;
-  }
+    var progress = 30 - (mins % 30);
+    await SecureStore.setItemAsync("bee_in_progress", "" + progress);
+    const newCount = Number.parseInt(prevCount) + added;
+    await SecureStore.setItemAsync("inventory_bees", "" + newCount);
+    return added;
+  };
 
-  obtainSeed(rarity, event) {
-    prevStr = await SecureStore.getItemAsync("inventory_seeds");
-    newStr = prevStr + "%" + rarity + event;
-    await SecureStore.setItemAsync("inventory_seeds", '' + newStr);
+  getGold = async () => {
+    const count = await SecureStore.getItemAsync("inventory_gold");
+    return count;
+  };
+
+  useGold = async (count) => {
+    const prevCount = await SecureStore.getItemAsync("inventory_gold");
+    const newCount = Number.parseInt(prevCount) - count;
+    await SecureStore.setItemAsync("inventory_gold", "" + newCount);
+    return newCount;
+  };
+
+  earnGold = async (mins, streak) => {
+    console.log("EARNGOLD");
+    const prevCount = await SecureStore.getItemAsync("inventory_gold");
+    var added = mins * 5;
+    if (streak >= 3) {
+      added = mins * (1 + streak / 10) * 5;
+    }
+    const newCount = Number.parseInt(prevCount) + added;
+    await SecureStore.setItemAsync("inventory_gold", "" + newCount);
+    return added;
+  };
+
+  obtainSeed = async (rarity, event) => {
+    console.log("OBTAINSEED");
+    const prevStr = await SecureStore.getItemAsync("inventory_seeds");
+    const newStr = prevStr + "%" + rarity + event;
+    await SecureStore.setItemAsync("inventory_seeds", "" + newStr);
     return newStr;
-  }  
+  };
 }

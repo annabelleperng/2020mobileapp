@@ -87,7 +87,11 @@ export default class Feedback extends Component {
 
         <TouchableOpacity>
           <Button
-            onPress={() => this.props.navigation.navigate("Timer")}
+            onPress={() =>
+              this.props.navigation.navigate("Rewards", {
+                timer_time: this.props.route.params.timer_time,
+              })
+            }
             title="Submit!"
             color="#35F2E9" //button bg for android, text for ios
           />
