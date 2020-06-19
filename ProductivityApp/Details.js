@@ -60,7 +60,6 @@ export default class Details extends Component {
         >
           <Text
             style={{
-              fontFamily: "Marker Felt",
               textAlign: "center",
               fontSize: 24,
             }}
@@ -70,7 +69,6 @@ export default class Details extends Component {
           </Text>
           <Text
             style={{
-              fontFamily: "Marker Felt",
               textAlign: "center",
               fontSize: 20,
             }}
@@ -101,6 +99,11 @@ export default class Details extends Component {
             title="Go to GardenTesting"
             //Button Title
             onPress={() => navigate("GardenTesting")}
+          />
+          <Button
+            title="Go to PlantView"
+            //Button Title
+            onPress={() => navigate("PlantView")}
           />
           {/* <Button
           title="Go to timer, pass minutes 1"

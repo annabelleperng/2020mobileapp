@@ -28,6 +28,7 @@ import RewardUtils from "./RewardUtils";
 import GardenTesting from "./GardenTesting";
 import Timezone from "./Timezone";
 import Rewards from "./Rewards";
+import PlantView from "./PlantView";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -65,6 +66,7 @@ export default function App() {
           <Stack.Screen name="GardenTesting" component={GardenTesting} />
           <Stack.Screen name="Timezone" component={Timezone} />
           <Stack.Screen name="Rewards" component={Rewards} />
+          <Stack.Screen name="PlantView" component={PlantView} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

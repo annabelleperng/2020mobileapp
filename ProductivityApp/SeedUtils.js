@@ -39,7 +39,13 @@ export default class SeedUtils extends Component {
       console.log("Invalid position for checkStatus");
       console.log("position =" + position);
       return -1;
-    } else if (status !== "0" && status !== "1" && status !== "2") {
+    } else if (
+      status != "0" &&
+      status != "1" &&
+      status != "2" &&
+      status != "3" &&
+      status != "4"
+    ) {
       console.log("Invalid status for checkStatus");
       return -1;
     }
@@ -96,7 +102,7 @@ export default class SeedUtils extends Component {
    */
   plantSeed = async (position, rarity_event) => {
     console.log("\n\n\nplantSeed called");
-    if (this.checkStatus(position, "0") === 0) {
+    if (this.checkStatus(position, "0") != 1) {
       console.log("error: trying to plant seed where it can't be planted");
       return -1;
     }
@@ -164,10 +170,10 @@ export default class SeedUtils extends Component {
 
   getImageName = async (position) => {
     console.log("\n\n\ngetImageName called");
-    if (this.checkStatus(position, "0") === 1) {
+    if (this.checkStatus(position, "0") == 1) {
       console.log("NO PLANT HERE");
       return "invis "; //update later
-    } else if (this.checkStatus(position, "1") === 1) {
+    } else if (this.checkStatus(position, "1") == 1) {
       console.log("SMOL PLANT");
       return "invis "; //update later
     }
@@ -177,7 +183,64 @@ export default class SeedUtils extends Component {
     return species + " ";
   };
 
+  /*
+   * Helper function.
+   * Grows seed fully (given that seed is not yet fully grown);
+   * this function would probably not be called on its own.
+   * Returns -1 if unsuccessful, 1 if successful.
+   */
   growSeed = async (position) => {
+    if (this.checkStatus(position, "1") != 1) {
+      console.log("error: you shouldn't be able to grow this plant.");
+      return -1;
+    }
+
+    // sets status to 2 - fully grown; sets water count to 15 - fully watered
+    await SecureStore.setItemAsync(position + "_status", "2");
+    await SecureStore.setItemAsync(position + "_waters", "15");
+
+    // should also set streak?
+
+    return 1;
+  };
+
+  /*
+   * Helper function.
+   * Wilts plant (given that plant is fully grown and not yet
+   * wilted); does NOT check/update streaks;
+   * this function would probably not be called on its own.
+   * Returns -1 if unsuccessful, 1 if successful.
+   */
+  wiltPlant = async (position) => {
+    if (this.checkStatus(position, "2") != 1) {
+      console.log("error: you shouldn't be able to wilt this plant.");
+      return -1;
+    }
+
+    // sets status to 3 - wilted
+    await SecureStore.setItemAsync(position + "_status", "3");
+
+    // should also set streak?
+
+    return 1;
+  };
+
+  /*
+   * Helper function.
+   * Kills plant without (given that plant is fully grown and
+   * already wilted); does NOT check/update streaks;
+   * this function would probably not be called on its own.
+   * Returns -1 if unsuccessful, 1 if successful.
+   */
+  killPlant = async () => {
+    if (this.checkStatus(position, "3") != 1) {
+      console.log("error: you shouldn't be able to kill this plant.");
+      return -1;
+    }
+
+    // sets status to 4 - dead
+    await SecureStore.setItemAsync(position + "_status", "4");
+
     return 1;
   };
 
@@ -201,7 +264,7 @@ export default class SeedUtils extends Component {
       return 0;
     }
 
-    if (this.checkStatus(position, "1") === 0) {
+    if (this.checkStatus(position, "1") != 1) {
       console.log("error: you shouldn't be able to fertilize this plant.");
       return -1;
     }
@@ -271,8 +334,6 @@ export default class SeedUtils extends Component {
     );
     return 0;
   };
-
-  //   fertilizePlant(position) {}
 
   //   breedPlant(position, waters) {}
 }
