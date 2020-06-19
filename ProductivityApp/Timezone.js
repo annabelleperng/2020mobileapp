@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { Dropdown } from "react-native-material-dropdown";
 import moment from "moment-timezone/builds/moment-timezone-with-data";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { Settings, DateTime } from "luxon";
 
-const dateTimeUtc = moment(new Date()).utc();
+// const { DateTime } = require("luxon");
+// const dateTimeUtc = moment(new Date()).utc();
+var dateTimeUtc = DateTime.utc();
+console.log(dateTimeUtc);
 export default class Example extends Component {
   constructor(props) {
     super(props);
@@ -13,14 +18,17 @@ export default class Example extends Component {
       offset: 0
     };
   }
-  setSelectedValue = val => {
-    this.setState({ selectedValue: val });
-    const timestamp = dateTimeUtc.unix();
-    const offset0 = moment.tz(this.state.selectedValue).utcOffset() * 60;
-    this.setState({
-      offset: offset0 / 60 / 60,
-      dateTimeLocal: moment.unix(timestamp + offset0).utc()
-    });
+  setSelectedValue = async () => {
+    // this.setState({ selectedValue: val });
+    // var overrideZone = DateTime.fromISO(dateTimeUtc, { zone: val });
+    // var timestamp = dateTimeUtc;
+    Settings.defaultZoneName = this.state.selectedValue;
+    await SecureStore.setItemAsync("timezone", Settings.defaultZoneName);
+    // console.log(DateTime.local().zoneName);
+    // await SecureStore.setItemAsync("time_offset", offset0);
+    // console.log(await SecureStore.getItemAsync("time_offset"));
+    // this.setState({ dateTimeLocal: time });
+    // const offset0 = this.state.dateTimeLocal.offset / 60;
   };
 
   render() {
@@ -72,9 +80,6 @@ export default class Example extends Component {
       },
       {
         value: "America/Glace_Bay"
-      },
-      {
-        value: "America/Caracas"
       },
       {
         value: "America/Caracas"
@@ -263,15 +268,23 @@ export default class Example extends Component {
         <Dropdown
           label="Select your timezone bitch"
           data={data}
-          onChangeText={(value, index, data) => this.setSelectedValue(value)}
+          onChangeText={selectedValue => this.setState({ selectedValue })}
         />
-        <Text>UTC time: {dateTimeUtc.format("ddd, DD MMM YYYY HH:mm:ss")}</Text>
-        <Text>Time Zone: {this.state.selectedValue}</Text>
+        <Button onpress={this.setSelectedValue()} title="Submit" />
+        {/* <Text>UTC time: {dateTimeUtc.format("ddd, DD MMM YYYY HH:mm:ss")}</Text> */}
         <Text>
-          Local Timel:
-          {this.state.dateTimeLocal.format("ddd, DD MMM YYYY HH:mm:ss")}
+          UTC time: {dateTimeUtc.toLocaleString(DateTime.DATETIME_MED)}
         </Text>
-        <Text>Offset: {this.state.offset}</Text>
+        <Text>Time Zone: {this.state.selectedValue}\</Text>
+        {/* <Text>
+          Local Time:
+          {this.state.dateTimeLocal.format("ddd, DD MMM YYYY HH:mm:ss")}
+        </Text> */}
+        <Text>
+          Local Time:
+          {DateTime.local().toLocaleString(DateTime.DATETIME_MED)}
+        </Text>
+        <Text>Offset: {DateTime.local().offset / 60}</Text>
       </View>
     );
   }
