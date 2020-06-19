@@ -12,6 +12,8 @@ import {
   Button,
 } from "react-native";
 
+import ProgressBarAnimated from "react-native-progress-bar-animated";
+
 const screen = Dimensions.get("window");
 import SeedUtils from "./SeedUtils";
 const su = new SeedUtils();
@@ -34,6 +36,9 @@ export default class GardenTesting extends Component {
       soundLoaded: false,
       shouldBePlaying: true,
       isPlaying: true,
+      progress: 0,
+      progressWithOnComplete: 0,
+      progressCustomized: 0,
     };
   }
 
@@ -103,6 +108,12 @@ export default class GardenTesting extends Component {
     return name;
   };
 
+  increase = (key, value) => {
+    this.setState({
+      [key]: this.state[key] + value,
+    });
+  };
+
   show13 = async () => {
     console.log("show13 called");
     let ret = await this.show12();
@@ -115,6 +126,16 @@ export default class GardenTesting extends Component {
   };
 
   render() {
+    // btwn 1.5 and 2
+    const barWidth = screen.width / 1.7;
+    const progressCustomStyles = {
+      backgroundColor: "#91faff",
+      borderRadius: 6,
+      borderColor: "#ffffff",
+      height: screen.height / 40,
+      barEasing: "linear",
+      maxValue: 100,
+    };
     this.checkInitialized();
     console.log("69");
     // const b = su.getImageName("ferns");
@@ -141,7 +162,7 @@ export default class GardenTesting extends Component {
             <Image
               style={styles.largePlant}
               source={require("./assets/fernsbig.png")}
-              // plant image with curved sides
+              // large plant image with rounded corners
             />
           </View>
           {/* <Image
@@ -155,6 +176,7 @@ export default class GardenTesting extends Component {
             flex: 2,
             backgroundColor: "#222",
           }}
+          // gray horizontal divider
         ></View>
         <View
           style={{
@@ -167,59 +189,39 @@ export default class GardenTesting extends Component {
             style={{
               flex: 1,
               backgroundColor: "#000",
+              justifyContent: "center",
+              // left side w/ inventory
             }}
           >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#000",
-                alignItems: "center",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Image
-                style={styles.inventoryBar}
-                source={require("./assets/inventorybartop.png")}
-                // plant image with curved sides
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#cde",
-              }}
-            ></View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#1cd",
-              }}
-            ></View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#e15",
-              }}
-            ></View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#e77",
-              }}
-            ></View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#fff",
-              }}
-            ></View>
+            <Image
+              style={styles.inventoryBar}
+              source={require("./assets/inventorybar.png")}
+            ></Image>
           </View>
           <View
             style={{
               flex: 2,
               backgroundColor: "#111",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          ></View>
+            // progress bar for water
+          >
+            <ProgressBarAnimated
+              {...progressCustomStyles}
+              width={barWidth}
+              value={this.state.progress}
+              backgroundColorOnComplete="#ff427b"
+            />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonInner}>
+                <Button
+                  title="Increase 20%"
+                  onPress={this.increase.bind(this, "progress", 10)}
+                />
+              </View>
+            </View>
+          </View>
         </View>
         <View
           style={{
@@ -266,14 +268,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   largePlant: {
-    width: screen.width / 2.4,
+    width: screen.width / 2.7,
     height: screen.width / 2.7,
     alignItems: "flex-end",
     justifyContent: "center",
   },
   inventoryBar: {
-    width: screen.width / 4.5,
-    height: screen.width / 10,
+    width: screen.height / 11,
+    height: screen.height / 2.7,
+    marginLeft: screen.width / 12,
   },
   menuIcons: {
     width: screen.width / 9,
