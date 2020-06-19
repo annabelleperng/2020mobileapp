@@ -166,9 +166,54 @@ export default class GardenTesting extends Component {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#aca",
+              backgroundColor: "#000",
             }}
-          ></View>
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#000",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Image
+                style={styles.inventoryBar}
+                source={require("./assets/inventorybartop.png")}
+                // plant image with curved sides
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#cde",
+              }}
+            ></View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#1cd",
+              }}
+            ></View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#e15",
+              }}
+            ></View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#e77",
+              }}
+            ></View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#fff",
+              }}
+            ></View>
+          </View>
           <View
             style={{
               flex: 2,
@@ -221,10 +266,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   largePlant: {
-    width: screen.width / 2.7,
+    width: screen.width / 2.4,
     height: screen.width / 2.7,
     alignItems: "flex-end",
     justifyContent: "center",
+  },
+  inventoryBar: {
+    width: screen.width / 4.5,
+    height: screen.width / 10,
   },
   menuIcons: {
     width: screen.width / 9,
