@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   StyleSheet,
   Text,
@@ -11,6 +10,8 @@ import {
   Alert,
 } from "react-native";
 import { screensEnabled } from "react-native-screens";
+import DateTime from "luxon/src/datetime.js";
+import Interval from "luxon/src/interval.js";
 
 const screen = Dimensions.get("window");
 
@@ -26,6 +27,7 @@ export default class StopWatch extends Component {
       start: new Date(),
       startedFirst: false,
       confirm: false,
+      setLatestSprint: 0,
     };
   }
 
@@ -33,7 +35,20 @@ export default class StopWatch extends Component {
     clearInterval(this.state.timer);
   }
 
+  updateLatestSprints = async () => {
+    var localZone = await SecureStore.getItemAsync("timezone");
+    var startTime = DateTime.local().setZone(localZone);
+    var newLatestSprint = await SecureStore.getItemAsync("temp_sprint");
+    await SecureStore.setItemAsync("latest_sprint", newLatestSprint);
+    await SecureStore.setItemAsync("temp_sprint", startTime);
+    this.setState({ setLatestSprint: 1 });
+  };
+
   onButtonStart = () => {
+    if (this.state.setLatestSprint == 0) {
+      this.updateLatestSprints();
+    }
+
     let timer = setInterval(() => {
       var num = (Number(this.state.seconds_Counter) - 1).toString(),
         count = this.state.minutes_Counter;

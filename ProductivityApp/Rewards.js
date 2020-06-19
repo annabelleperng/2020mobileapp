@@ -42,7 +42,6 @@ export default class Rewards extends React.Component {
     const beeProgress = await SecureStore.getItemAsync("bee_in_progress");
     console.log(beeProgress);
     this.setState({
-      timer_time: this.state.timer_time,
       water: await utils.earnWater(mins, streak),
       bees: await utils.earnBees(mins, streak),
       timeTilBee: beeProgress,
@@ -52,6 +51,7 @@ export default class Rewards extends React.Component {
     console.log(this.state.hasSet);
     // console.log("earning stuff");
     utils.updateStreak();
+    console.log("YOYOYOYOYOYOYOYOYOYOYO");
     // console.log(SecureStore.getItemAsync("inventory_water"));
     // console.log(SecureStore.getItemAsync("inventory_bees"));
     // console.log(SecureStore.getItemAsync("inventory_gold"));
@@ -69,7 +69,7 @@ export default class Rewards extends React.Component {
       await this.earnStuff(this.state.timer_time);
       const currS = await SecureStore.getItemAsync("streak_length");
       console.log("\n\ncurrS from doStuff = " + currS);
-      this.setState({ prevStreak: currS });
+      this.setState({ currStreak: currS });
       console.log("end of doStuff: " + DateTime.local().toString());
     } else {
       console.log("hasSet was not 0");
@@ -80,39 +80,54 @@ export default class Rewards extends React.Component {
     if (this.state.setStreakTemp == 0) {
       await SecureStore.setItemAsync("streak_length", "3");
       this.setState({ setStreakTemp: 1 });
+      console.log("setiing temp");
     }
   };
+
   render() {
-    this.setStreak();
+    // this.setStreak();
     console.log("start of render: " + DateTime.local().toString());
-    const prevStreak = "3";
-    const currStreak = "4";
     // console.log(this.props);
-    console.log("im a sneaky bitch");
     this.doStuff();
     return (
       <View style={styles.container}>
         <Text style={styles.encourage}>
-          Congratulations on finishing today's sprint! {"\n\n"}
+          Congratulations on finishing {"\n"} today's sprint!
         </Text>
-        {/* {!(prevStreak === currStreak) ? (
-          <View style={styles.tinyLogoCenter}>
-            <Image
-              style={styles.tinyLogoCenter}
-              source={require("./assets/flame.png")}
-            />
-            <Text>
-              {"Streak increased! Your resource multiplier next time will be 1." +
-                prevStreak}
+        <Image
+          style={styles.tinyLogoCenter}
+          source={require("./assets/flame.png")}
+        />
+        {console.log("prev: " + this.state.prevStreak)}
+        {console.log("curr: " + this.state.currStreak)}
+        {!(this.state.prevStreak == this.state.currStreak) ? (
+          <View>
+            <Text style={styles.yay}>
+              {"Streak increased!\nYour resource multiplier next time will be 1." +
+                this.state.prevStreak +
+                "."}{" "}
             </Text>
           </View>
         ) : (
-          <Text>
-            Keep it up to build a streak and earn a resourced multiplier.
+          <Text style={styles.yay}>
+            Keep it up{" "}
+            {this.state.currStreak < 3 ? (
+              <Text>for {3 - this.state.currStreak} more days</Text>
+            ) : (
+              <Text></Text>
+            )}{" "}
+            to build your streak {"\n"} and earn a boosted resource multiplier!
+            {this.state.currStreak >= 3 ? (
+              <Text>
+                {"\n"}Your current streak is {this.state.currStreak} days.
+              </Text>
+            ) : (
+              <Text></Text>
+            )}
           </Text>
-        )} */}
-        <Text>You earned: </Text>
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
+        )}
+        <Text style={styles.norm}>You earned: </Text>
+        {/* <View style={{ flexDirection: "row", marginTop: 10 }}>
           <Image
             style={styles.tinyLogoLeft}
             source={require("./assets/water.png")}
@@ -125,28 +140,52 @@ export default class Rewards extends React.Component {
             style={styles.tinyLogoRight}
             source={require("./assets/gold.png")}
           />
-        </View>
+        </View> */}
         <View style={{ flexDirection: "row", marginTop: 10 }}>
           {/* <View style={{ flexDirection: "column" }}> */}
           {/* <Image
           style={styles.tinyLogoCenter}
           source={require("./assets/water.png")}
         /> */}
-          <Text>{"+" + this.state.water + " water"}</Text>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={styles.tinyLogoCenter}
+              source={require("./assets/water.png")}
+            />
+            <Text style={{ textAlign: "center" }}>
+              {"+" + this.state.water + " water"}
+            </Text>
+          </View>
           {/* </View> */}
           {/* <View style={{ flexDirection: "column" }}> */}
           {/* <Image
           style={styles.tinyLogoCenter}
           source={require("./assets/bee.png")}
         /> */}
-          <Text>{"+" + this.state.bees + " bees"}</Text>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={styles.tinyLogoCenter}
+              source={require("./assets/bee.png")}
+            />
+            <Text style={{ textAlign: "center" }}>
+              {"+" + this.state.bees + " bees"}
+            </Text>
+          </View>
           {/* </View> */}
           {/* <View style={{ flexDirection: "column" }}> */}
           {/* <Image
           style={styles.tinyCenter}
           source={require("./assets/gold.png")}
         /> */}
-          <Text>{"+" + this.state.gold + " gold"}</Text>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={styles.tinyLogoCenter}
+              source={require("./assets/gold.png")}
+            />
+            <Text style={{ textAlign: "center" }}>
+              {"+" + this.state.gold + " gold"}
+            </Text>
+          </View>
           {/* </View> */}
         </View>
         <Text>{this.state.timeTilBee + " minutes 'til your next bee!"}</Text>
@@ -165,7 +204,7 @@ const styles = StyleSheet.create({
   tinyLogoCenter: {
     width: screen.width / 15,
     height: screen.width / 15,
-    alignItems: "center",
+    alignSelf: "center",
   },
   tinyLogoLeft: {
     width: screen.width / 15,
@@ -180,7 +219,21 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   encourage: {
-    fontSize: 15,
+    fontSize: 25,
     marginTop: 3,
+    marginBottom: 6,
+    color: "#CA3DD4",
+    textAlign: "center",
+  },
+  yay: {
+    fontSize: 20,
+    marginTop: 30,
+    color: "#CA3DD4",
+    textAlign: "center",
+  },
+  norm: {
+    fontSize: 15,
+    marginTop: 60,
+    color: "#FCCC00",
   },
 });

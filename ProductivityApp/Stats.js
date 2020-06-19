@@ -213,7 +213,7 @@ export default class App extends React.Component {
           style={{
             flexDirection: "row",
             alignContent: "space-between",
-            marginTop: 30,
+            marginTop: 0,
           }}
         >
           <Text style={styles.leftTimes}>Started at {"        "}</Text>
@@ -224,6 +224,7 @@ export default class App extends React.Component {
             flexDirection: "row",
             alignContent: "space-between",
             marginTop: 3,
+            marginBottom: 15,
           }}
         >
           <Text style={styles.leftTimesSmol}>

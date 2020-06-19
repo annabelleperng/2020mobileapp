@@ -55,7 +55,7 @@ export default class App extends React.Component {
     const prevCount = await SecureStore.getItemAsync("inventory_water");
     var added = mins;
     if (streak >= 3) {
-      added = mins * (1 + streak / 10);
+      added = Math.floor(mins * (1 + streak / 10));
     }
     const newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_water", "" + newCount);
@@ -105,7 +105,7 @@ export default class App extends React.Component {
     const prevCount = await SecureStore.getItemAsync("inventory_gold");
     var added = mins * 5;
     if (streak >= 3) {
-      added = mins * (1 + streak / 10) * 5;
+      added = Math.floor(mins * (1 + streak / 10) * 5);
     }
     const newCount = Number.parseInt(prevCount) + added;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
