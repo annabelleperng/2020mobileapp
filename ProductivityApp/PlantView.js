@@ -25,6 +25,7 @@ let images = {
 };
 
 import * as SecureStore from "expo-secure-store";
+import { screensEnabled } from "react-native-screens";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
@@ -206,20 +207,84 @@ export default class GardenTesting extends Component {
             }}
             // right side for progress bar and buttons
           >
-            <ProgressBarAnimated
-              {...progressCustomStyles}
-              width={barWidth}
-              value={this.state.progress}
-              backgroundColorOnComplete="#ff427b"
-              // progress bar for water
-            />
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonInner}>
-                <Button
-                  title="Increase 1/15th"
-                  onPress={this.increase.bind(this, "progress", 6.67)}
-                />
-              </View>
+            <View
+              style={{
+                flex: 0.7,
+                // backgroundColor: "#eac",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // top margin
+            ></View>
+            <View
+              style={{
+                flex: 0.5,
+                // backgroundColor: "#eac",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // top third - countdown
+            >
+              <Text style={styles.whiteText}>02:25:36:45</Text>
+              <Text style={styles.whiteText}>until wilted</Text>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                // backgroundColor: "#ace",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // middle third - progress bar
+            >
+              <ProgressBarAnimated
+                {...progressCustomStyles}
+                width={barWidth}
+                value={this.state.progress}
+                backgroundColorOnComplete="#ff427b"
+                // progress bar
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: "#cea",
+                // justifyContent: "center",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+              // bottom third - 3 buttons
+            >
+              <TouchableOpacity
+                onPress={this.increase.bind(this, "progress", 6.67)}
+              >
+                <View style={styles.rectangular}>
+                  <Text style={styles.rectangularText}>X 1</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this.increase.bind(this, "progress", 33.35)}
+              >
+                <View style={styles.rectangular}>
+                  <Text style={styles.rectangularText}>X 5</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this.increase.bind(this, "progress", 100)}
+              >
+                <View style={styles.rectangular}>
+                  <Text style={styles.rectangularText}>MAX</Text>
+                </View>
+              </TouchableOpacity>
+              {/* <View style={styles.buttonContainer}>
+                <View style={styles.buttonInner}>
+                  <Button
+                    title="Increase 1/15th"
+                    onPress={this.increase.bind(this, "progress", 6.67)}
+                  />
+                </View>
+              </View> */}
             </View>
           </View>
         </View>
@@ -328,6 +393,25 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    fontSize: 30,
+  },
+  rectangular: {
+    borderWidth: 2,
+    width: screen.width / 7,
+    height: screen.width / 13,
+    borderColor: "#fff",
+    color: "#1ce",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  rectangularText: {
+    color: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  whiteText: {
+    color: "#fff",
     fontSize: 30,
   },
 });
