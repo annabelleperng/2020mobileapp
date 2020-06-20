@@ -54,7 +54,9 @@ export default class App extends React.Component {
     console.log("EARNWATER");
     const prevCount = await SecureStore.getItemAsync("inventory_water");
     var added = mins;
-    if (streak >= 3) {
+    if (streak >= 10) {
+      added = Math.floor(mins * 2.0);
+    } else if (streak >= 3) {
       added = Math.floor(mins * (1 + streak / 10));
     }
     const newCount = Number.parseInt(prevCount) + added;
@@ -78,7 +80,9 @@ export default class App extends React.Component {
     console.log("EARNBEES");
     const prevCount = await SecureStore.getItemAsync("inventory_bees");
     var added = Math.floor(mins, 30);
-    if (streak >= 3) {
+    if (streak >= 10) {
+      added = Math.floor(mins * 2.0);
+    } else if (streak >= 3) {
       added = Math.floor(mins * (1 + streak / 10), 30);
     }
     var progress = 30 - (mins % 30);
@@ -104,7 +108,9 @@ export default class App extends React.Component {
     console.log("EARNGOLD");
     const prevCount = await SecureStore.getItemAsync("inventory_gold");
     var added = mins * 5;
-    if (streak >= 3) {
+    if (streak >= 10) {
+      added = Math.floor(mins * 2.0);
+    } else if (streak >= 3) {
       added = Math.floor(mins * (1 + streak / 10) * 5);
     }
     const newCount = Number.parseInt(prevCount) + added;

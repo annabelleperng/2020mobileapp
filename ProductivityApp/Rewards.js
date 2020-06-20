@@ -80,12 +80,12 @@ export default class Rewards extends React.Component {
     if (this.state.setStreakTemp == 0) {
       await SecureStore.setItemAsync("streak_length", "3");
       this.setState({ setStreakTemp: 1 });
-      console.log("setiing temp");
+      console.log("setting temp");
     }
   };
 
   render() {
-    // this.setStreak();
+    this.setStreak();
     console.log("start of render: " + DateTime.local().toString());
     // console.log(this.props);
     this.doStuff();
@@ -100,11 +100,13 @@ export default class Rewards extends React.Component {
         />
         {console.log("prev: " + this.state.prevStreak)}
         {console.log("curr: " + this.state.currStreak)}
-        {!(this.state.prevStreak == this.state.currStreak) ? (
+        {this.state.currStreak == "" ? (
+          <Text style={{ marginTop: 5 }}>Calculating...</Text>
+        ) : !(this.state.prevStreak == this.state.currStreak) ? (
           <View>
             <Text style={styles.yay}>
-              {"Streak increased!\nYour resource multiplier next time will be 1." +
-                this.state.prevStreak +
+              {"Streak increased!\nYour resource multiplier for tomorrow is 1." +
+                this.state.currStreak +
                 "."}{" "}
             </Text>
           </View>
@@ -112,20 +114,30 @@ export default class Rewards extends React.Component {
           <Text style={styles.yay}>
             Keep it up{" "}
             {this.state.currStreak < 3 ? (
-              <Text>for {3 - this.state.currStreak} more days</Text>
+              <Text>
+                for {3 - this.state.currStreak} more{" "}
+                {this.state.currStreak == "2" ? (
+                  <Text>day </Text>
+                ) : (
+                  <Text>days </Text>
+                )}
+                to build a streak{"\n "}
+              </Text>
             ) : (
-              <Text></Text>
-            )}{" "}
-            to build your streak {"\n"} and earn a boosted resource multiplier!
+              <Text>to build your streak {"\n "}</Text>
+            )}
+            and earn a boosted resource multiplier!
             {this.state.currStreak >= 3 ? (
               <Text>
-                {"\n"}Your current streak is {this.state.currStreak} days.
+                {"\n"}Your resource multiplier today was 1.
+                {this.state.prevStreak}.
               </Text>
             ) : (
               <Text></Text>
             )}
           </Text>
         )}
+
         <Text style={styles.norm}>You earned: </Text>
         {/* <View style={{ flexDirection: "row", marginTop: 10 }}>
           <Image
@@ -221,13 +233,13 @@ const styles = StyleSheet.create({
   encourage: {
     fontSize: 25,
     marginTop: 3,
-    marginBottom: 6,
+    marginBottom: 25,
     color: "#CA3DD4",
     textAlign: "center",
   },
   yay: {
     fontSize: 20,
-    marginTop: 30,
+    marginTop: 5,
     color: "#CA3DD4",
     textAlign: "center",
   },
