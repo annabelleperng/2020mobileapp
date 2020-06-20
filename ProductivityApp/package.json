@@ -12,6 +12,7 @@
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.19",
     "expo": "~37.0.3",
+    "expo-av": "~8.1.0",
     "expo-secure-store": "^8.1.0",
     "luxon": "^1.24.1",
     "moment": "^2.26.0",
@@ -22,6 +23,7 @@
     "react-native-elements": "^2.0.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-material-dropdown": "^0.11.1",
+    "react-native-progress-bar-animated": "^1.0.6",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.7.0",
     "react-native-sound": "^0.11.0",
@@ -32,8 +34,7 @@
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.9",
     "victory": "^34.3.5",
-    "victory-native": "^34.3.0",
-    "expo-av": "~8.1.0"
+    "victory-native": "^34.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

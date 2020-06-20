@@ -37,8 +37,6 @@ export default class GardenTesting extends Component {
       shouldBePlaying: true,
       isPlaying: true,
       progress: 0,
-      progressWithOnComplete: 0,
-      progressCustomized: 0,
     };
   }
 
@@ -109,8 +107,12 @@ export default class GardenTesting extends Component {
   };
 
   increase = (key, value) => {
+    let v = this.state[key] + value;
+    if (v > 100) {
+      v = 100;
+    }
     this.setState({
-      [key]: this.state[key] + value,
+      [key]: v,
     });
   };
 
@@ -130,11 +132,14 @@ export default class GardenTesting extends Component {
     const barWidth = screen.width / 1.7;
     const progressCustomStyles = {
       backgroundColor: "#91faff",
-      borderRadius: 6,
+      borderRadius: 10,
+      //   maxValue: 100,
       borderColor: "#ffffff",
       height: screen.height / 40,
       barEasing: "linear",
-      maxValue: 100,
+      width: barWidth,
+      //   maxValue: 90,
+      //   maxValue: 105,
     };
     this.checkInitialized();
     console.log("69");
@@ -142,7 +147,6 @@ export default class GardenTesting extends Component {
     const vv = this.show13();
     console.log("96");
     console.log("\n\n vv = " + vv);
-    // console.log(this.props);
     return (
       <View
         style={{
@@ -165,11 +169,6 @@ export default class GardenTesting extends Component {
               // large plant image with rounded corners
             />
           </View>
-          {/* <Image
-            style={styles.plants}
-            source={require("./assets/fernshuge.png")}
-            // plant image with curved sides
-          /> */}
         </View>
         <View
           style={{
@@ -205,19 +204,20 @@ export default class GardenTesting extends Component {
               justifyContent: "center",
               alignItems: "center",
             }}
-            // progress bar for water
+            // right side for progress bar and buttons
           >
             <ProgressBarAnimated
               {...progressCustomStyles}
               width={barWidth}
               value={this.state.progress}
               backgroundColorOnComplete="#ff427b"
+              // progress bar for water
             />
             <View style={styles.buttonContainer}>
               <View style={styles.buttonInner}>
                 <Button
-                  title="Increase 20%"
-                  onPress={this.increase.bind(this, "progress", 10)}
+                  title="Increase 1/15th"
+                  onPress={this.increase.bind(this, "progress", 6.67)}
                 />
               </View>
             </View>
