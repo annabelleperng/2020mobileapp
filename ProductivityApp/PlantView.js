@@ -190,13 +190,79 @@ export default class GardenTesting extends Component {
               flex: 1,
               backgroundColor: "#000",
               justifyContent: "center",
+
               // left side w/ inventory
             }}
           >
-            <Image
+            <View style={styles.inventoryOutline}>
+              <View style={{ flex: 0.2 }}></View>
+              <View style={{ flex: 1 }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("GardenTesting")
+                  }
+                  activeOpacity={0.5}
+                  // inventory item: water
+                >
+                  <Text style={styles.smallWhiteText}>60</Text>
+                  <Image
+                    source={require("./assets/shoplogo.png")}
+                    style={styles.menuIcons}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.smallWhiteText}>30</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("GardenTesting")
+                  }
+                  activeOpacity={0.5}
+                  // imventory item: fertilizer
+                >
+                  <Image
+                    source={require("./assets/shoplogo.png")}
+                    style={styles.menuIcons}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.smallWhiteText}>70</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("GardenTesting")
+                  }
+                  activeOpacity={0.5}
+                  // inventory item: bee
+                >
+                  <Image
+                    source={require("./assets/shoplogo.png")}
+                    style={styles.menuIcons}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.smallWhiteText}>15</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("GardenTesting")
+                  }
+                  activeOpacity={0.5}
+                  // inventory item: elixir
+                >
+                  <Image
+                    source={require("./assets/shoplogo.png")}
+                    style={styles.menuIcons}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.1 }}></View>
+              {/* <Text>Boo</Text> */}
+            </View>
+            {/* <Image
               style={styles.inventoryBar}
               source={require("./assets/inventorybar.png")}
-            ></Image>
+            ></Image> */}
           </View>
           <View
             style={{
@@ -352,6 +418,17 @@ const styles = StyleSheet.create({
     height: screen.width / 9,
     marginLeft: screen.width / 10,
   },
+  inventoryOutline: {
+    borderWidth: 5,
+    borderColor: "#854832",
+    width: screen.width / 5,
+    height: screen.height / 2.7,
+    borderRadius: screen.width / 25,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginLeft: screen.width / 12,
+  },
   pinkButton: {
     borderWidth: 2,
     borderColor: "#ff576d",
@@ -413,5 +490,11 @@ const styles = StyleSheet.create({
   whiteText: {
     color: "#fff",
     fontSize: 30,
+  },
+  smallWhiteText: {
+    color: "#ff547c",
+    fontSize: 15,
+    // alignItems: "center",
+    marginLeft: screen.width / 27,
   },
 });
