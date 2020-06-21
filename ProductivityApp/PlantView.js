@@ -38,6 +38,12 @@ export default class GardenTesting extends Component {
       shouldBePlaying: true,
       isPlaying: true,
       progress: 0,
+      position: 1,
+      inventory_water: 0,
+      inventory_fertilizer: 0,
+      inventory_bees: 0,
+      inventory_elixir: 0,
+      inventory_set: false,
     };
   }
 
@@ -59,11 +65,12 @@ export default class GardenTesting extends Component {
 
   initializeGarden = async () => {
     console.log("initializing garden");
-    await SecureStore.setItemAsync("inventory_water", "0");
-    await SecureStore.setItemAsync("inventory_bees", "0");
+    await SecureStore.setItemAsync("inventory_water", "1000");
+    await SecureStore.setItemAsync("inventory_bees", "200");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_fertilizer", "2");
+    await SecureStore.setItemAsync("inventory_elixir", "1");
     await SecureStore.setItemAsync("1_status", "0");
     await SecureStore.setItemAsync("2_status", "0");
     await SecureStore.setItemAsync("3_status", "0");
@@ -128,6 +135,30 @@ export default class GardenTesting extends Component {
     return ret;
   };
 
+  getInventoryCounts = async () => {
+    if (this.state.inventory_set == false) {
+      let waters = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_water")
+      );
+      let fertilizer = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_fertilizer")
+      );
+      let bees = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_bees")
+      );
+      let elixir = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_elixir")
+      );
+      this.setState({
+        inventory_water: waters,
+        inventory_fertilizer: fertilizer,
+        inventory_bees: bees,
+        inventory_elixir: elixir,
+        inventory_set: true,
+      });
+    }
+  };
+
   render() {
     // btwn 1.5 and 2
     const barWidth = screen.width / 1.7;
@@ -143,6 +174,7 @@ export default class GardenTesting extends Component {
       //   maxValue: 105,
     };
     this.checkInitialized();
+    this.getInventoryCounts();
     console.log("69");
     // const b = su.getImageName("ferns");
     const vv = this.show13();
@@ -177,7 +209,9 @@ export default class GardenTesting extends Component {
             backgroundColor: "#222",
           }}
           // gray horizontal divider
-        ></View>
+        >
+          {/* <Text style={styles.whiteText}>Blue-Pleated Rhododendron</Text> */}
+        </View>
         <View
           style={{
             flex: 21,
@@ -196,7 +230,10 @@ export default class GardenTesting extends Component {
           >
             <View style={styles.inventoryOutline}>
               <View style={{ flex: 0.2 }}></View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Text style={styles.smallWhiteText}>
+                  {this.state.inventory_water}
+                </Text>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -204,15 +241,16 @@ export default class GardenTesting extends Component {
                   activeOpacity={0.5}
                   // inventory item: water
                 >
-                  <Text style={styles.smallWhiteText}>60</Text>
                   <Image
                     source={require("./assets/shoplogo.png")}
                     style={styles.menuIcons}
                   ></Image>
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.smallWhiteText}>30</Text>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Text style={styles.smallWhiteText}>
+                  {this.state.inventory_fertilizer}
+                </Text>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -226,8 +264,10 @@ export default class GardenTesting extends Component {
                   ></Image>
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.smallWhiteText}>70</Text>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Text style={styles.smallWhiteText}>
+                  {this.state.inventory_bees}
+                </Text>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -241,8 +281,10 @@ export default class GardenTesting extends Component {
                   ></Image>
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.smallWhiteText}>15</Text>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Text style={styles.smallWhiteText}>
+                  {this.state.inventory_elixir}
+                </Text>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -363,8 +405,8 @@ export default class GardenTesting extends Component {
 
         <View
           style={{
-            flex: 7,
-            backgroundColor: "#34626d",
+            flex: 7, //7
+            backgroundColor: "#a9d9de",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -410,8 +452,8 @@ const styles = StyleSheet.create({
     marginLeft: screen.width / 12,
   },
   menuIcons: {
-    width: screen.width / 9,
-    height: screen.width / 9,
+    width: screen.width / 11,
+    height: screen.width / 11,
   },
   menuIcons2: {
     width: screen.width / 9,
@@ -447,8 +489,8 @@ const styles = StyleSheet.create({
     height: 0,
   },
   whiteRoundedCorners: {
-    borderWidth: 2,
-    width: screen.width / 1.6, //1.6
+    borderWidth: 0,
+    width: screen.width / 1.5, //1.6
     height: screen.width / 2.4, //2.4
     borderColor: "#fff",
     borderRadius: screen.width / 15,
@@ -457,7 +499,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   red: {
-    borderWidth: 2,
+    borderWidth: 3,
     width: screen.width / 1.25,
     height: screen.width / 8,
     borderColor: "#fff",
@@ -473,7 +515,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   rectangular: {
-    borderWidth: 2,
+    borderWidth: 1.2,
     width: screen.width / 7,
     height: screen.width / 13,
     borderColor: "#fff",
@@ -494,7 +536,8 @@ const styles = StyleSheet.create({
   smallWhiteText: {
     color: "#ff547c",
     fontSize: 15,
-    // alignItems: "center",
-    marginLeft: screen.width / 27,
+
+    // marginLeft: screen.width / 40,
+    // marginRight: screen.width / 5,
   },
 });
