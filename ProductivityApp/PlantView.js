@@ -10,6 +10,7 @@ import {
   TextInput,
   ImageStore,
   Button,
+  TouchableNativeFeedbackBase,
 } from "react-native";
 
 import ProgressBarAnimated from "react-native-progress-bar-animated";
@@ -30,20 +31,25 @@ export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      plantNum: 1,
+      plant_position: 1,
+      plant_waters: 0,
       showCancel: false,
       image1: "invis ",
       temp: false,
-      soundLoaded: false,
-      shouldBePlaying: true,
-      isPlaying: true,
-      progress: 0,
-      position: 1,
+      //   soundLoaded: false,
+      //   shouldBePlaying: true,
+      //   isPlaying: true,
+      progress: 0, //current # waters
       inventory_water: 0,
       inventory_fertilizer: 0,
       inventory_bees: 0,
       inventory_elixir: 0,
       inventory_set: false,
+      button_x1: false,
+      button_x5: false,
+      button_max: false,
+      //
+      waters_set: false,
     };
   }
 
@@ -72,6 +78,7 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
     await SecureStore.setItemAsync("1_status", "0");
+    await SecureStore.setItemAsync("1_waters", "14");
     await SecureStore.setItemAsync("2_status", "0");
     await SecureStore.setItemAsync("3_status", "0");
     await SecureStore.setItemAsync("4_status", "0");
@@ -137,7 +144,7 @@ export default class GardenTesting extends Component {
 
   getInventoryCounts = async () => {
     if (this.state.inventory_set == false) {
-      let waters = Number.parseInt(
+      let water = Number.parseInt(
         await SecureStore.getItemAsync("inventory_water")
       );
       let fertilizer = Number.parseInt(
@@ -149,14 +156,74 @@ export default class GardenTesting extends Component {
       let elixir = Number.parseInt(
         await SecureStore.getItemAsync("inventory_elixir")
       );
+      let pos_waters = Number.parseInt(
+        await SecureStore.getItemAsync(this.state.plant_position + "_waters")
+      );
+      pos_waters *= 6.67;
+      console.log(this.state.plant_position + "_waters");
       this.setState({
-        inventory_water: waters,
+        inventory_water: water,
         inventory_fertilizer: fertilizer,
         inventory_bees: bees,
         inventory_elixir: elixir,
+        progress: pos_waters,
         inventory_set: true,
       });
+      this.checkWateringOptions();
     }
+  };
+
+  getPlantWaterCount = async () => {
+    let pos = this.state.plant_position;
+    let plant_waters = SecureStore.getItemAsync(pos + "_waters");
+    console.log(pos + "_waters gotten\n\n\n");
+    this.setState({ progress: plant_waters });
+  };
+
+  /* Determines which buttons - x1, x5, MAX - to show for
+   * watering if the plant can be watered. */
+  checkWateringOptions = async () => {
+    let pos_waters = Number.parseInt(
+      await SecureStore.getItemAsync(this.state.plant_position + "_waters")
+    );
+    let one = false;
+    let five = false;
+    let max = false;
+
+    let needed = 15 - pos_waters;
+
+    if (needed >= 5) {
+      one = true;
+      five = true;
+      max = true;
+    } else if (needed >= 1) {
+      one = true;
+      max = true;
+    } else {
+      return 1;
+    }
+
+    let inventory_water = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
+
+    if (inventory_water < needed) {
+      max = false;
+    }
+
+    if (inventory_water < 1) {
+      one = false;
+    }
+
+    if (inventory_water < 5) {
+      five = false;
+    }
+
+    console.log("\none = " + one);
+    console.log("\nfive = " + five);
+    console.log("\nmax = " + max);
+
+    this.setState({ button_x1: one, button_x5: five, button_max: max });
   };
 
   render() {
@@ -173,6 +240,7 @@ export default class GardenTesting extends Component {
       //   maxValue: 90,
       //   maxValue: 105,
     };
+    // this.getPlantWaterCount();
     this.checkInitialized();
     this.getInventoryCounts();
     console.log("69");
@@ -268,6 +336,7 @@ export default class GardenTesting extends Component {
                 <Text style={styles.smallWhiteText}>
                   {this.state.inventory_bees}
                 </Text>
+
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -364,27 +433,48 @@ export default class GardenTesting extends Component {
               }}
               // bottom third - 3 buttons
             >
-              <TouchableOpacity
-                onPress={this.increase.bind(this, "progress", 6.67)}
-              >
-                <View style={styles.rectangular}>
-                  <Text style={styles.rectangularText}>X 1</Text>
+              {this.state.button_x1 ? (
+                <TouchableOpacity
+                  onPress={this.increase.bind(this, "progress", 6.67)}
+                >
+                  <View style={styles.rectangular}>
+                    <Text style={styles.rectangularText}>X 1</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.darkRectangular}>
+                  <Text style={styles.darkRectangularText}>X 1</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this.increase.bind(this, "progress", 33.35)}
-              >
-                <View style={styles.rectangular}>
-                  <Text style={styles.rectangularText}>X 5</Text>
+              )}
+
+              {this.state.button_x5 ? (
+                <TouchableOpacity
+                  onPress={this.increase.bind(this, "progress", 33.35)}
+                >
+                  <View style={styles.rectangular}>
+                    <Text style={styles.rectangularText}>X 5</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.darkRectangular}>
+                  <Text style={styles.darkRectangularText}>X 5</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this.increase.bind(this, "progress", 100)}
-              >
-                <View style={styles.rectangular}>
-                  <Text style={styles.rectangularText}>MAX</Text>
+              )}
+
+              {this.state.button_max ? (
+                <TouchableOpacity
+                  onPress={this.increase.bind(this, "progress", 100)}
+                >
+                  <View style={styles.rectangular}>
+                    <Text style={styles.rectangularText}>MAX</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.darkRectangular}>
+                  <Text style={styles.darkRectangularText}>MAX</Text>
                 </View>
-              </TouchableOpacity>
+              )}
+
               {/* <View style={styles.buttonContainer}>
                 <View style={styles.buttonInner}>
                   <Button
@@ -525,6 +615,21 @@ const styles = StyleSheet.create({
   },
   rectangularText: {
     color: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  darkRectangular: {
+    borderWidth: 1.2,
+    width: screen.width / 7,
+    height: screen.width / 13,
+    borderColor: "#525252",
+    color: "#1ce",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  darkRectangularText: {
+    color: "#525252",
     alignItems: "center",
     justifyContent: "center",
     fontSize: 15,
