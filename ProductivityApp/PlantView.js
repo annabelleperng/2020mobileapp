@@ -30,9 +30,10 @@ import { screensEnabled } from "react-native-screens";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
+    this.initializeGarden();
     this.state = {
       plant_position: 1,
-      plant_waters: 0,
+      //   plant_waters: 0,
       showCancel: false,
       image1: "invis ",
       temp: false,
@@ -50,6 +51,7 @@ export default class GardenTesting extends Component {
       button_max: false,
       //
       waters_set: false,
+      fully_watered: false,
     };
   }
 
@@ -61,7 +63,7 @@ export default class GardenTesting extends Component {
       this.initializeGarden();
       await SecureStore.setItemAsync("garden_initialized", "true");
     }
-    this.initializeGarden();
+    // this.initializeGarden();
   };
 
   componentWillUnmount = () => {
@@ -78,7 +80,7 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
     await SecureStore.setItemAsync("1_status", "0");
-    await SecureStore.setItemAsync("1_waters", "14");
+    await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "0");
     await SecureStore.setItemAsync("3_status", "0");
     await SecureStore.setItemAsync("4_status", "0");
@@ -125,10 +127,89 @@ export default class GardenTesting extends Component {
     let v = this.state[key] + value;
     if (v > 100) {
       v = 100;
+      this.setState({
+        button_x1: false,
+        button_x5: false,
+        button_max: false,
+        fully_watered: true,
+      });
     }
     this.setState({
       [key]: v,
     });
+  };
+
+  water_1 = async () => {
+    // gets inventory water count
+    let inventory_water = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
+
+    // gets this plant's current water count
+    let pos = this.state.plant_position + "_waters";
+    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+
+    // waters plant once
+    inventory_water = inventory_water - 1;
+    plant_water = plant_water + 1;
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
+    await SecureStore.setItemAsync(pos, "" + plant_water);
+
+    // updates progress bar, display number
+    this.increase("progress", 6.67);
+    await this.checkWateringOptions();
+    this.setState({ inventory_water: inventory_water });
+  };
+
+  water_5 = async () => {
+    // gets inventory water count
+    let inventory_water = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
+
+    // gets this plant's current water count
+    let pos = this.state.plant_position + "_waters";
+    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+
+    // waters plant five times
+    inventory_water = inventory_water - 5;
+    plant_water = plant_water + 5;
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
+    await SecureStore.setItemAsync(pos, "" + plant_water);
+
+    // updates progress bar, display number
+    this.increase("progress", 33.35);
+    await this.checkWateringOptions();
+    this.setState({ inventory_water: inventory_water });
+  };
+
+  water_max = async () => {
+    // gets inventory water count
+    let inventory_water = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
+
+    // gets this plant's current water count
+    let pos = this.state.plant_position + "_waters";
+    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+    let needed = 15 - plant_water;
+
+    // waters plant till fully watered
+    inventory_water = inventory_water - needed;
+    plant_water = plant_water + needed;
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
+    await SecureStore.setItemAsync(pos, "" + plant_water);
+
+    // updates progress bar, display number
+    this.increase("progress", 100);
+    await this.checkWateringOptions();
+    this.setState({ inventory_water: inventory_water });
   };
 
   show13 = async () => {
@@ -183,15 +264,15 @@ export default class GardenTesting extends Component {
   /* Determines which buttons - x1, x5, MAX - to show for
    * watering if the plant can be watered. */
   checkWateringOptions = async () => {
-    let pos_waters = Number.parseInt(
-      await SecureStore.getItemAsync(this.state.plant_position + "_waters")
-    );
+    let pos = this.state.plant_position.toString() + "_waters";
+    let pos_waters = Number.parseInt(await SecureStore.getItemAsync(pos));
     let one = false;
     let five = false;
     let max = false;
 
     let needed = 15 - pos_waters;
 
+    console.log("pos_waters from CHECKWATERING OPTIONS = " + pos_waters);
     if (needed >= 5) {
       one = true;
       five = true;
@@ -200,6 +281,7 @@ export default class GardenTesting extends Component {
       one = true;
       max = true;
     } else {
+      this.setState({ button_x1: false, button_x5: false, button_max: false });
       return 1;
     }
 
@@ -224,6 +306,8 @@ export default class GardenTesting extends Component {
     console.log("\nmax = " + max);
 
     this.setState({ button_x1: one, button_x5: five, button_max: max });
+
+    console.log("DONE CHECKING WATERING OPTIONS I THINK");
   };
 
   render() {
@@ -407,6 +491,15 @@ export default class GardenTesting extends Component {
             </View>
             <View
               style={{
+                flex: 0.3,
+                // backgroundColor: "#eac",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // top margin
+            ></View>
+            <View
+              style={{
                 flex: 0.5,
                 // backgroundColor: "#ace",
                 justifyContent: "center",
@@ -421,6 +514,13 @@ export default class GardenTesting extends Component {
                 backgroundColorOnComplete="#ff427b"
                 // progress bar
               />
+              <Text></Text>
+              {this.state.fully_watered ? (
+                <Text style={styles.smallWhiteText}>FULLY WATERED</Text>
+              ) : (
+                <Text style={styles.smallWhiteText}>WATER PLANT</Text>
+              )}
+              <Text></Text>
             </View>
             <View
               style={{
@@ -434,9 +534,7 @@ export default class GardenTesting extends Component {
               // bottom third - 3 buttons
             >
               {this.state.button_x1 ? (
-                <TouchableOpacity
-                  onPress={this.increase.bind(this, "progress", 6.67)}
-                >
+                <TouchableOpacity onPress={this.water_1.bind(this)}>
                   <View style={styles.rectangular}>
                     <Text style={styles.rectangularText}>X 1</Text>
                   </View>
@@ -448,9 +546,7 @@ export default class GardenTesting extends Component {
               )}
 
               {this.state.button_x5 ? (
-                <TouchableOpacity
-                  onPress={this.increase.bind(this, "progress", 33.35)}
-                >
+                <TouchableOpacity onPress={this.water_5.bind(this)}>
                   <View style={styles.rectangular}>
                     <Text style={styles.rectangularText}>X 5</Text>
                   </View>
@@ -462,9 +558,7 @@ export default class GardenTesting extends Component {
               )}
 
               {this.state.button_max ? (
-                <TouchableOpacity
-                  onPress={this.increase.bind(this, "progress", 100)}
-                >
+                <TouchableOpacity onPress={this.water_max.bind(this)}>
                   <View style={styles.rectangular}>
                     <Text style={styles.rectangularText}>MAX</Text>
                   </View>
