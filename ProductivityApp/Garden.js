@@ -9,8 +9,12 @@ import {
   Dimensions,
   TextInput,
 } from "react-native";
+import SeedUtils from "./SeedUtils";
+import RewardUtils from "./RewardUtils";
 
 const screen = Dimensions.get("window");
+const seedUtils = new SeedUtils();
+const rewardUtils = new RewardUtils();
 
 export default class Garden extends Component {
   constructor(props) {
@@ -47,7 +51,24 @@ export default class Garden extends Component {
     }
   };
 
+  updateStuff = async () => {
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const localTime = DateTime.local().setZone(localZone);
+    const periodStartKey = position + "_period_start";
+    const periodStart = DateTime.fromISO(
+      await SecureStore.getItemAsync(periodStartKey)
+    );
+    if (localTime.diff(periodStart).hours() >= 24) {
+      rewardUtils.updateStreak();
+      for (i = 1; i <= 9; i++) {
+        seedUtils.updateWilting(i);
+      }
+    }
+  };
+
   render() {
+    this.updateStuff();
+
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
       <View

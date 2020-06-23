@@ -182,7 +182,6 @@ export default class Details extends Component {
           style={{
             flex: 0.25,
             justifyContent: "center",
-            alignItems: "left",
             backgroundColor: "#0ffcff",
           }}
         >

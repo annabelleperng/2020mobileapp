@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+import DateTime from "luxon/src/datetime.js";
+import Interval from "luxon/src/interval.js";
 import * as SecureStore from "expo-secure-store";
 
 let none = [
@@ -124,6 +126,27 @@ export default class SeedUtils extends Component {
     const speciesKey = position + "_species";
     console.log("species = " + species);
     await SecureStore.setItemAsync(speciesKey, species);
+
+    //set position_date_planted to current time
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const datePlanted = DateTime.local().setZone(localZone).toISO();
+    const datePlantedKey = position + "_date_planted";
+    console.log("date planted = " + datePlanted);
+    await SecureStore.setItemAsync(datePlantedKey, datePlanted);
+
+    //set position_growth_streak_length to 0
+    const growthStreakLengthKey = position + "_growth_streak_length";
+    await SecureStore.setItemAsync(growthStreakLengthKey, "0");
+
+    //set position_growth_streak_start to -1, set properly in updateGrowthStreak function
+    const growthStreakStartKey = position + "_growth_streak_start";
+    await SecureStore.setItemAsync(growthStreakStartKey, "-1");
+
+    //set growth_streak_offset to current regular streak length
+    const growthStreakOffset = await SecureStore.getItemAsync("streak_length");
+    const growthStreakOffsetKey = position + "_growth_streak_offset";
+    await SecureStore.setItemAsync(growthStreakOffsetKey, growthStreakOffset);
+
     console.log("plantSeed finished\n\n\n");
     return 1;
   };
@@ -201,6 +224,25 @@ export default class SeedUtils extends Component {
 
     // should also set streak?
 
+    //set position_period_start to current date
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const periodStart = DateTime.local().setZone(localZone);
+    const periodStartMidnight = DateTime.fromObject({
+      year: localTime.year,
+      month: localTime.month,
+      day: localTime.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      zone: localZone,
+    });
+    const periodStartKey = position + "_period_start";
+    await SecureStore.setItemAsync(periodStartKey, periodStartMidnight.ISO());
+
+    //set position_water_progress
+    const waterProgressKey = position + "_water_progres";
+    await SecureStore.setItemAsync(waterProgressKey, "0");
+
     return 1;
   };
 
@@ -232,7 +274,7 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  killPlant = async () => {
+  killPlant = async (position) => {
     if (this.checkStatus(position, "3") != 1) {
       console.log("error: you shouldn't be able to kill this plant.");
       return -1;
@@ -332,8 +374,216 @@ export default class SeedUtils extends Component {
       "inventory_water",
       waterInventory - waters + ""
     );
+
+    //update position_period_start
+    const periodStartKey = position + "_period_start";
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const localTime = DateTime.local().setZone(localZone);
+    const localMidnight = DateTime.fromObject({
+      year: localTime.year,
+      month: localTime.month,
+      day: localTime.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      zone: localZone,
+    });
+    await SecureStore.setItemAsync(periodStartKey, localMidnight.ISO());
+
+    //update position_water_progress for the 3-day 15-water requirement
+    const waterProgressKey = position + "_water_progress";
+    const waterProgressPrev = Number.parseInt(
+      await SecureStore.getItemAsync(waterProgressKey)
+    );
+    const waterProgressNew = waterProgressPrev + waters;
+    await SecureStore.setItemAsync(waterProgressKey, waterProgressNew);
+
     return 0;
   };
 
   //   breedPlant(position, waters) {}
+
+  /* Updates position_growth_streak_start (GSS) and position_growth_streak_length (GSL).
+   * If GSS == -1, set to current time.
+   * Otherwise, sets GSS and GSL according depending on time difference between this sprint and last sprint.
+   *
+   * This method should be called in Timer5.js similar to updateLatestSprints.
+   */
+  updateGrowthStreak = async (position) => {
+    if (this.checkStatus(position, "1") != 1) {
+      console.log("error: only growing plants have growing streaks");
+      return -1;
+    }
+
+    // const startKey = position + "_growth_streak_start";
+    const statusKey = position + "_status";
+    const lengthKey = position + "_growth_streak_length";
+    const offsetKey = position + "_growth_streak_offset";
+    const offsetStr = await SecureStore.getItemAsync(offsetKey);
+    var offset = Number.parseInt(offsetStr);
+
+    var length =
+      Number.parseInt(await SecureStore.getItemAsync("streak_length")) - offset;
+    if (length < 0) {
+      length = 0;
+      offset = 0;
+    }
+
+    await SecureStore.setItemAsync(lengthKey, length);
+    await SecureStore.setItemAsync(offsetKey, offset);
+
+    if (length == 3) {
+      this.growSeed(position);
+    }
+
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const currDate = DateTime.local().setZone(localZone);
+
+    // const localZone = await SecureStore.getItemAsync("timezone");
+    // const localTime = DateTime.local().setZone(localZone).toISO();
+    // const localMidnight = DateTime.fromObject({
+    //   year: localTime.year,
+    //   month: localTime.month,
+    //   day: localTime.day,
+    //   hour: 0,
+    //   minute: 0,
+    //   second: 0,
+    //   zone: localZone,
+    // });
+    // const localPrevMidnight = localMidnight.minus({ days: 1 });
+    // const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+
+    // if (await SecureStore.getItemAsync(growthStreakStartKey) == "-1") {
+    //   await SecureStore.setItemAsync(growthStreakStartKey, localTime;
+    // }
+    // const growthStreakStart = DateTime.fromISO(
+    //   await SecureStore.getItemAsync(growthStreakStartKey)
+    // );
+
+    // const streakLength = Number.parseInt(
+    //   await SecureStore.getItemAsync("streak_length")
+    // );
+
+    // const latestSprintDay = DateTime.fromISO(
+    //   await SecureStore.getItemAsync("latest_sprint")
+    // );
+
+    // if (prevDay.contains(latestSprintDay)) {
+    //   streakLength += 1;
+    // } else if (prevDay.isAfter(latestSprintDay)) {
+    //   streakLength = 0;
+    //   await SecureStore.setItemAsync(growthStreakStartKey, localTime.toISO());
+    //   console.log("\n\n\n\n\nUpdated growth streak start to " + localTime.toISO());
+    // }
+    // await SecureStore.setItemAsync(growthStreakLengthKey, "" + streakLength);
+    // console.log("\n\n\n\n\nUpdated growth streak length to " + streakLength);
+  };
+
+  updateWilting = async (position) => {
+    if (this.checkStatus(position, "2") != 1) {
+      console.log("error: only grown plants can wilt");
+      return -1;
+    }
+
+    const localZone = await SecureStore.getItemAsync("timezone");
+    const currDate = DateTime.local().setZone(localZone);
+
+    const periodStartKey = position + "_period_start";
+    const periodStart = DateTime.fromISO(
+      await SecureStore.getItemAsync(periodStartKey)
+    );
+
+    const diff = currDate.diff(periodStart).hours();
+    if (diff >= 72 && diff < 144) {
+      this.wiltPlant(position);
+    } else if (diff >= 144) {
+      this.killPlant(position);
+    }
+  };
+
+  elixirPlant = async (position) => {
+    if (this.checkStatus(position, "3") != 1) {
+      console.log("error: only wilted plants use elixir");
+      return -1;
+    }
+
+    var elixir = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_elixir")
+    );
+    if (elixir == 0) {
+      return -1;
+    }
+    elixir -= 1;
+    await SecureStore.setItemAsync("inventory_elixir", "" + elixir);
+    const statusKey = position + "_status";
+    await SecureStore.setItemAsync(statusKey, "2");
+  };
 }
+
+breedPlants = async (positionA, positionB) => {
+  if (this.checkStatus(positionA, "2") != 1) {
+    console.log("error: plant A isn't grown and can't breed");
+    return -1;
+  }
+  if (this.checkStatus(positionB, "2") != 1) {
+    console.log("error: plant B isn't grown and can't breed");
+    return -1;
+  }
+  var newSeed = "%";
+
+  const rarityAKey = positionA + "_rarity";
+  const rarityBKey = positionB + "_rarity";
+  const rarityA = Number.parseInt(await SecureStore.getItemAsync(rarityAKey));
+  const rarityB = Number.parseInt(await SecureStore.getItemAsync(rarityBKey));
+  const sumRarity = rarityA + rarityB;
+
+  var uncommonChance = 0;
+  var rareChance = 0;
+
+  if (sumRarity == 2) {
+    uncommonChance = 50;
+    rareChance = 95;
+  } else if (sumRarity == 3) {
+    uncommonChance = 40;
+    rareChance = 85;
+  } else if (sumRarity == 4) {
+    uncommonChance = 30;
+    rareChance = 75;
+  } else if (sumRarity == 5) {
+    uncommonChance = 20;
+    rareChance = 60;
+  } else {
+    uncommonChance = 5;
+    rareChance = 35;
+  }
+
+  const rarityRand = Math.floor(Math.random() * 100) + 1;
+  var rarity = "";
+  if (rarityRand < uncommonChance) {
+    rarity = "1";
+  } else if (rarityRand < rareChance) {
+    rarity = "2";
+  } else {
+    rarity = "3";
+  }
+  newSeed = newSeed + rarity;
+
+  const eventAKey = positionA + "_event";
+  const eventBKey = positionB + "_event";
+  const eventA = await SecureStore.getItemAsync(eventAKey);
+  const eventB = await SecureStore.getItemAsync(eventBKey);
+
+  const eventRand = Math.floor(Math.random() * 100) + 1;
+  if (eventRand < 35) {
+    newSeed = newSeed + eventA;
+  }
+  if (eventRand < 70) {
+    newSeed = newSeed + eventB;
+  } else {
+    newSeed = newSeed + "none";
+  }
+
+  var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
+  allSeeds = allSeeds + newSeed;
+  await SecureStore.setItemAsync("inventory_seeds", allSeeds);
+};

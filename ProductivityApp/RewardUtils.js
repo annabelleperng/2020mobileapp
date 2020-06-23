@@ -2,7 +2,10 @@ import DateTime from "luxon/src/datetime.js";
 import Interval from "luxon/src/interval.js";
 import * as SecureStore from "expo-secure-store";
 import React from "react";
+import SeedUtils from "./SeedUtils";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+
+const utils = new SeedUtils();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -36,6 +39,12 @@ export default class App extends React.Component {
     }
     await SecureStore.setItemAsync("streak_length", "" + streakLength);
     console.log("\n\n\n\n\nUpdated streak to " + streakLength);
+
+    for (i = 1; i <= 9; i++) {
+      utils.updateGrowthStreak(i);
+    }
+
+    await SecureStore.setItemAsync("last_updated", localMidnight.ISO());
   };
 
   getWater = async () => {
