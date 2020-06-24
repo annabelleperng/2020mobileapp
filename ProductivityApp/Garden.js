@@ -1,3 +1,7 @@
+import DateTime from "luxon/src/datetime.js";
+import Duration from "luxon/src/duration.js";
+import Interval from "luxon/src/interval.js";
+
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -11,6 +15,8 @@ import {
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
+
+import * as SecureStore from "expo-secure-store";
 
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
@@ -51,14 +57,18 @@ export default class Garden extends Component {
     }
   };
 
-  updateStuff = async () => {
+  updateStuff = async (position) => {
     const localZone = await SecureStore.getItemAsync("timezone");
     const localTime = DateTime.local().setZone(localZone);
     const periodStartKey = position + "_period_start";
     const periodStart = DateTime.fromISO(
       await SecureStore.getItemAsync(periodStartKey)
     );
-    if (localTime.diff(periodStart).hours() >= 24) {
+    console.log("localTime is " + localTime.toISO());
+    console.log("periodStart is " + periodStart.toISO());
+    const diff = localTime.diff(periodStart);
+    console.log("difference is" + diff);
+    if (diff.hours() >= 24) {
       rewardUtils.updateStreak();
       for (i = 1; i <= 9; i++) {
         seedUtils.updateWilting(i);
@@ -67,7 +77,7 @@ export default class Garden extends Component {
   };
 
   render() {
-    this.updateStuff();
+    // this.updateStuff();
 
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
@@ -78,12 +88,14 @@ export default class Garden extends Component {
           justifyContent: "center",
         }}
       >
-        <View style={{ flex: 4, backgroundColor: "#57423e" }}>
+        <View
+          style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: margin,
-              marginLeft: screen.width / 14,
+              //   marginLeft: screen.width / 14,
             }}
           >
             <TouchableOpacity onPress={this.toggleCancel}>
@@ -102,76 +114,88 @@ export default class Garden extends Component {
             />
           </View>
         </View>
-        <View style={{ flex: 1.1, backgroundColor: "#472b25" }}>
+        <View
+          style={{
+            flex: 1.1,
+            backgroundColor: "#472b25",
+            alignItems: "center",
+          }}
+        >
           <View
             style={{
-              flexDirection: "row",
-              marginTop: screen.height / 22 - screen.height / 25,
-              marginLeft: screen.width / 11,
+              flexDirection: "column",
+              //   marginTop: screen.height / 22 - screen.height / 25,
+              //   marginLeft: screen.width / 11,
             }}
           >
-            <TouchableOpacity>
-              {/* {this.state.showCancel ? (
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity>
+                {/* {this.state.showCancel ? (
                 <Text> Hello Friends </Text>
               ) : (
                 <Text>Fat bitch</Text>
               )} */}
-              {/* <Text>hewo {this.state.showCancel}</Text> */}
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? styles.hidden : {},
-                ]}
-                source={require("./assets/invis.png")}
-              />
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? {} : styles.hidden,
-                ]}
-                source={require("./assets/puta.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? styles.hidden : {},
-                ]}
-                source={require("./assets/invis.png")}
-              />
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? {} : styles.hidden,
-                ]}
-                source={require("./assets/night.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? styles.hidden : {},
-                ]}
-                source={require("./assets/invis.png")}
-              />
-              <Image
-                style={[
-                  styles.smallButton,
-                  this.state.showCancel ? {} : styles.hidden,
-                ]}
-                source={require("./assets/tempdollar.png")}
-              />
-            </TouchableOpacity>
+                {/* <Text>hewo {this.state.showCancel}</Text> */}
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? styles.hidden : {},
+                  ]}
+                  source={require("./assets/invis.png")}
+                />
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? {} : styles.hidden,
+                  ]}
+                  source={require("./assets/puta.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? styles.hidden : {},
+                  ]}
+                  source={require("./assets/invis.png")}
+                />
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? {} : styles.hidden,
+                  ]}
+                  source={require("./assets/night.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? styles.hidden : {},
+                  ]}
+                  source={require("./assets/invis.png")}
+                />
+                <Image
+                  style={[
+                    styles.smallButton,
+                    this.state.showCancel ? {} : styles.hidden,
+                  ]}
+                  source={require("./assets/tempdollar.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1 }}></View>
+            <View style={{ flex: 1 }}></View>
           </View>
         </View>
-        <View style={{ flex: 4, backgroundColor: "#57423e" }}>
+        <View
+          style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: margin,
-              marginLeft: screen.width / 14,
+              //   marginLeft: screen.width / 14,
             }}
           >
             <Image
@@ -188,13 +212,34 @@ export default class Garden extends Component {
             />
           </View>
         </View>
-        <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
-        <View style={{ flex: 4, backgroundColor: "#57423e" }}>
+        <View
+          style={{
+            flex: 1.1,
+            flexDirection: "row",
+            backgroundColor: "#472b25",
+          }}
+        >
+          <Image
+            style={styles.smallButton}
+            source={require("./assets/fernsbig.png")}
+          />
+          <Image
+            style={styles.smallButton}
+            source={require("./assets/fernsbig.png")}
+          />
+          <Image
+            style={styles.smallButton}
+            source={require("./assets/fernsbig.png")}
+          />
+        </View>
+        <View
+          style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: margin,
-              marginLeft: screen.width / 14,
+              //   marginLeft: screen.width / 14,
             }}
           >
             <Image
