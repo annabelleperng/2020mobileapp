@@ -17,20 +17,38 @@ import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
 
 import * as SecureStore from "expo-secure-store";
+import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
 const rewardUtils = new RewardUtils();
+
+let bees = {
+  "invis ": require("./assets/invis.png"),
+  "bw ": require("./assets/largebeebw.png"),
+  "color ": require("./assets/largebee.png"),
+};
 
 export default class Garden extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showCancel: false,
+      showBees: false,
+      status1: 2,
+      status2: 2,
+      status3: 2,
+      bee1: "invis ",
+      bee2: "invis ",
+      bee3: "invis ",
+      firstParent: 0,
+      secondParent: 0,
+      selectedParents: 0,
     };
   }
 
   toggleCancel = () => {
+    console.log("toggleCancel called");
     console.log(" ");
     // this.state.showCancel = !this.state.showCancel;
     // var showC = !this.state.showCancel;
@@ -73,6 +91,55 @@ export default class Garden extends Component {
       for (i = 1; i <= 9; i++) {
         seedUtils.updateWilting(i);
       }
+    }
+  };
+
+  selectBreeding = (key, position) => {
+    console.log("selectBreeding called with (" + key + ", " + position + ")");
+    if (
+      this.state.selectedParents == 0 ||
+      (this.state.selectedParents == 1 && this.state.firstParent == position)
+    ) {
+      console.log("first case");
+      this.setState({ selectedParents: 1, firstParent: position });
+    } else if (this.state.selectedParents == 1) {
+      console.log("2nd case");
+      this.setState({ selectedParents: 2, secondParent: [position] });
+    } else {
+      console.log("3rd case");
+      return;
+    }
+    this.setState({ [key]: "color " });
+  };
+
+  showBees = () => {
+    // first implementing it for the first row plants
+    this.setState({ showBees: true });
+    if (this.state.status1 == 2) {
+      this.setState({ bee1: "bw " });
+    }
+    if (this.state.status2 == 2) {
+      this.setState({ bee2: "bw " });
+    }
+    if (this.state.status3 == 2) {
+      this.setState({ bee3: "bw " });
+    }
+  };
+
+  hideBees = () => {
+    this.setState({
+      showBees: false,
+      bee1: "invis ",
+      bee2: "invis ",
+      bee3: "invis ",
+    });
+  };
+
+  toggleBees = () => {
+    if (this.state.showBees == false) {
+      this.showBees();
+    } else {
+      this.hideBees();
     }
   };
 
@@ -133,31 +200,28 @@ export default class Garden extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <Image
-              style={[
-                styles.smallButton,
-                //   this.state.showCancel ? {} : styles.hidden,
-              ]}
-              source={require("./assets/puta.png")}
-            />
+            <TouchableOpacity onPress={() => this.selectBreeding("bee1", 1)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee1]}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <Image
-              style={[
-                styles.smallButton,
-                //   this.state.showCancel ? {} : styles.hidden,
-              ]}
-              source={require("./assets/puta.png")}
-            />
+            <TouchableOpacity onPress={() => this.selectBreeding("bee2", 2)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee2]}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <Image
-              style={[
-                styles.smallButton,
-                //   this.state.showCancel ? {} : styles.hidden,
-              ]}
-              source={require("./assets/puta.png")}
-            />
+            <TouchableOpacity onPress={() => this.selectBreeding("bee3", 3)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee3]}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
@@ -250,7 +314,7 @@ export default class Garden extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.toggleBees()}
               activeOpacity={0.5}
             >
               <Image
