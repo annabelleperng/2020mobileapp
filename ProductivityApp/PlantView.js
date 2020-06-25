@@ -735,7 +735,8 @@ const styles = StyleSheet.create({
   smallWhiteText: {
     color: "#ff547c",
     fontSize: 15,
-    // alignItems: "center",
-    marginLeft: screen.width / 40,
+
+    // marginLeft: screen.width / 40,
+    // marginRight: screen.width / 5,
   },
 });

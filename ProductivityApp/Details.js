@@ -26,7 +26,7 @@ export default class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minutes: 50,
+      minutes: 10,
     };
   }
   static navigationOptions = {

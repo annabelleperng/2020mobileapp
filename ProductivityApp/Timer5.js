@@ -43,7 +43,7 @@ export default class StopWatch extends Component {
     this.setState({ setLatestSprint: 1 });
   };
 
-  onButtonStart = async() => {
+  onButtonStart = async () => {
     let timer = setInterval(() => {
       var num = (Number(this.state.seconds_Counter) - 1).toString(),
         count = this.state.minutes_Counter;
@@ -72,10 +72,10 @@ export default class StopWatch extends Component {
           total_time: diff,
           timer_time: this.props.route.params.JSON_ListView_Clicked_Item,
         });
-        const localZone = await SecureStore.getItemAsync("timezone");
-        const currDate = DateTime.local().setZone(localZone);
-        if (currDate.diff(periodStart).hours() > )
-        this.updateLatestSprints();
+        // var localZone = await SecureStore.getItemAsync("timezone");
+        // const currDate = DateTime.local().setZone(localZone);
+        // if (currDate.diff(periodStart).hours() > 5)
+        // this.updateLatestSprints();
       }
 
       if (

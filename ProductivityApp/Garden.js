@@ -98,20 +98,28 @@ export default class Garden extends Component {
               //   marginLeft: screen.width / 14,
             }}
           >
-            <TouchableOpacity onPress={this.toggleCancel}>
+            <View style={{ flex: 0.2 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={this.toggleCancel}>
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Image
+                style={styles.plants}
+                source={require("./assets/tulipsbig.png")}
+              />
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
               <Image
                 style={styles.plants}
                 source={require("./assets/fernsbig.png")}
               />
-            </TouchableOpacity>
-            <Image
-              style={styles.plants}
-              source={require("./assets/tulipsbig.png")}
-            />
-            <Image
-              style={styles.plants}
-              source={require("./assets/fernsbig.png")}
-            />
+            </View>
+            <View style={{ flex: 0.2 }}></View>
           </View>
         </View>
         <View
@@ -119,74 +127,39 @@ export default class Garden extends Component {
             flex: 1.1,
             backgroundColor: "#472b25",
             alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
           }}
         >
-          <View
-            style={{
-              flexDirection: "column",
-              //   marginTop: screen.height / 22 - screen.height / 25,
-              //   marginLeft: screen.width / 11,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity>
-                {/* {this.state.showCancel ? (
-                <Text> Hello Friends </Text>
-              ) : (
-                <Text>Fat bitch</Text>
-              )} */}
-                {/* <Text>hewo {this.state.showCancel}</Text> */}
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? styles.hidden : {},
-                  ]}
-                  source={require("./assets/invis.png")}
-                />
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? {} : styles.hidden,
-                  ]}
-                  source={require("./assets/puta.png")}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? styles.hidden : {},
-                  ]}
-                  source={require("./assets/invis.png")}
-                />
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? {} : styles.hidden,
-                  ]}
-                  source={require("./assets/night.png")}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? styles.hidden : {},
-                  ]}
-                  source={require("./assets/invis.png")}
-                />
-                <Image
-                  style={[
-                    styles.smallButton,
-                    this.state.showCancel ? {} : styles.hidden,
-                  ]}
-                  source={require("./assets/tempdollar.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 1 }}></View>
-            <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 0.2 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Image
+              style={[
+                styles.smallButton,
+                //   this.state.showCancel ? {} : styles.hidden,
+              ]}
+              source={require("./assets/puta.png")}
+            />
           </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Image
+              style={[
+                styles.smallButton,
+                //   this.state.showCancel ? {} : styles.hidden,
+              ]}
+              source={require("./assets/puta.png")}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Image
+              style={[
+                styles.smallButton,
+                //   this.state.showCancel ? {} : styles.hidden,
+              ]}
+              source={require("./assets/puta.png")}
+            />
+          </View>
+          <View style={{ flex: 0.2 }}></View>
         </View>
         <View
           style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
@@ -282,7 +255,7 @@ export default class Garden extends Component {
             >
               <Image
                 style={styles.menuIcons2}
-                source={require("./assets/shoplogo.png")}
+                source={require("./assets/largebee.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
