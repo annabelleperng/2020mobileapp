@@ -17,7 +17,7 @@ import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
 
 import * as SecureStore from "expo-secure-store";
-import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
+// import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
@@ -432,7 +432,7 @@ export default class Garden extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.props.navigation.navigate("Shop")}
               activeOpacity={0.5}
             >
               <Image
