@@ -51,7 +51,14 @@ export default function App() {
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Details">
+        <Stack.Navigator
+          initialRouteName="Details"
+          screenOptions={{
+            headerBackTitleVisible: false,
+            headerBackImage: () => <Text></Text>,
+            // makes back button invisible
+          }}
+        >
           {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
           <Stack.Screen name="Feedback" component={Feedback} />
           <Stack.Screen name="Timer" component={Timer} />

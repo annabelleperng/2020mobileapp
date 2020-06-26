@@ -38,9 +38,21 @@ export default class Garden extends Component {
       status1: 2,
       status2: 2,
       status3: 2,
+      status4: 2,
+      status5: 2,
+      status6: 2,
+      status7: 2,
+      status8: 2,
+      status9: 2,
       bee1: "invis ",
       bee2: "invis ",
       bee3: "invis ",
+      bee4: "invis ",
+      bee5: "invis ",
+      bee6: "invis ",
+      bee7: "invis ",
+      bee8: "invis ",
+      bee9: "invis ",
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0,
@@ -104,9 +116,10 @@ export default class Garden extends Component {
       this.setState({ selectedParents: 1, firstParent: position });
     } else if (this.state.selectedParents == 1) {
       console.log("2nd case");
-      this.setState({ selectedParents: 2, secondParent: [position] });
+      this.setState({ selectedParents: 2, secondParent: position });
     } else {
       console.log("3rd case");
+      console.log(this.state);
       return;
     }
     this.setState({ [key]: "color " });
@@ -124,6 +137,24 @@ export default class Garden extends Component {
     if (this.state.status3 == 2) {
       this.setState({ bee3: "bw " });
     }
+    if (this.state.status4 == 2) {
+      this.setState({ bee4: "bw " });
+    }
+    if (this.state.status5 == 2) {
+      this.setState({ bee5: "bw " });
+    }
+    if (this.state.status6 == 2) {
+      this.setState({ bee6: "bw " });
+    }
+    if (this.state.status7 == 2) {
+      this.setState({ bee7: "bw " });
+    }
+    if (this.state.status8 == 2) {
+      this.setState({ bee8: "bw " });
+    }
+    if (this.state.status9 == 2) {
+      this.setState({ bee9: "bw " });
+    }
   };
 
   hideBees = () => {
@@ -132,6 +163,12 @@ export default class Garden extends Component {
       bee1: "invis ",
       bee2: "invis ",
       bee3: "invis ",
+      bee4: "invis ",
+      bee5: "invis ",
+      bee6: "invis ",
+      bee7: "invis ",
+      bee8: "invis ",
+      bee9: "invis ",
     });
   };
 
@@ -235,39 +272,66 @@ export default class Garden extends Component {
               //   marginLeft: screen.width / 14,
             }}
           >
-            <Image
-              style={styles.plants}
-              source={require("./assets/fernsbig.png")}
-            />
-            <Image
-              style={styles.plants}
-              source={require("./assets/tulipsbig.png")}
-            />
-            <Image
-              style={styles.plants}
-              source={require("./assets/fernsbig.png")}
-            />
+            <View style={{ flex: 0.2 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={this.toggleCancel}>
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Image
+                style={styles.plants}
+                source={require("./assets/tulipsbig.png")}
+              />
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Image
+                style={styles.plants}
+                source={require("./assets/fernsbig.png")}
+              />
+            </View>
+            <View style={{ flex: 0.2 }}></View>
           </View>
         </View>
+
         <View
           style={{
             flex: 1.1,
-            flexDirection: "row",
             backgroundColor: "#472b25",
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
           }}
         >
-          <Image
-            style={styles.smallButton}
-            source={require("./assets/fernsbig.png")}
-          />
-          <Image
-            style={styles.smallButton}
-            source={require("./assets/fernsbig.png")}
-          />
-          <Image
-            style={styles.smallButton}
-            source={require("./assets/fernsbig.png")}
-          />
+          <View style={{ flex: 0.2 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee4", 4)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee4]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee5", 5)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee5]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee6", 6)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee6]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 0.2 }}></View>
         </View>
         <View
           style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
@@ -279,21 +343,66 @@ export default class Garden extends Component {
               //   marginLeft: screen.width / 14,
             }}
           >
-            <Image
-              style={styles.plants}
-              source={require("./assets/fernsbig.png")}
-            />
-            <Image
-              style={styles.plants}
-              source={require("./assets/tulipsbig.png")}
-            />
-            <Image
-              style={styles.plants}
-              source={require("./assets/fernsbig.png")}
-            />
+            <View style={{ flex: 0.2 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={this.toggleCancel}>
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Image
+                style={styles.plants}
+                source={require("./assets/tulipsbig.png")}
+              />
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Image
+                style={styles.plants}
+                source={require("./assets/fernsbig.png")}
+              />
+            </View>
+            <View style={{ flex: 0.2 }}></View>
           </View>
         </View>
-        <View style={{ flex: 1.1, backgroundColor: "#472b25" }}></View>
+        <View
+          style={{
+            flex: 1.1,
+            backgroundColor: "#472b25",
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <View style={{ flex: 0.2 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee7", 7)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee7]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee8", 8)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee8]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => this.selectBreeding("bee9", 9)}>
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee9]}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 0.2 }}></View>
+        </View>
         <View style={{ flex: 2, backgroundColor: "#57423e" }}></View>
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
           <View
