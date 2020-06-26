@@ -169,6 +169,9 @@ export default class Garden extends Component {
       bee7: "invis ",
       bee8: "invis ",
       bee9: "invis ",
+      firstParent: 0,
+      secondParent: 0,
+      selectedParents: 0,
     });
   };
 
