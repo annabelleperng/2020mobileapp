@@ -11,7 +11,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
-  TextInput,
+  TextInput
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
@@ -26,7 +26,7 @@ const rewardUtils = new RewardUtils();
 let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
-  "color ": require("./assets/largebee.png"),
+  "color ": require("./assets/largebee.png")
 };
 
 export default class Garden extends Component {
@@ -43,7 +43,7 @@ export default class Garden extends Component {
       bee3: "invis ",
       firstParent: 0,
       secondParent: 0,
-      selectedParents: 0,
+      selectedParents: 0
     };
   }
 
@@ -75,7 +75,7 @@ export default class Garden extends Component {
     }
   };
 
-  updateStuff = async (position) => {
+  updateStuff = async position => {
     const localZone = await SecureStore.getItemAsync("timezone");
     const localTime = DateTime.local().setZone(localZone);
     const periodStartKey = position + "_period_start";
@@ -131,7 +131,7 @@ export default class Garden extends Component {
       showBees: false,
       bee1: "invis ",
       bee2: "invis ",
-      bee3: "invis ",
+      bee3: "invis "
     });
   };
 
@@ -152,7 +152,7 @@ export default class Garden extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         <View
@@ -161,7 +161,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin,
+              marginTop: margin
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -195,7 +195,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -231,7 +231,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin,
+              marginTop: margin
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -253,7 +253,7 @@ export default class Garden extends Component {
           style={{
             flex: 1.1,
             flexDirection: "row",
-            backgroundColor: "#472b25",
+            backgroundColor: "#472b25"
           }}
         >
           <Image
@@ -275,7 +275,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin,
+              marginTop: margin
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -300,7 +300,7 @@ export default class Garden extends Component {
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              marginTop: (screen.height * 3) / 22 - screen.width / 5
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -323,7 +323,7 @@ export default class Garden extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.props.navigation.navigate("Shop")}
               activeOpacity={0.5}
             >
               <Image
@@ -350,16 +350,16 @@ export default class Garden extends Component {
 const styles = StyleSheet.create({
   plants: {
     width: screen.width / 3.5,
-    height: screen.width / 3.5,
+    height: screen.width / 3.5
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9,
+    height: screen.width / 9
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    marginLeft: screen.width / 10
   },
   pinkButton: {
     borderWidth: 2,
@@ -368,14 +368,14 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28,
+    height: screen.height / 28
   },
   hidden: {
     width: 0,
-    height: 0,
-  },
+    height: 0
+  }
 });
