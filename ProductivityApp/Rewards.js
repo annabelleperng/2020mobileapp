@@ -201,6 +201,14 @@ export default class Rewards extends React.Component {
           {/* </View> */}
         </View>
         <Text>{this.state.timeTilBee + " minutes 'til your next bee!"}</Text>
+
+        <TouchableOpacity style={{ marginTop: screen.width / 4 }}>
+          <Button
+            onPress={() => this.props.navigation.navigate("Details")}
+            title="Go back home"
+            color="#35F2E9" //button bg for android, text for ios
+          />
+        </TouchableOpacity>
       </View>
     );
   }

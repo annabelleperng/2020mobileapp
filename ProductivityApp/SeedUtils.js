@@ -518,72 +518,85 @@ export default class SeedUtils extends Component {
     const statusKey = position + "_status";
     await SecureStore.setItemAsync(statusKey, "2");
   };
+
+  useBees = async (count) => {
+    const prevCount = await SecureStore.getItemAsync("inventory_bees");
+    if (count > prevCount) {
+      console.log("error: not enough bees");
+      return -1;
+    }
+    const newCount = Number.parseInt(prevCount) - count;
+    await SecureStore.setItemAsync("inventory_bees", "" + newCount);
+    return newCount;
+  };
+
+  breedPlants = async (positionA, positionB) => {
+    if (this.checkStatus(positionA, "2") != 1) {
+      console.log("error: plant A isn't grown and can't breed");
+      return -1;
+    }
+    if (this.checkStatus(positionB, "2") != 1) {
+      console.log("error: plant B isn't grown and can't breed");
+      return -1;
+    }
+    var newSeed = "%";
+
+    this.useBees(1);
+
+    const rarityAKey = positionA + "_rarity";
+    const rarityBKey = positionB + "_rarity";
+    const rarityA = Number.parseInt(await SecureStore.getItemAsync(rarityAKey));
+    const rarityB = Number.parseInt(await SecureStore.getItemAsync(rarityBKey));
+    const sumRarity = rarityA + rarityB;
+
+    var uncommonChance = 0;
+    var rareChance = 0;
+
+    if (sumRarity == 2) {
+      uncommonChance = 50;
+      rareChance = 95;
+    } else if (sumRarity == 3) {
+      uncommonChance = 40;
+      rareChance = 85;
+    } else if (sumRarity == 4) {
+      uncommonChance = 30;
+      rareChance = 75;
+    } else if (sumRarity == 5) {
+      uncommonChance = 20;
+      rareChance = 60;
+    } else {
+      uncommonChance = 5;
+      rareChance = 35;
+    }
+
+    const rarityRand = Math.floor(Math.random() * 100) + 1;
+    var rarity = "";
+    if (rarityRand < uncommonChance) {
+      rarity = "1";
+    } else if (rarityRand < rareChance) {
+      rarity = "2";
+    } else {
+      rarity = "3";
+    }
+    newSeed = newSeed + rarity;
+
+    const eventAKey = positionA + "_event";
+    const eventBKey = positionB + "_event";
+    const eventA = await SecureStore.getItemAsync(eventAKey);
+    const eventB = await SecureStore.getItemAsync(eventBKey);
+
+    const eventRand = Math.floor(Math.random() * 100) + 1;
+    if (eventRand < 35) {
+      newSeed = newSeed + eventA;
+    }
+    if (eventRand < 70) {
+      newSeed = newSeed + eventB;
+    } else {
+      newSeed = newSeed + "none";
+    }
+
+    var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
+    allSeeds = allSeeds + newSeed;
+    await SecureStore.setItemAsync("inventory_seeds", allSeeds);
+  };
 }
-
-breedPlants = async (positionA, positionB) => {
-  if (this.checkStatus(positionA, "2") != 1) {
-    console.log("error: plant A isn't grown and can't breed");
-    return -1;
-  }
-  if (this.checkStatus(positionB, "2") != 1) {
-    console.log("error: plant B isn't grown and can't breed");
-    return -1;
-  }
-  var newSeed = "%";
-
-  const rarityAKey = positionA + "_rarity";
-  const rarityBKey = positionB + "_rarity";
-  const rarityA = Number.parseInt(await SecureStore.getItemAsync(rarityAKey));
-  const rarityB = Number.parseInt(await SecureStore.getItemAsync(rarityBKey));
-  const sumRarity = rarityA + rarityB;
-
-  var uncommonChance = 0;
-  var rareChance = 0;
-
-  if (sumRarity == 2) {
-    uncommonChance = 50;
-    rareChance = 95;
-  } else if (sumRarity == 3) {
-    uncommonChance = 40;
-    rareChance = 85;
-  } else if (sumRarity == 4) {
-    uncommonChance = 30;
-    rareChance = 75;
-  } else if (sumRarity == 5) {
-    uncommonChance = 20;
-    rareChance = 60;
-  } else {
-    uncommonChance = 5;
-    rareChance = 35;
-  }
-
-  const rarityRand = Math.floor(Math.random() * 100) + 1;
-  var rarity = "";
-  if (rarityRand < uncommonChance) {
-    rarity = "1";
-  } else if (rarityRand < rareChance) {
-    rarity = "2";
-  } else {
-    rarity = "3";
-  }
-  newSeed = newSeed + rarity;
-
-  const eventAKey = positionA + "_event";
-  const eventBKey = positionB + "_event";
-  const eventA = await SecureStore.getItemAsync(eventAKey);
-  const eventB = await SecureStore.getItemAsync(eventBKey);
-
-  const eventRand = Math.floor(Math.random() * 100) + 1;
-  if (eventRand < 35) {
-    newSeed = newSeed + eventA;
-  }
-  if (eventRand < 70) {
-    newSeed = newSeed + eventB;
-  } else {
-    newSeed = newSeed + "none";
-  }
-
-  var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
-  allSeeds = allSeeds + newSeed;
-  await SecureStore.setItemAsync("inventory_seeds", allSeeds);
-};

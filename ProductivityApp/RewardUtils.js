@@ -54,6 +54,10 @@ export default class App extends React.Component {
 
   useWater = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_water");
+    if (count > prevCount) {
+      console.log("error: not enough water");
+      return -1;
+    }
     const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_water", "" + newCount);
     return newCount;
@@ -76,13 +80,6 @@ export default class App extends React.Component {
   getBees = async () => {
     const count = await SecureStore.getItemAsync("inventory_bees");
     return count;
-  };
-
-  useBees = async (count) => {
-    const prevCount = await SecureStore.getItemAsync("inventory_bees");
-    const newCount = Number.parseInt(prevCount) - count;
-    await SecureStore.setItemAsync("inventory_bees", "" + newCount);
-    return newCount;
   };
 
   earnBees = async (mins, streak) => {
@@ -108,6 +105,10 @@ export default class App extends React.Component {
 
   useGold = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_gold");
+    if (count > prevCount) {
+      console.log("error: not enough gold");
+      return -1;
+    }
     const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
     return newCount;
