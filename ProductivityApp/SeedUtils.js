@@ -541,7 +541,10 @@ export default class SeedUtils extends Component {
     }
     var newSeed = "%";
 
-    this.useBees(1);
+    var beeCheck = this.useBees(1);
+    if (beeCheck == -1) {
+      return -1;
+    }
 
     const rarityAKey = positionA + "_rarity";
     const rarityBKey = positionB + "_rarity";

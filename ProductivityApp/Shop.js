@@ -40,9 +40,26 @@ export default class Shop extends Component {
       selectedParents: 0,
 
       hasEvent: false,
-      itemPrices: [100, 100, 100, 300, 150, 150, 200, 600, -1, -1, -1, -1],
+      itemPrices: [
+        "100",
+        "100",
+        "100",
+        "300",
+        "150",
+        "150",
+        "200",
+        "600",
+        "???",
+        "???",
+        "???",
+        "???",
+      ],
     };
   }
+
+  buy = () => {
+    console.log("buying");
+  };
 
   render() {
     // this.updateStuff();
@@ -62,34 +79,59 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
+              flex: 1,
+              alignItems: "center",
+              //   marginLeft: screen.width / 14,
+            }}
+          >
+            <View style={{ flex: 0.2 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Text style={styles.itemName}>Common Seed</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Text style={styles.itemName}>Common Seed</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Text style={styles.itemName}>Common Seed</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Text style={styles.itemName}>Fertilizer</Text>
+            </View>
+            <View style={{ flex: 0.2 }}></View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
               marginTop: margin,
               //   marginLeft: screen.width / 14,
             }}
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
+              {/* <Text style={styles.itemName}>Common Seed</Text> */}
               <TouchableOpacity>
                 <Image
-                  style={styles.plants}
+                  style={styles.items}
                   source={require("./assets/common_seed.png")}
                 />
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/common_seed.png")}
               />
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/common_seed.png")}
               />
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/fertilizer.png")}
               />
             </View>
@@ -107,27 +149,47 @@ export default class Shop extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+            <TouchableOpacity onPress={() => this.buy()}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[0]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[1]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[2]}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[3]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 0.2 }}></View>
@@ -146,26 +208,26 @@ export default class Shop extends Component {
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity>
                 <Image
-                  style={styles.plants}
+                  style={styles.items}
                   source={require("./assets/uncommon_seed.png")}
                 />
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/uncommon_seed.png")}
               />
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/rare_seed.png")}
               />
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Image
-                style={styles.plants}
+                style={styles.items}
                 source={require("./assets/elixir.png")}
               />
             </View>
@@ -185,112 +247,158 @@ export default class Shop extends Component {
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[4]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[5]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableOpacity>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/fertilizer.png")}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[6]}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[7]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
-
-        {this.state.hasEvent ? (
-          <View>
+        {console.log(this.state.hasEvent)}
+        <View
+          style={{
+            flex: 4,
+            backgroundColor: "#57423e",
+            alignItems: "center",
+          }}
+        >
+          {this.state.hasEvent ? (
             <View
               style={{
-                flex: 4,
-                backgroundColor: "#57423e",
-                alignItems: "center",
+                flexDirection: "row",
+                marginTop: margin,
+                //   marginLeft: screen.width / 14,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: margin,
-                  //   marginLeft: screen.width / 14,
-                }}
-              >
-                <View style={{ flex: 0.2 }}></View>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  <TouchableOpacity>
-                    <Image
-                      style={styles.plants}
-                      source={require("./assets/fernsbig.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flex: 1, alignItems: "center" }}>
+              <View style={{ flex: 0.2 }}></View>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <TouchableOpacity>
                   <Image
-                    style={styles.plants}
-                    source={require("./assets/tulipsbig.png")}
-                  />
-                </View>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  <Image
-                    style={styles.plants}
+                    style={styles.items}
                     source={require("./assets/fernsbig.png")}
                   />
-                </View>
-                <View style={{ flex: 0.2 }}></View>
+                </TouchableOpacity>
               </View>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Image
+                  style={styles.items}
+                  source={require("./assets/tulipsbig.png")}
+                />
+              </View>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Image
+                  style={styles.items}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </View>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Image
+                  style={styles.items}
+                  source={require("./assets/tulipsbig.png")}
+                />
+              </View>
+              <View style={{ flex: 0.2 }}></View>
             </View>
+          ) : (
+            <View>
+              <Text style={styles.comingSoon}>Event coming soon!</Text>
+            </View>
+          )}
+        </View>
 
-            <View
-              style={{
-                flex: 1.1,
-                backgroundColor: "#472b25",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
-              <View style={{ flex: 0.2 }}></View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <TouchableOpacity>
-                  <Image
-                    style={[styles.smallButton]}
-                    source={require("./assets/fertilizer.png")}
-                  />
-                </TouchableOpacity>
+        <View
+          style={{
+            flex: 1.1,
+            backgroundColor: "#472b25",
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <View style={{ flex: 0.2 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[8]}</Text>
               </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <TouchableOpacity>
-                  <Image
-                    style={[styles.smallButton]}
-                    source={require("./assets/fertilizer.png")}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <TouchableOpacity>
-                  <Image
-                    style={[styles.smallButton]}
-                    source={require("./assets/fertilizer.png")}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 0.2 }}></View>
-            </View>
+            </TouchableOpacity>
           </View>
-        ) : (
-          <View></View>
-        )}
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[9]}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[10]}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={require("./assets/gold.png")}
+                />
+                <Text style={styles.prices}>{this.state.itemPrices[11]}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 0.2 }}></View>
+        </View>
 
         <View style={{ flex: 2, backgroundColor: "#57423e" }}></View>
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
@@ -346,9 +454,11 @@ export default class Shop extends Component {
 }
 
 const styles = StyleSheet.create({
-  plants: {
-    width: screen.width / 3.5,
-    height: screen.width / 3.5,
+  items: {
+    marginTop: 0,
+    marginBottom: screen.height / 80,
+    width: screen.width / 7,
+    height: screen.width / 7,
   },
   menuIcons: {
     width: screen.width / 9,
@@ -372,8 +482,19 @@ const styles = StyleSheet.create({
     width: screen.height / 28,
     height: screen.height / 28,
   },
-  hidden: {
-    width: 0,
-    height: 0,
+  comingSoon: {
+    color: "#74D130",
+    fontSize: 40,
+    marginTop: screen.height / 20,
+  },
+  prices: {
+    color: "#FFFFFF",
+    fontSize: 16,
+  },
+  itemName: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    marginTop: screen.height / 70,
+    textAlign: "center",
   },
 });
