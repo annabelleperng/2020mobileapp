@@ -79,9 +79,9 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
     await SecureStore.setItemAsync("inventory_fertilizer", "1");
-    await SecureStore.setItemAsync("1_status", "0");
-    await SecureStore.setItemAsync("2_status", "0");
-    await SecureStore.setItemAsync("3_status", "0");
+    await SecureStore.setItemAsync("1_status", "2");
+    await SecureStore.setItemAsync("2_status", "2");
+    await SecureStore.setItemAsync("3_status", "2");
     await SecureStore.setItemAsync("4_status", "0");
     await SecureStore.setItemAsync("5_status", "0");
     await SecureStore.setItemAsync("6_status", "0");

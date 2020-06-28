@@ -32,6 +32,7 @@ let bees = {
 export default class Garden extends Component {
   constructor(props) {
     super(props);
+    this.initializeGarden();
     this.state = {
       showCancel: false,
       showBees: false,
@@ -87,6 +88,39 @@ export default class Garden extends Component {
     }
   };
 
+  initializeGarden = async () => {
+    console.log("initializing garden");
+    await SecureStore.setItemAsync("inventory_water", "1000");
+    await SecureStore.setItemAsync("inventory_bees", "1");
+    await SecureStore.setItemAsync("inventory_seeds", "");
+    await SecureStore.setItemAsync("inventory_gold", "1500");
+    await SecureStore.setItemAsync("inventory_fertilizer", "2");
+    await SecureStore.setItemAsync("inventory_elixir", "1");
+    await SecureStore.setItemAsync("1_status", "2");
+    await SecureStore.setItemAsync("1_waters", "10");
+    await SecureStore.setItemAsync("2_status", "2");
+    await SecureStore.setItemAsync("3_status", "2");
+    await SecureStore.setItemAsync("4_status", "0");
+    await SecureStore.setItemAsync("5_status", "0");
+    await SecureStore.setItemAsync("6_status", "0");
+    await SecureStore.setItemAsync("7_status", "0");
+    await SecureStore.setItemAsync("8_status", "0");
+    await SecureStore.setItemAsync("9_status", "0");
+    await SecureStore.setItemAsync("9_status", "0");
+    await SecureStore.setItemAsync("1_event", "none");
+    await SecureStore.setItemAsync("2_event", "none");
+    await SecureStore.setItemAsync("3_event", "none");
+    await SecureStore.setItemAsync(
+      "inventory_seeds",
+      "%2bitch%1hello%1hi%2i%3am"
+    );
+    await SecureStore.setItemAsync("garden_initialized", "true");
+    // await su.plantSeed
+    console.log("we're here");
+    // su.checkStatus(1, "0");
+    // su.checkStatus(1, "1");
+  };
+
   updateStuff = async (position) => {
     const localZone = await SecureStore.getItemAsync("timezone");
     const localTime = DateTime.local().setZone(localZone);
@@ -104,6 +138,11 @@ export default class Garden extends Component {
         seedUtils.updateWilting(i);
       }
     }
+  };
+
+  breedTwo = () => {
+    seedUtils.breedPlants(this.state.firstParent, this.state.secondParent);
+    this.hideBees();
   };
 
   selectBreeding = (key, position) => {
@@ -406,52 +445,102 @@ export default class Garden extends Component {
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
-        <View style={{ flex: 2, backgroundColor: "#57423e" }}></View>
+        <View
+          style={{
+            flex: 2,
+            backgroundColor: "#57423e",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {this.state.selectedParents == 2 ? (
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={() => this.breedTwo()}>
+                <View style={styles.pinkButton2}>
+                  <Text style={styles.whiteText}>Breed</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{ flex: 1, alignItems: "center" }}>
+              {/* <View style={styles.pinkButton2}>
+                <Text style={styles.whiteText}>Cancel</Text>
+              </View> */}
+            </View>
+          )}
+          {this.state.selectedParents == 2 ? (
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={() => this.hideBees()}>
+                <View style={styles.pinkButton2}>
+                  <Text style={styles.whiteText}>Cancel</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{ flex: 1, alignItems: "center" }}>
+              {/* <View style={styles.pinkButton2}>
+                <Text style={styles.whiteText}>Cancel</Text>
+              </View> */}
+            </View>
+          )}
+        </View>
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              marginTop: (screen.height * 3) / 22 - screen.width / 4,
               //   marginLeft: screen.width / 14,
             }}
           >
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
-              activeOpacity={0.5}
-            >
-              <Image
-                style={styles.menuIcons}
-                source={require("./assets/shoplogo.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.toggleBees()}
-              activeOpacity={0.5}
-            >
-              <Image
-                style={styles.menuIcons2}
-                source={require("./assets/largebee.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Shop")}
-              activeOpacity={0.5}
-            >
-              <Image
-                style={styles.menuIcons2}
-                source={require("./assets/shoplogo.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("GardenTesting")}
-              activeOpacity={0.5}
-            >
-              <Image
-                style={styles.menuIcons2}
-                source={require("./assets/shoplogo.png")}
-              />
-            </TouchableOpacity>
+            <View style={{ flex: 0.4 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Details")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons}
+                  source={require("./assets/largeshop.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.toggleBees()}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons2}
+                  source={require("./assets/largebee.png")}
+                />
+              </TouchableOpacity>
+              <Text style={styles.smallWhiteText}>55</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Shop")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons2}
+                  source={require("./assets/largeshop.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("GardenTesting")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons2}
+                  source={require("./assets/largeshop.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 0.4 }}></View>
           </View>
         </View>
       </View>
@@ -471,7 +560,7 @@ const styles = StyleSheet.create({
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    // marginLeft: screen.width / 10,
   },
   pinkButton: {
     borderWidth: 2,
@@ -489,5 +578,31 @@ const styles = StyleSheet.create({
   hidden: {
     width: 0,
     height: 0,
+  },
+  whiteText: {
+    color: "#000",
+    fontSize: 26,
+  },
+  pinkButton2: {
+    borderWidth: 2,
+    borderColor: "#ff576d",
+    width: screen.width / 3,
+    height: screen.width / 12,
+    borderRadius: screen.width / 2,
+    alignItems: "center",
+    backgroundColor: "#fca",
+    // color: "#fff",
+    // fontSize: 30,
+    justifyContent: "center",
+  },
+  smallWhiteText: {
+    color: "#ebbd34",
+    fontSize: 15,
+    marginTop: 5,
+  },
+  tinyWhiteText: {
+    // color: "#ff547c",
+    // fontSize: 3,
+    // marginTop: 15,
   },
 });

@@ -531,11 +531,11 @@ export default class SeedUtils extends Component {
   };
 
   breedPlants = async (positionA, positionB) => {
-    if (this.checkStatus(positionA, "2") != 1) {
+    if ((await this.checkStatus(positionA, "2")) != 1) {
       console.log("error: plant A isn't grown and can't breed");
       return -1;
     }
-    if (this.checkStatus(positionB, "2") != 1) {
+    if ((await this.checkStatus(positionB, "2")) != 1) {
       console.log("error: plant B isn't grown and can't breed");
       return -1;
     }
@@ -591,13 +591,13 @@ export default class SeedUtils extends Component {
     const eventRand = Math.floor(Math.random() * 100) + 1;
     if (eventRand < 35) {
       newSeed = newSeed + eventA;
-    }
-    if (eventRand < 70) {
+    } else if (eventRand < 70) {
       newSeed = newSeed + eventB;
     } else {
       newSeed = newSeed + "none";
     }
 
+    console.log("new seed = " + newSeed);
     var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
     allSeeds = allSeeds + newSeed;
     await SecureStore.setItemAsync("inventory_seeds", allSeeds);

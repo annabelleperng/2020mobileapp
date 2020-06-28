@@ -79,10 +79,10 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_gold", "1500");
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
-    await SecureStore.setItemAsync("1_status", "0");
+    await SecureStore.setItemAsync("1_status", "2");
     await SecureStore.setItemAsync("1_waters", "10");
-    await SecureStore.setItemAsync("2_status", "0");
-    await SecureStore.setItemAsync("3_status", "0");
+    await SecureStore.setItemAsync("2_status", "2");
+    await SecureStore.setItemAsync("3_status", "2");
     await SecureStore.setItemAsync("4_status", "0");
     await SecureStore.setItemAsync("5_status", "0");
     await SecureStore.setItemAsync("6_status", "0");
@@ -394,7 +394,7 @@ export default class GardenTesting extends Component {
                   // inventory item: water
                 >
                   <Image
-                    source={require("./assets/shoplogo.png")}
+                    source={require("./assets/largewater.png")}
                     style={styles.menuIcons}
                   ></Image>
                 </TouchableOpacity>
@@ -426,7 +426,7 @@ export default class GardenTesting extends Component {
                     this.props.navigation.navigate("GardenTesting")
                   }
                   activeOpacity={0.5}
-                  // inventory item: bee
+                  // inventory item: bee / shovel
                 >
                   <Image
                     source={require("./assets/shoplogo.png")}
@@ -446,8 +446,8 @@ export default class GardenTesting extends Component {
                   // inventory item: elixir
                 >
                   <Image
-                    source={require("./assets/shoplogo.png")}
-                    style={styles.menuIcons}
+                    source={require("./assets/largeelixir3.png")}
+                    style={styles.menuIcons2}
                   ></Image>
                 </TouchableOpacity>
               </View>
@@ -636,13 +636,19 @@ const styles = StyleSheet.create({
     marginLeft: screen.width / 12,
   },
   menuIcons: {
-    width: screen.width / 11,
-    height: screen.width / 11,
+    width: screen.width / 11, // 11
+    height: screen.width / 11, // 11
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    // marginLeft: screen.width / 10,
+  },
+  menuIcons3: {
+    width: screen.width / 11,
+    height: screen.width / 11,
+    borderWidth: 1,
+    borderColor: "#854832",
   },
   inventoryOutline: {
     borderWidth: 5,
