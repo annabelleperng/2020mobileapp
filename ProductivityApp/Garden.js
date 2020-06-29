@@ -1,8 +1,9 @@
 import DateTime from "luxon/src/datetime.js";
 import Duration from "luxon/src/duration.js";
 import Interval from "luxon/src/interval.js";
+// import Modal from "react-native-modal";
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,13 +11,17 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
   TextInput,
+  Alert,
+  Modal,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
 
 import * as SecureStore from "expo-secure-store";
+import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 // import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
@@ -57,6 +62,9 @@ export default class Garden extends Component {
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0,
+      inventorySynced: false,
+      inventory_bees: 0,
+      modalVisible: false,
     };
   }
 
@@ -91,7 +99,7 @@ export default class Garden extends Component {
   initializeGarden = async () => {
     console.log("initializing garden");
     await SecureStore.setItemAsync("inventory_water", "1000");
-    await SecureStore.setItemAsync("inventory_bees", "1");
+    await SecureStore.setItemAsync("inventory_bees", "5");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
@@ -140,13 +148,27 @@ export default class Garden extends Component {
     }
   };
 
-  breedTwo = () => {
-    seedUtils.breedPlants(this.state.firstParent, this.state.secondParent);
+  breedTwo = async () => {
+    await seedUtils.breedPlants(
+      this.state.firstParent,
+      this.state.secondParent
+    );
+    this.setState({
+      inventorySynced: false,
+      firstParent: 0,
+      secondParent: 0,
+      selectedParents: 0,
+      modalVisible: true,
+    });
+    await this.syncInventory();
     this.hideBees();
   };
 
   selectBreeding = (key, position) => {
     console.log("selectBreeding called with (" + key + ", " + position + ")");
+    if (this.state.showBees == false) {
+      return;
+    }
     if (
       this.state.selectedParents == 0 ||
       (this.state.selectedParents == 1 && this.state.firstParent == position)
@@ -166,6 +188,9 @@ export default class Garden extends Component {
 
   showBees = () => {
     // first implementing it for the first row plants
+    if (this.state.inventory_bees < 1) {
+      return;
+    }
     this.setState({ showBees: true });
     if (this.state.status1 == 2) {
       this.setState({ bee1: "bw " });
@@ -222,8 +247,21 @@ export default class Garden extends Component {
     }
   };
 
+  syncInventory = async () => {
+    if (this.state.inventorySynced == false) {
+      var bees = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_bees")
+      );
+      this.setState({ inventorySynced: true, inventory_bees: bees });
+      console.log("bees = " + bees);
+    }
+  };
+
   render() {
     // this.updateStuff();
+    // const isModalVisible = true;
+    // const setModalVisible = true;
+    this.syncInventory();
 
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
@@ -339,6 +377,32 @@ export default class Garden extends Component {
           </View>
         </View>
 
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible} //this.state.modalVisible
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+        >
+          {/* <View style={{ flex: 1 }}>
+            <Text>Hello there</Text>
+          </View> */}
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Successfully bred plants!</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  this.setState({ modalVisible: false });
+                }}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
         <View
           style={{
             flex: 1.1,
@@ -516,7 +580,9 @@ export default class Garden extends Component {
                   source={require("./assets/largebee.png")}
                 />
               </TouchableOpacity>
-              <Text style={styles.smallWhiteText}>55</Text>
+              <Text style={styles.smallWhiteText}>
+                {this.state.inventory_bees}
+              </Text>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
@@ -604,5 +670,41 @@ const styles = StyleSheet.create({
     // color: "#ff547c",
     // fontSize: 3,
     // marginTop: 15,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
