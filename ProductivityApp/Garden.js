@@ -22,6 +22,7 @@ import RewardUtils from "./RewardUtils";
 
 import * as SecureStore from "expo-secure-store";
 import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
+import { enableScreens } from "react-native-screens";
 // import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
@@ -65,6 +66,7 @@ export default class Garden extends Component {
       inventorySynced: false,
       inventory_bees: 0,
       modalVisible: false,
+      acquiredSeed: "",
     };
   }
 
@@ -149,16 +151,46 @@ export default class Garden extends Component {
   };
 
   breedTwo = async () => {
-    await seedUtils.breedPlants(
+    const res = await seedUtils.breedPlants(
       this.state.firstParent,
       this.state.secondParent
     );
+    if (res == -1) {
+      this.setState({
+        inventorySynced: false,
+        firstParent: 0,
+        secondParent: 0,
+        selectedParents: 0,
+        modalVisible: true,
+        acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed.",
+      });
+      this.hideBees();
+      //   Alert.alert(
+      //     "ERROR",
+      //     "Could not breed plants! No bees consumed.",
+      //     [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      //     { cancelable: false }
+      //   );
+      return;
+    }
+    let resEvent = res.substring(2, res.length);
+    let resRarity = res.substring(res.length - 1);
+    let resString = "Successfully bred plants!\n\nACQUIRED: 1 ";
+    if (resRarity == "R") {
+      resString += "RARE ";
+    } else if (resRarity == "U") {
+      resString += "UNCOMMON ";
+    } else {
+      resString += "COMMON ";
+    }
+    resString += "seed\n\nEvent type: " + resEvent.toUpperCase();
     this.setState({
       inventorySynced: false,
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0,
       modalVisible: true,
+      acquiredSeed: resString,
     });
     await this.syncInventory();
     this.hideBees();
@@ -280,7 +312,7 @@ export default class Garden extends Component {
               flexDirection: "row",
               marginTop: margin,
               //   marginLeft: screen.width / 14,
-            }}
+            }} // first row of plants
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
@@ -314,6 +346,7 @@ export default class Garden extends Component {
             flexDirection: "row",
             justifyContent: "center",
           }}
+          // first row of bees
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -350,7 +383,7 @@ export default class Garden extends Component {
               flexDirection: "row",
               marginTop: margin,
               //   marginLeft: screen.width / 14,
-            }}
+            }} // second row of plants
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
@@ -383,15 +416,15 @@ export default class Garden extends Component {
           visible={this.state.modalVisible} //this.state.modalVisible
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
-          }}
+          }} // successfully bred plants / error message modal
         >
           {/* <View style={{ flex: 1 }}>
             <Text>Hello there</Text>
           </View> */}
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Successfully bred plants!</Text>
-
+              {/* <Text style={styles.modalText}>Successfully bred plants!</Text> */}
+              <Text style={styles.modalText}>{this.state.acquiredSeed}</Text>
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
@@ -410,7 +443,7 @@ export default class Garden extends Component {
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
-          }}
+          }} // second row of bees
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -447,7 +480,7 @@ export default class Garden extends Component {
               flexDirection: "row",
               marginTop: margin,
               //   marginLeft: screen.width / 14,
-            }}
+            }} // third row of plants
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
@@ -480,7 +513,7 @@ export default class Garden extends Component {
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
-          }}
+          }} // third row of bees
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -515,7 +548,7 @@ export default class Garden extends Component {
             backgroundColor: "#57423e",
             flexDirection: "row",
             alignItems: "center",
-          }}
+          }} // breed / cancel buttons
         >
           {this.state.selectedParents == 2 ? (
             <View style={{ flex: 1, alignItems: "center" }}>
@@ -556,7 +589,7 @@ export default class Garden extends Component {
               //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
               marginTop: (screen.height * 3) / 22 - screen.width / 4,
               //   marginLeft: screen.width / 14,
-            }}
+            }} // navigation icons
           >
             <View style={{ flex: 0.4 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>

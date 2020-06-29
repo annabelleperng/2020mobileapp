@@ -601,5 +601,6 @@ export default class SeedUtils extends Component {
     var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
     allSeeds = allSeeds + newSeed;
     await SecureStore.setItemAsync("inventory_seeds", allSeeds);
+    return newSeed;
   };
 }
