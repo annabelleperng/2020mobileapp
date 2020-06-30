@@ -15,6 +15,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 //import CombinedButton from "react-native-combined-button";
 // import { NavigationContainer } from "@react-navigation/native";
@@ -33,78 +34,88 @@ export default class Details extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View
-        style={{
-          flex: 1,
-        }} // top part: header + subheader
-      >
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
         <View
           style={{
-            flex: 2.5,
-            backgroundColor: "#0ffcff",
-            justifyContent: "center",
-          }}
+            flex: 1,
+          }} // top part: header + subheader
         >
-          <Text
+          <View
             style={{
-              textAlign: "center",
-              fontSize: 30,
+              flex: 2.5,
+              backgroundColor: "#0ffcff",
+              justifyContent: "center",
             }}
           >
-            Time to get grinding!{" "}
-          </Text>
-          <Text></Text>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 18,
-            }}
-          >
-            Start a sprint now or
-          </Text>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 18,
-            }}
-          >
-            view your past statistics!
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flex: 2,
-            backgroundColor: "#2edcf2",
-            alignItems: "center",
-          }} // enter time to start a sprint
-        >
-          <View style={{ flex: 0.7 }}></View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <TextInput
-              onChangeText={(minutes) => this.setState({ minutes })}
-              placeholder={"# of minutes"}
-              keyboardType="number-pad"
-              style={[
-                styles.input,
-                { height: Platform.OS == "android" ? 40 : 35 },
-              ]}
-            />
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 30,
+              }}
+            >
+              Time to get grinding!{" "}
+            </Text>
+            <Text></Text>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 18,
+              }}
+            >
+              Start a sprint now or
+            </Text>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 18,
+              }}
+            >
+              view your past statistics!
+            </Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity>
-              <Button
+
+          <View
+            style={{
+              flex: 2,
+              backgroundColor: "#2edcf2",
+              alignItems: "center",
+            }} // enter time to start a sprint
+          >
+            <View style={{ flex: 0.7 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TextInput
+                onChangeText={(minutes) => this.setState({ minutes })}
+                placeholder={"# of minutes"}
+                keyboardType="number-pad"
+                style={[
+                  styles.input,
+                  { height: Platform.OS == "android" ? 40 : 35 },
+                ]}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate("Timer5", {
+                    JSON_ListView_Clicked_Item: this.state.minutes,
+                  })
+                }
+              >
+                <View style={styles.openButton}>
+                  <Text>Let's go!</Text>
+                </View>
+                {/* <Button
                 title="LET'S GO!"
                 onPress={() =>
                   navigate("Timer5", {
                     JSON_ListView_Clicked_Item: this.state.minutes,
                   })
                 }
-              />
-            </TouchableOpacity>
+              /> */}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        {/* <View style={{ flex: 1.5 }}>
+          {/* <View style={{ flex: 1.5 }}>
           <Button title="Go to garden." onPress={() => navigate("Garden")} />
           <Button
             title="Go to GardenTesting"
@@ -115,37 +126,36 @@ export default class Details extends Component {
             onPress={() => navigate("PlantView")}
           />
         </View> */}
-
-        <View
-          style={{
-            flex: 5,
-            justifyContent: "center",
-            flexDirection: "row",
-            backgroundColor: "#0ffcff",
-          }}
-        >
-          <View style={{ flex: 1, backgroundColor: "#b19999" }}>
-            <View style={{ flex: 0.5 }}></View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.smallText}>You've sprinted for</Text>
-              <Text style={styles.smallText}>25 minutes today.</Text>
-              <Text style={styles.smallText}></Text>
-              <Text style={styles.smallText}></Text>
-              <Text style={styles.smallText}>
-                - <Text style={styles.smallGreenText}>87.5%</Text> working
-              </Text>
-              <Text style={styles.smallText}></Text>
-              <Text style={styles.smallText}>
-                - <Text style={styles.smallRedText}>12.5%</Text> paused
-              </Text>
-              <Text style={styles.smallText}></Text>
-              <Text style={styles.smallText}></Text>
-              <TouchableOpacity onPress={() => navigate("Timer5")}>
-                <Text style={styles.smallLinkText}>See more stats!</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 0.5 }}></View>
-            {/* <TouchableOpacity
+          <View
+            style={{
+              flex: 5,
+              justifyContent: "center",
+              flexDirection: "row",
+              backgroundColor: "#0ffcff",
+            }}
+          >
+            <View style={{ flex: 1, backgroundColor: "#b19999" }}>
+              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.smallText}>You've sprinted for</Text>
+                <Text style={styles.smallText}>25 minutes today.</Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}>
+                  - <Text style={styles.smallGreenText}>87.5%</Text> working
+                </Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}>
+                  - <Text style={styles.smallRedText}>12.5%</Text> paused
+                </Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}></Text>
+                <TouchableOpacity onPress={() => navigate("Timer5")}>
+                  <Text style={styles.smallLinkText}>See more stats!</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.5 }}></View>
+              {/* <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => this.props.navigation.navigate("Garden")}
             >
@@ -157,41 +167,82 @@ export default class Details extends Component {
                 }}
               />
             </TouchableOpacity> */}
-          </View>
-          <View style={{ flex: 1, backgroundColor: "#9a7993" }}>
-            <View style={{ flex: 0.5 }}></View>
-            <View style={{ flex: 0.35, justifyContent: "center" }}>
-              <TouchableOpacity onPress={() => navigate("Shop")}>
-                <View style={styles.pinkButton2}>
-                  <Text style={styles.smallWhiteText}>SHOP</Text>
-                </View>
-              </TouchableOpacity>
             </View>
-            <View style={{ flex: 0.35, justifyContent: "center" }}>
-              <TouchableOpacity onPress={() => navigate("Garden")}>
-                <View style={styles.pinkButton2}>
-                  <Text style={styles.smallWhiteText}>GARDEN</Text>
-                </View>
-              </TouchableOpacity>
+            <View style={{ flex: 1, backgroundColor: "#9a7993" }}>
+              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity onPress={() => navigate("Shop")}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>SHOP</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity onPress={() => navigate("Garden")}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>GARDEN</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>SETTINGS</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>HELP</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.5 }}></View>
             </View>
-            <View style={{ flex: 0.35, justifyContent: "center" }}>
-              <TouchableOpacity>
-                <View style={styles.pinkButton2}>
-                  <Text style={styles.smallWhiteText}>SETTINGS</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 0.35, justifyContent: "center" }}>
-              <TouchableOpacity>
-                <View style={styles.pinkButton2}>
-                  <Text style={styles.smallWhiteText}>HELP</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 0.5 }}></View>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -212,7 +263,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DBDBD6",
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#979797",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
