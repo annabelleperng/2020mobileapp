@@ -418,7 +418,8 @@ export default class GardenTesting extends Component {
               </View>
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.smallWhiteText}>
-                  {this.state.inventory_bees}
+                  SELL
+                  {/* {this.state.inventory_bees} */}
                 </Text>
 
                 <TouchableOpacity
@@ -429,7 +430,7 @@ export default class GardenTesting extends Component {
                   // inventory item: bee / shovel
                 >
                   <Image
-                    source={require("./assets/shoplogo.png")}
+                    source={require("./assets/largeshovel.png")}
                     style={styles.menuIcons}
                   ></Image>
                 </TouchableOpacity>

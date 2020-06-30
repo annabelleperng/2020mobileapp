@@ -17,10 +17,8 @@ import {
   TextInput,
 } from "react-native";
 //import CombinedButton from "react-native-combined-button";
-
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from "@react-navigation/stack";
-// import './App.js';
 
 export default class Details extends Component {
   constructor(props) {
@@ -29,31 +27,18 @@ export default class Details extends Component {
       minutes: 10,
     };
   }
-  static navigationOptions = {
-    //Setting the header of the screen
-    title: "Detailsss",
-  };
-
-  //   someFunction(minutes, seconds) {
-  //     this.setState({ states: [minutes, seconds] });
-  //   }
-  //   someFunction(minutes) {
-  //     this.setState({ states: [minutes, this.states.states[1]] });
-  //   }
-
-  //   const [value, onChangeText] = useState('Useless Placeholder');
 
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View
         style={{
-          flex: 1 /*}, alignItems: "center", justifyContent: "center" */,
-        }}
+          flex: 1,
+        }} // top part: header + subheader
       >
         <View
           style={{
-            flex: 0.25,
+            flex: 2.5,
             backgroundColor: "#0ffcff",
             justifyContent: "center",
           }}
@@ -61,103 +46,76 @@ export default class Details extends Component {
           <Text
             style={{
               textAlign: "center",
-              fontSize: 24,
+              fontSize: 30,
             }}
           >
-            {" "}
             Time to get grinding!{" "}
+          </Text>
+          <Text></Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 18,
+            }}
+          >
+            Start a sprint now or
           </Text>
           <Text
             style={{
               textAlign: "center",
-              fontSize: 20,
+              fontSize: 18,
             }}
           >
-            {" "}
-            View past statistics or start a sprint:
+            view your past statistics!
           </Text>
         </View>
 
         <View
           style={{
-            flex: 0.25,
+            flex: 2,
             backgroundColor: "#2edcf2",
             alignItems: "center",
-          }}
+          }} // enter time to start a sprint
         >
-          <TextInput
-            // value={this.state.minutes}
-            onChangeText={(minutes) => this.setState({ minutes })}
-            placeholder={"Enter Any value"}
-            keyboardType="number-pad"
-            style={[
-              styles.input,
-              { height: Platform.OS == "android" ? 40 : 35 },
-            ]}
-          />
+          <View style={{ flex: 0.7 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <TextInput
+              onChangeText={(minutes) => this.setState({ minutes })}
+              placeholder={"# of minutes"}
+              keyboardType="number-pad"
+              style={[
+                styles.input,
+                { height: Platform.OS == "android" ? 40 : 35 },
+              ]}
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity>
+              <Button
+                title="LET'S GO"
+                onPress={() =>
+                  navigate("Timer5", {
+                    JSON_ListView_Clicked_Item: this.state.minutes,
+                  })
+                }
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ flex: 1.5 }}>
+          <Button title="Go to garden." onPress={() => navigate("Garden")} />
           <Button
             title="Go to GardenTesting"
-            //Button Title
             onPress={() => navigate("GardenTesting")}
           />
           <Button
             title="Go to PlantView"
-            //Button Title
             onPress={() => navigate("PlantView")}
           />
-          {/* <Button
-          title="Go to timer, pass minutes 1"
-          //Button Title
-          onPress={() =>
-            navigate({
-              name: "Timer",
-              routeName: "Timer",
-              params: {
-                JSON_ListView_Clicked_Item: this.state.minutes
-              }
-            })
-          }
-        />
-        <Button
-          title="Go to timer, pass minutes and 101"
-          //Button Title
-          onPress={() =>
-            navigate("Timer", {
-              userName: this.state.minutes,
-              otherParam: "101"
-            })
-          }
-        /> */}
-          {/* <Button
-          title="Go to timer, pass itemID"
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */}
-          {/*navigate("Timer", {
-              itemId: 86,
-              otherParam: "anything you want here"
-            });
-          }}
-        /> */}
-          <TouchableOpacity>
-            <Button
-              title="Enter an amount of time and start a sprint!"
-              //Button Title
-              onPress={() =>
-                navigate("Timer5", {
-                  JSON_ListView_Clicked_Item: this.state.minutes,
-                })
-              }
-            />
-            <Button
-              title="Go to garden."
-              //Button Title
-              onPress={() => navigate("Garden")}
-            />
-          </TouchableOpacity>
         </View>
         <View
           style={{
-            flex: 0.25,
+            flex: 2.5,
             backgroundColor: "#0ffcff",
             justifyContent: "center",
           }}
@@ -170,17 +128,9 @@ export default class Details extends Component {
             />
           </TouchableOpacity>
         </View>
-        {/*View style={{ flex: 1.5, backgroundColor: "#5aceef" }}>*/}
-        {/* <Text>YOURE A BITCHASS HOE!</Text>
-        <Button
-          onPress={() => this.props.navigation.navigate("TextInput")}
-          title="Go back to TEXTINPUT"
-          color="#35F2E9" //button bg for android, text for ios
-        /> */}
-        {/*</View>*/}
         <View
           style={{
-            flex: 0.25,
+            flex: 2.5,
             justifyContent: "center",
             backgroundColor: "#0ffcff",
           }}
