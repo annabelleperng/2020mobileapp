@@ -42,15 +42,15 @@ export default class Garden extends Component {
     this.state = {
       showCancel: false,
       showBees: false,
-      status1: 2,
+      status1: 1,
       status2: 2,
       status3: 2,
       status4: 2,
-      status5: 2,
+      status5: 1,
       status6: 2,
       status7: 2,
       status8: 2,
-      status9: 2,
+      status9: 1,
       bee1: "invis ",
       bee2: "invis ",
       bee3: "invis ",
@@ -199,6 +199,10 @@ export default class Garden extends Component {
   selectBreeding = (key, position) => {
     console.log("selectBreeding called with (" + key + ", " + position + ")");
     if (this.state.showBees == false) {
+      return;
+    }
+    const status = "status" + position;
+    if (this.state[status] != 2) {
       return;
     }
     if (
@@ -627,6 +631,7 @@ export default class Garden extends Component {
                   source={require("./assets/largeshop.png")}
                 />
               </TouchableOpacity>
+              {/* <Text style={styles.smallWhiteText}>SHOP</Text> */}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
