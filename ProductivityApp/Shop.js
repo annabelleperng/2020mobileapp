@@ -39,6 +39,7 @@ export default class Shop extends Component {
       secondParent: 0,
       selectedParents: 0,
 
+      initialized: false,
       eventName: "",
       eventCountdown: -1,
       itemPrices: ["100", "100", "100", "300", "150", "150", "200", "600"],
@@ -46,18 +47,18 @@ export default class Shop extends Component {
       price9: "???",
       price10: "???",
       price11: "???",
-      bought0: false,
-      bought1: false,
-      bought2: false,
-      bought3: false,
-      bought4: false,
-      bought5: false,
-      bought6: false,
-      bought7: false,
-      bought8: false,
-      bought9: false,
-      bought10: false,
-      bought11: false,
+      bought0: 0,
+      bought1: 0,
+      bought2: 0,
+      bought3: 0,
+      bought4: 0,
+      bought5: 0,
+      bought6: 0,
+      bought7: 0,
+      bought8: 0,
+      bought9: 0,
+      bought10: 0,
+      bought11: 0,
       rarity10: "uncommon",
       rarity11: "uncommon",
     };
@@ -80,6 +81,7 @@ export default class Shop extends Component {
     const lastRefreshed = DateTime.fromISO(
       await SecureStore.getItemAsync("shop_refreshed")
     );
+    console.log(lastRefreshed);
 
     var eventName = await SecureStore.getItemAsync("event_name");
     var eventCountdown = await SecureStore.getItemAsync("event_countdown");
@@ -95,14 +97,15 @@ export default class Shop extends Component {
       }
     }
 
+    console.log(prevDay.isBefore(lastRefreshed));
+
     if (
       lastRefreshed == null ||
       lastRefreshed == "" ||
       prevDay.isBefore(lastRefreshed)
     ) {
+      console.log("REFRESHED TODAY!");
       this.setState({
-        eventName: await SecureStore.getItemAsync("event_name"),
-        eventCountdown: await SecureStore.getItemAsync("event_countdown"),
         price8: await SecureStore.getItemAsync("price8"),
         price9: await SecureStore.getItemAsync("price9"),
         price10: await SecureStore.getItemAsync("price10"),
@@ -122,18 +125,27 @@ export default class Shop extends Component {
         rarity10: await SecureStore.getItemAsync("rarity10"),
         rarity11: await SecureStore.getItemAsync("rarity11"),
       });
+
+      if ((await SecureStore.getItemAsync("event_name")) != null) {
+        this.setState({
+          eventName: await SecureStore.getItemAsync("event_name"),
+          eventCountdown: await SecureStore.getItemAsync("event_countdown"),
+        });
+      }
     }
+    console.log(await SecureStore.getItemAsync("event_name"));
 
     if (prevDay.contains(lastRefreshed) || prevDay.isAfter(lastRefreshed)) {
+      console.log("FIRST TIME IN SHOP TODAY!");
       //initialize
-      await SecureStore.setItemAsync("bought0", this.state.bought0);
-      await SecureStore.setItemAsync("bought1", this.state.bought1);
-      await SecureStore.setItemAsync("bought2", this.state.bought2);
-      await SecureStore.setItemAsync("bought3", this.state.bought3);
-      await SecureStore.setItemAsync("bought4", this.state.bought4);
-      await SecureStore.setItemAsync("bought5", this.state.bought5);
-      await SecureStore.setItemAsync("bought6", this.state.bought6);
-      await SecureStore.setItemAsync("bought7", this.state.bought7);
+      await SecureStore.setItemAsync("bought0", "" + this.state.bought0);
+      await SecureStore.setItemAsync("bought1", "" + this.state.bought1);
+      await SecureStore.setItemAsync("bought2", "" + this.state.bought2);
+      await SecureStore.setItemAsync("bought3", "" + this.state.bought3);
+      await SecureStore.setItemAsync("bought4", "" + this.state.bought4);
+      await SecureStore.setItemAsync("bought5", "" + this.state.bought5);
+      await SecureStore.setItemAsync("bought6", "" + this.state.bought6);
+      await SecureStore.setItemAsync("bought7", "" + this.state.bought7);
 
       if (eventCountdown > 0) {
         eventCountdown -= 1;
@@ -141,10 +153,10 @@ export default class Shop extends Component {
       await SecureStore.setItemAsync("event_countdown", eventCountdown);
       if (eventCountdown == 0) {
         await SecureStore.setItemAsync("event_name", "");
-        await SecureStore.setItemAsync("bought8", this.state.bought8);
-        await SecureStore.setItemAsync("bought9", this.state.bought9);
-        await SecureStore.setItemAsync("bought10", this.state.bought10);
-        await SecureStore.setItemAsync("bought11", this.state.bought11);
+        await SecureStore.setItemAsync("bought8", "" + this.state.bought8);
+        await SecureStore.setItemAsync("bought9", "" + this.state.bought9);
+        await SecureStore.setItemAsync("bought10", "" + this.state.bought10);
+        await SecureStore.setItemAsync("bought11", "" + this.state.bought11);
         await SecureStore.setItemAsync("rarity10", "uncommon");
         await SecureStore.setItemAsync("rarity11", "uncommon");
       } else {
@@ -181,7 +193,7 @@ export default class Shop extends Component {
       return -1;
     }
 
-    rewardUtils.earnGold(50, 1);
+    // rewardUtils.earnGold(50, 1);
     var gold = rewardUtils.getGold();
     console.log("gold: " + (await SecureStore.getItemAsync("inventory_gold")));
     if (gold < this.state.itemPrices[pos]) {
@@ -219,6 +231,8 @@ export default class Shop extends Component {
       }
     }
 
+    await SecureStore.setItemAsync("bought" + pos, "1");
+
     await rewardUtils.useGold(this.state.itemPrices[pos]);
 
     this.setState({ [boughtVar]: true });
@@ -230,6 +244,10 @@ export default class Shop extends Component {
 
   render() {
     // this.updateStuff();
+    if (!this.state.initialized) {
+      this.initialize();
+      this.setState({ initialized: true });
+    }
 
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
@@ -325,7 +343,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought0 ? (
+                {this.state.bought0 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[0]}
@@ -348,7 +366,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought1 ? (
+                {this.state.bought1 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[1]}
@@ -371,7 +389,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought2 ? (
+                {this.state.bought2 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[2]}
@@ -394,7 +412,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought3 ? (
+                {this.state.bought3 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[3]}
@@ -498,7 +516,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought4 ? (
+                {this.state.bought4 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[4]}
@@ -521,7 +539,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought5 ? (
+                {this.state.bought5 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[5]}
@@ -544,7 +562,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought6 ? (
+                {this.state.bought6 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[6]}
@@ -567,7 +585,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought7 ? (
+                {this.state.bought7 == "1" ? (
                   <View>
                     <Text style={styles.bought}>
                       {this.state.itemPrices[7]}
@@ -592,7 +610,7 @@ export default class Shop extends Component {
             alignItems: "center",
           }}
         >
-          {this.state.eventName != "" ? (
+          {this.state.eventName != "" && this.state.eventName != null ? (
             <View
               style={{
                 flexDirection: "row",
@@ -620,7 +638,7 @@ export default class Shop extends Component {
             <View></View>
           )}
 
-          {this.state.eventName != "" ? (
+          {this.state.eventName != "" && this.eventName != null ? (
             <View
               style={{
                 flexDirection: "row",
@@ -681,7 +699,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought8 ? (
+                {this.state.bought8 == "1" ? (
                   <View>
                     <Text style={styles.bought}>{this.state.price8}</Text>
                   </View>
@@ -700,7 +718,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought9 ? (
+                {this.state.bought9 == "1" ? (
                   <View>
                     <Text style={styles.bought}>{this.state.price9}</Text>
                   </View>
@@ -719,7 +737,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought10 ? (
+                {this.state.bought10 == "1" ? (
                   <View>
                     <Text style={styles.bought}>{this.state.price10}</Text>
                   </View>
@@ -738,7 +756,7 @@ export default class Shop extends Component {
                   style={[styles.smallButton]}
                   source={require("./assets/gold.png")}
                 />
-                {this.state.bought11 ? (
+                {this.state.bought11 == "1" ? (
                   <View>
                     <Text style={styles.bought}>{this.state.price11}</Text>
                   </View>
