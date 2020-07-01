@@ -13,6 +13,8 @@ import {
   TouchableNativeFeedbackBase,
 } from "react-native";
 
+import CountDown from "react-native-countdown-component";
+
 import ProgressBarAnimated from "react-native-progress-bar-animated";
 
 const screen = Dimensions.get("window");
@@ -52,6 +54,8 @@ export default class GardenTesting extends Component {
       //
       waters_set: false,
       fully_watered: false,
+      //
+      totalDuration: 30,
     };
   }
 
@@ -487,7 +491,20 @@ export default class GardenTesting extends Component {
               }}
               // top third - countdown
             >
-              <Text style={styles.whiteText}>02:25:36:45</Text>
+              <CountDown
+                until={this.state.totalDuration}
+                //duration of countdown in seconds
+                timetoShow={("M", "S")}
+                //formate to show
+                onFinish={() => alert("finished")}
+                //on Finish call
+                onPress={() => alert("hello")}
+                //on Press call
+                size={20}
+                digitStyle={{ backgroundColor: "#333" }}
+                digitTxtStyle={{ color: "#fff" }}
+              />
+              {/* <Text style={styles.whiteText}>02:25:36:45</Text> */}
               <Text style={styles.whiteText}>until wilted</Text>
             </View>
             <View

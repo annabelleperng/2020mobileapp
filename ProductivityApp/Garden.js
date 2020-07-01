@@ -320,7 +320,9 @@ export default class Garden extends Component {
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <TouchableOpacity onPress={this.toggleCancel}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("PlantView")}
+              >
                 <Image
                   style={styles.plants}
                   source={require("./assets/fernsbig.png")}

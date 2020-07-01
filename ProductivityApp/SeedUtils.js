@@ -235,12 +235,16 @@ export default class SeedUtils extends Component {
       minute: 0,
       second: 0,
       zone: localZone,
-    });
+    }); // the midnight that just passed
+    const periodEndMidnight = periodStartMidnight.plus({ day: 4 });
     const periodStartKey = position + "_period_start";
     await SecureStore.setItemAsync(periodStartKey, periodStartMidnight.ISO());
 
+    const periodEndKey = position + "_period_end";
+    await SecureStore.setItemAsync(periodEndKey, periodEndMidnight.ISO());
+
     //set position_water_progress
-    const waterProgressKey = position + "_water_progres";
+    const waterProgressKey = position + "_waters";
     await SecureStore.setItemAsync(waterProgressKey, "0");
 
     return 1;
@@ -488,12 +492,12 @@ export default class SeedUtils extends Component {
     const localZone = await SecureStore.getItemAsync("timezone");
     const currDate = DateTime.local().setZone(localZone);
 
-    const periodStartKey = position + "_period_start";
-    const periodStart = DateTime.fromISO(
-      await SecureStore.getItemAsync(periodStartKey)
+    const periodEndKey = position + "_period_end";
+    const periodEnd = DateTime.fromISO(
+      await SecureStore.getItemAsync(periodEndKey)
     );
 
-    const diff = currDate.diff(periodStart).hours();
+    const diff = currDate.diff(periodEnd).hours();
     if (diff >= 72 && diff < 144) {
       this.wiltPlant(position);
     } else if (diff >= 144) {
