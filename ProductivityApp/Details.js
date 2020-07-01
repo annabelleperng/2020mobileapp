@@ -94,15 +94,24 @@ export default class Details extends Component {
               />
             </View>
             <View style={{ flex: 1 }}>
-              <TouchableOpacity>
-                <Button
-                  title="LET'S GO!"
-                  onPress={() =>
-                    navigate("Timer5", {
-                      JSON_ListView_Clicked_Item: this.state.minutes,
-                    })
-                  }
-                />
+              <TouchableOpacity
+                onPress={() =>
+                  navigate("Timer5", {
+                    JSON_ListView_Clicked_Item: this.state.minutes,
+                  })
+                }
+              >
+                <View style={styles.openButton}>
+                  <Text>Let's go!</Text>
+                </View>
+                {/* <Button
+                title="LET'S GO!"
+                onPress={() =>
+                  navigate("Timer5", {
+                    JSON_ListView_Clicked_Item: this.state.minutes,
+                  })
+                }
+              /> */}
               </TouchableOpacity>
             </View>
           </View>
@@ -117,7 +126,6 @@ export default class Details extends Component {
             onPress={() => navigate("PlantView")}
           />
         </View> */}
-
           <View
             style={{
               flex: 5,
@@ -164,28 +172,68 @@ export default class Details extends Component {
               <View style={{ flex: 0.5 }}></View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
                 <TouchableOpacity onPress={() => navigate("Shop")}>
-                  <View style={styles.pinkButton2}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
                     <Text style={styles.smallWhiteText}>SHOP</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
                 <TouchableOpacity onPress={() => navigate("Garden")}>
-                  <View style={styles.pinkButton2}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
                     <Text style={styles.smallWhiteText}>GARDEN</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
                 <TouchableOpacity>
-                  <View style={styles.pinkButton2}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
                     <Text style={styles.smallWhiteText}>SETTINGS</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
                 <TouchableOpacity>
-                  <View style={styles.pinkButton2}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
                     <Text style={styles.smallWhiteText}>HELP</Text>
                   </View>
                 </TouchableOpacity>
@@ -215,7 +263,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DBDBD6",
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#979797",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
