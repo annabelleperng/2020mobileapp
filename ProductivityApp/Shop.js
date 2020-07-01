@@ -78,6 +78,8 @@ export default class Shop extends Component {
     });
     const localPrevMidnight = localMidnight.minus({ days: 1 });
     const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+    // const localPrev = localPrevMidnight.minus({ hours: 5 });
+    // await SecureStore.setItemAsync("shop_refreshed", localPrev.toISO());
     const lastRefreshed = DateTime.fromISO(
       await SecureStore.getItemAsync("shop_refreshed")
     );
@@ -91,9 +93,9 @@ export default class Shop extends Component {
         eventName = this.state.eventName;
         await SecureStore.setItemAsync(
           "event_countdown",
-          this.state.eventCountdown
+          "" + this.state.eventCountdown
         );
-        eventCountdown = this.state.eventCountdown;
+        eventCountdown = "" + this.state.eventCountdown;
       }
     }
 
@@ -129,7 +131,9 @@ export default class Shop extends Component {
       if ((await SecureStore.getItemAsync("event_name")) != null) {
         this.setState({
           eventName: await SecureStore.getItemAsync("event_name"),
-          eventCountdown: await SecureStore.getItemAsync("event_countdown"),
+          eventCountdown: Number.parseInt(
+            await SecureStore.getItemAsync("event_countdown")
+          ),
         });
       }
     }
@@ -147,11 +151,11 @@ export default class Shop extends Component {
       await SecureStore.setItemAsync("bought6", "" + this.state.bought6);
       await SecureStore.setItemAsync("bought7", "" + this.state.bought7);
 
-      if (eventCountdown > 0) {
-        eventCountdown -= 1;
+      if (Number.parseInt(eventCountdown) > 0) {
+        eventCountdown = Number.parseInt(eventCountdown) - 1 + "";
       }
-      await SecureStore.setItemAsync("event_countdown", eventCountdown);
-      if (eventCountdown == 0) {
+      await SecureStore.setItemAsync("event_countdown", "" + eventCountdown);
+      if (Number.parseInt(eventCountdown) == 0) {
         await SecureStore.setItemAsync("event_name", "");
         await SecureStore.setItemAsync("bought8", "" + this.state.bought8);
         await SecureStore.setItemAsync("bought9", "" + this.state.bought9);
@@ -188,7 +192,7 @@ export default class Shop extends Component {
     console.log("buying");
     var boughtVar = "bought" + pos;
     console.log("boughtVar: " + this.state[boughtVar]);
-    if (this.state[boughtVar]) {
+    if (this.state[boughtVar] == 1) {
       console.log("error: this item has been bought today already");
       return -1;
     }
@@ -196,7 +200,8 @@ export default class Shop extends Component {
     // rewardUtils.earnGold(50, 1);
     var gold = rewardUtils.getGold();
     console.log("gold: " + (await SecureStore.getItemAsync("inventory_gold")));
-    if (gold < this.state.itemPrices[pos]) {
+    console.log("price: " + this.state.itemPrices[pos]);
+    if (gold < Number.parseInt(this.state.itemPrices[pos])) {
       console.log("error: not enough gold to buy item " + pos);
       return -1;
     }
@@ -233,9 +238,9 @@ export default class Shop extends Component {
 
     await SecureStore.setItemAsync("bought" + pos, "1");
 
-    await rewardUtils.useGold(this.state.itemPrices[pos]);
+    await rewardUtils.useGold(Number.parseInt(this.state.itemPrices[pos]));
 
-    this.setState({ [boughtVar]: true });
+    this.setState({ [boughtVar]: 1 });
 
     console.log(
       "after: " + (await SecureStore.getItemAsync("inventory_seeds")) + "\n\n"
@@ -249,7 +254,8 @@ export default class Shop extends Component {
       this.setState({ initialized: true });
     }
 
-    const margin = (screen.height * 4) / 22 - screen.width / 3.5;
+    const gold = rewardUtils.getGold();
+
     return (
       <View
         style={{
@@ -291,37 +297,70 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin,
+              marginTop: 0,
               //   marginLeft: screen.width / 14,
             }}
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              {/* <Text style={styles.itemName}>Common Seed</Text> */}
-              <TouchableOpacity>
+              {this.state.bought0 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/common_seed.png")}
+                  source={require("./assets/common_seed_bought.png")}
                 />
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(0)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/common_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/common_seed.png")}
-              />
+              {this.state.bought1 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/common_seed_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(1)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/common_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/common_seed.png")}
-              />
+              {this.state.bought2 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/common_seed_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(2)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/common_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/fertilizer.png")}
-              />
+              {this.state.bought3 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/fertilizer_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(3)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/fertilizer.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -337,96 +376,98 @@ export default class Shop extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(0)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought0 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[0]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[0]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought0 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[0]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[0]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[0]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[0]}</Text>
+                </View>
+              )}
+
+              {/* {gold < Number.parseInt(this.state.itemPrices[0]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[0]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[0]}</Text>
+                </View>
+              )} */}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(1)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought1 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[1]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[1]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought1 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[1]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[1]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[1]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[1]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(2)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought2 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[2]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[2]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought2 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[2]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[2]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[2]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[2]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(3)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought3 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[3]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[3]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought3 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[3]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[3]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[3]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[3]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
@@ -464,36 +505,70 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin,
+              marginTop: 0,
               //   marginLeft: screen.width / 14,
             }}
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <TouchableOpacity>
+              {this.state.bought4 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/uncommon_seed.png")}
+                  source={require("./assets/uncommon_seed_bought.png")}
                 />
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(4)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/uncommon_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/uncommon_seed.png")}
-              />
+              {this.state.bought5 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/uncommon_seed_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(5)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/uncommon_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/rare_seed.png")}
-              />
+              {this.state.bought6 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/rare_seed_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(6)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/rare_seed.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.items}
-                source={require("./assets/elixir.png")}
-              />
+              {this.state.bought7 == 1 ? (
+                <Image
+                  style={styles.items}
+                  source={require("./assets/elixir_bought.png")}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => this.buy(7)}>
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/elixir.png")}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -510,96 +585,88 @@ export default class Shop extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(4)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought4 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[4]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[4]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought4 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[4]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[4]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[4]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[4]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(5)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought5 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[5]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[5]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought5 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[5]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[5]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[5]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[5]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(6)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought6 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[6]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[6]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought6 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[6]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[6]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[6]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[6]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.buy(7)}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought7 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>
-                      {this.state.itemPrices[7]}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>
-                      {this.state.itemPrices[7]}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {this.state.bought7 == 1 ? (
+                <View>
+                  <Text style={styles.bought}>{this.state.itemPrices[7]}</Text>
+                </View>
+              ) : gold < Number.parseInt(this.state.itemPrices[7]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.itemPrices[7]}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.itemPrices[7]}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
@@ -642,36 +709,98 @@ export default class Shop extends Component {
             <View
               style={{
                 flexDirection: "row",
-                marginTop: margin,
+                marginTop: 0,
                 //   marginLeft: screen.width / 14,
               }}
             >
               <View style={{ flex: 0.2 }}></View>
               <View style={{ flex: 1, alignItems: "center" }}>
-                <TouchableOpacity>
+                {this.state.bought8 == 1 ? (
                   <Image
                     style={styles.items}
                     source={require("./assets/fernsbig.png")}
                   />
-                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => this.buy(8)}>
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/fernsbig.png")}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Image
-                  style={styles.items}
-                  source={require("./assets/tulipsbig.png")}
-                />
+                {this.state.bought9 == 1 ? (
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/fernsbig.png")}
+                  />
+                ) : (
+                  <TouchableOpacity onPress={() => this.buy(9)}>
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/fernsbig.png")}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Image
-                  style={styles.items}
-                  source={require("./assets/fernsbig.png")}
-                />
+                {this.state.rarity10 == "uncommon" ? (
+                  this.state.bought10 == 1 ? (
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/fernsbig.png")}
+                    />
+                  ) : (
+                    <TouchableOpacity onPress={() => this.buy(10)}>
+                      <Image
+                        style={styles.items}
+                        source={require("./assets/fernsbig.png")}
+                      />
+                    </TouchableOpacity>
+                  )
+                ) : this.state.bought10 == 1 ? (
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/tulipsbig.png")}
+                  />
+                ) : (
+                  <TouchableOpacity onPress={() => this.buy(10)}>
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/tulipsbig.png")}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Image
-                  style={styles.items}
-                  source={require("./assets/tulipsbig.png")}
-                />
+                {this.state.rarity11 == "uncommon" ? (
+                  this.state.bought10 == 1 ? (
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/fernsbig.png")}
+                    />
+                  ) : (
+                    <TouchableOpacity onPress={() => this.buy(10)}>
+                      <Image
+                        style={styles.items}
+                        source={require("./assets/fernsbig.png")}
+                      />
+                    </TouchableOpacity>
+                  )
+                ) : this.state.bought11 == 1 ? (
+                  <Image
+                    style={styles.items}
+                    source={require("./assets/tulipsbig.png")}
+                  />
+                ) : (
+                  <TouchableOpacity onPress={() => this.buy(11)}>
+                    <Image
+                      style={styles.items}
+                      source={require("./assets/tulipsbig.png")}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={{ flex: 0.2 }}></View>
             </View>
@@ -693,80 +822,72 @@ export default class Shop extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought8 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>{this.state.price8}</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>{this.state.price8}</Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {gold < Number.parseInt(this.state.itemPrices[8]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.price8}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.price8}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought9 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>{this.state.price9}</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>{this.state.price9}</Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {gold < Number.parseInt(this.state.itemPrices[9]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.price9}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.price9}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought10 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>{this.state.price10}</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>{this.state.price10}</Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {gold < Number.parseInt(this.state.itemPrices[10]) ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.price10}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.price10}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  style={[styles.smallButton]}
-                  source={require("./assets/gold.png")}
-                />
-                {this.state.bought11 == "1" ? (
-                  <View>
-                    <Text style={styles.bought}>{this.state.price11}</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <Text style={styles.prices}>{this.state.price11}</Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={[styles.smallButton]}
+                source={require("./assets/gold.png")}
+              />
+              {gold < Number.parseInt(this.state.itemPrices[11]) == 1 ? (
+                <View>
+                  <Text style={styles.poor}>{this.state.price11}</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.prices}>{this.state.price11}</Text>
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
@@ -862,8 +983,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
   },
-  bought: {
+  poor: {
     color: "#F5493D",
+    fontSize: 16,
+  },
+  bought: {
+    color: "#B9C4C4",
     fontSize: 16,
   },
   itemName1: {

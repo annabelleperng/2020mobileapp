@@ -48,13 +48,15 @@ export default class App extends React.Component {
   };
 
   getWater = async () => {
-    const count = await SecureStore.getItemAsync("inventory_water");
+    const count = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_water")
+    );
     return count;
   };
 
   useWater = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_water");
-    if (count > prevCount) {
+    if (count > Number.parseInt(prevCount)) {
       console.log("error: not enough water");
       return -1;
     }
@@ -78,7 +80,9 @@ export default class App extends React.Component {
   };
 
   getBees = async () => {
-    const count = await SecureStore.getItemAsync("inventory_bees");
+    const count = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_bees")
+    );
     return count;
   };
 
@@ -99,13 +103,15 @@ export default class App extends React.Component {
   };
 
   getGold = async () => {
-    const count = await SecureStore.getItemAsync("inventory_gold");
+    const count = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_gold")
+    );
     return count;
   };
 
   useGold = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_gold");
-    if (count > prevCount) {
+    if (count > Number.parseInt(prevCount)) {
       console.log("error: not enough gold");
       return -1;
     }
