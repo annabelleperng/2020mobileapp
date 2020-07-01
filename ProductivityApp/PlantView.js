@@ -622,7 +622,9 @@ export default class GardenTesting extends Component {
               {this.state.fully_watered ? (
                 <Text style={styles.smallWhiteText}>FULLY WATERED</Text>
               ) : (
-                <Text style={styles.smallWhiteText}>WATER PLANT</Text>
+                <Text style={styles.smallWhiteText}>
+                  {Math.floor(this.state.progress / 6.67)}/15 WATERS
+                </Text>
               )}
               <Text></Text>
             </View>

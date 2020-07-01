@@ -497,10 +497,41 @@ export default class SeedUtils extends Component {
       await SecureStore.getItemAsync(periodEndKey)
     );
 
-    const diff = currDate.diff(periodEnd).hours();
-    if (diff >= 72 && diff < 144) {
+    const waterKey = position + "_waters";
+    const waters = Number.parseInt(await SecureStore.getItemAsync(waterKey));
+
+    // if enough waters and current period ended,
+    // start new period
+
+    if (waters >= 15) {
+      console.log("updateWilting: streak upheld!");
+      if (currDate > periodEnd) {
+        console.log("updateWilting: new streak started!");
+        const newStart = periodEnd;
+        const newEnd = periodEnd.plus({ day: 3 });
+        const periodStartKey = position + "_period_start";
+
+        await SecureStore.setItemAsync(periodStartKey, newStart.toISO());
+        await SecureStore.setItemAsync(periodEndKey, newEnd.toISO());
+        await SecureStore.setItemAsync(waterKey, "0");
+      }
+      return;
+    }
+
+    // if current period hasn't ended, do nothing
+
+    if (currDate < periodEnd) {
+      console.log("updateWilting: streak still in progress");
+      return;
+    }
+
+    // if period ended and plant was not fully watered,
+    // wilt plant (kill after 3 days without elixir)
+
+    const diff = currDate.diff(periodEnd).as("hours");
+    if (diff < 73) {
       this.wiltPlant(position);
-    } else if (diff >= 144) {
+    } else {
       this.killPlant(position);
     }
   };
