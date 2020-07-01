@@ -54,7 +54,7 @@ export default class GardenTesting extends Component {
       this.initializeGarden();
       await SecureStore.setItemAsync("garden_initialized", "true");
     }
-    this.initializeGarden();
+    // this.initializeGarden();
     // su.plantSeed(1, "1none");
     // su.plantSeed(2, "1none");
     // su.fertilizePlant(2);
@@ -181,7 +181,7 @@ export default class GardenTesting extends Component {
 
   render() {
     this.checkInitialized();
-    this.playSound();
+    // this.playSound();
     // if (0 === "0") {
     //   console.log('0 ==="0"');
     // }

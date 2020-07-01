@@ -107,6 +107,15 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
     await SecureStore.setItemAsync("1_status", "2");
+    await SecureStore.setItemAsync(
+      "1_period_start",
+      "2020-06-2T18:50:15.437-07:00"
+    );
+    await SecureStore.setItemAsync(
+      "1_period_end",
+      "2020-07-02T18:50:15.437-07:00"
+    );
+    await SecureStore.setItemAsync("timezone", "UTC");
     await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "2");
     await SecureStore.setItemAsync("3_status", "2");

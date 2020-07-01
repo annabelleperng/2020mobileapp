@@ -14,6 +14,8 @@ import {
 } from "react-native";
 
 import CountDown from "react-native-countdown-component";
+import DateTime from "luxon/src/datetime.js";
+import moment from "moment";
 
 import ProgressBarAnimated from "react-native-progress-bar-animated";
 
@@ -55,18 +57,19 @@ export default class GardenTesting extends Component {
       waters_set: false,
       fully_watered: false,
       //
-      totalDuration: 30,
+      totalDuration: "",
+      countdownSet: false,
     };
   }
 
   checkInitialized = async () => {
     console.log("checking if initialized!");
-    const initialized = await SecureStore.getItemAsync("garden_initialized");
-    if (initialized === null) {
-      console.log("not initialized");
-      this.initializeGarden();
-      await SecureStore.setItemAsync("garden_initialized", "true");
-    }
+    // const initialized = await SecureStore.getItemAsync("garden_initialized");
+    // if (initialized === null) {
+    //   console.log("not initialized");
+    //   this.initializeGarden();
+    //   await SecureStore.setItemAsync("garden_initialized", "true");
+    // }
     // this.initializeGarden();
   };
 
@@ -84,6 +87,18 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
     await SecureStore.setItemAsync("1_status", "2");
+    // const localZone = await SecureStore.getItemAsync("timezone");
+    // const datePlanted = DateTime.local().setZone(localZone).toISO();
+    // console.log("dateplanted issss" + datePlanted);
+    await SecureStore.setItemAsync(
+      "1_period_start",
+      "2020-06-28T18:50:15.437-07:00"
+    );
+    await SecureStore.setItemAsync(
+      "1_period_end",
+      "2020-07-01T18:50:15.437-07:00"
+    );
+    // await SecureStore.setItemAsync("1_period_start", "2");
     await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "2");
     await SecureStore.setItemAsync("3_status", "2");
@@ -305,17 +320,82 @@ export default class GardenTesting extends Component {
       five = false;
     }
 
-    console.log("\none = " + one);
-    console.log("\nfive = " + five);
-    console.log("\nmax = " + max);
+    // console.log("\none = " + one);
+    // console.log("\nfive = " + five);
+    // console.log("\nmax = " + max);
 
     this.setState({ button_x1: one, button_x5: five, button_max: max });
 
     console.log("DONE CHECKING WATERING OPTIONS I THINK");
   };
 
+  //   componentDidMount = async () => {
+  //     var that = this;
+
+  //     //We are showing the coundown timer for a given expiry date-time
+  //     //If you are making an quize type app then you need to make a simple timer
+  //     //which can be done by using the simple like given below
+  //     //that.setState({ totalDuration: 30 }); //which is 30 sec
+
+  //     var date = moment().utcOffset("+05:30").format("YYYY-MM-DD hh:mm:ss");
+  //     //Getting the current date-time with required formate and UTC
+
+  //     var expirydate = "2020-10-23 04:00:45"; //You can set your own date-time
+  //     //Let suppose we have to show the countdown for above date-time
+
+  //     var diffr = moment.duration(moment(expirydate).diff(moment(date)));
+  //     //difference of the expiry date-time given and current date-time
+
+  //     var hours = parseInt(diffr.asHours());
+  //     var minutes = parseInt(diffr.minutes());
+  //     var seconds = parseInt(diffr.seconds());
+
+  //     var d = hours * 60 * 60 + minutes * 60 + seconds;
+  //     //converting in seconds
+
+  //     that.setState({ totalDuration: 50 });
+  //     //Settign up the duration of countdown in seconds to re-render
+  //   }
+
+  getCountdownLength = async () => {
+    console.log("getCountdownLength called");
+    if (this.state.countdownSet != false) {
+      return;
+    }
+    const pos = this.state.plant_position;
+    if (pos < 1 || pos >= 9) {
+      console.log("position not set correctly");
+      return;
+    }
+    const posString = pos + "";
+
+    if (this.state.countdownSet == false) {
+      console.log("WAS FALSE!?!??!?????????????????????");
+
+      //   this.setState({ countdownSet: true, totalDuration: 50 });
+
+      const endKey = posString + "_period_end";
+      console.log(endKey + "endKey");
+      const end = DateTime.fromISO(await SecureStore.getItemAsync(endKey));
+      console.log(end.toISO() + "end");
+      const localZone = await SecureStore.getItemAsync("timezone");
+      console.log("localzone is " + localZone);
+      const currDate = DateTime.local().setZone(localZone);
+      const diff = end.diff(currDate).as("seconds");
+      console.log("\n\n\ndiff = " + diff);
+
+      //   const tempst = DateTime.fromISO("2020-06-28T18:50:15.437-07:00");
+      //   const tempend = DateTime.fromISO("2020-07-01T18:50:15.437-07:00");
+      //   const diff = tempend.diff(tempst).as("seconds");
+      //   console.log("diff = " + diff);
+
+      this.setState({ totalDuration: diff, countdownSet: true });
+    }
+  };
+
   render() {
     // btwn 1.5 and 2
+    console.log(this.state.totalDuration);
     const barWidth = screen.width / 1.7;
     const progressCustomStyles = {
       backgroundColor: "#91faff",
@@ -331,11 +411,12 @@ export default class GardenTesting extends Component {
     // this.getPlantWaterCount();
     this.checkInitialized();
     this.getInventoryCounts();
-    console.log("69");
+    this.getCountdownLength();
+    // console.log("69");
     // const b = su.getImageName("ferns");
-    const vv = this.show13();
-    console.log("96");
-    console.log("\n\n vv = " + vv);
+    // const vv = this.show13();
+    // console.log("96");
+    // console.log("\n\n vv = " + vv);
     return (
       <View
         style={{
@@ -491,19 +572,24 @@ export default class GardenTesting extends Component {
               }}
               // top third - countdown
             >
-              <CountDown
-                until={this.state.totalDuration}
-                //duration of countdown in seconds
-                timetoShow={("M", "S")}
-                //formate to show
-                onFinish={() => alert("finished")}
-                //on Finish call
-                onPress={() => alert("hello")}
-                //on Press call
-                size={20}
-                digitStyle={{ backgroundColor: "#333" }}
-                digitTxtStyle={{ color: "#fff" }}
-              />
+              {this.state.countdownSet ? (
+                <CountDown
+                  until={this.state.totalDuration}
+                  //duration of countdown in seconds
+                  timetoShow={("M", "S")}
+                  //formate to show
+                  onFinish={() => alert("finished")}
+                  //on Finish call
+                  onPress={() => alert("hello")}
+                  //on Press call
+                  size={20}
+                  digitStyle={{ backgroundColor: "#333" }}
+                  digitTxtStyle={{ color: "#fff" }}
+                />
+              ) : (
+                <View></View>
+              )}
+
               {/* <Text style={styles.whiteText}>02:25:36:45</Text> */}
               <Text style={styles.whiteText}>until wilted</Text>
             </View>
