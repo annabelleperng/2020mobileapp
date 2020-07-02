@@ -34,7 +34,7 @@ import { screensEnabled } from "react-native-screens";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
-    this.initializeGarden();
+    // this.initializeGarden();
     this.state = {
       plant_position: 1,
       //   plant_waters: 0,
@@ -90,14 +90,6 @@ export default class GardenTesting extends Component {
     // const localZone = await SecureStore.getItemAsync("timezone");
     // const datePlanted = DateTime.local().setZone(localZone).toISO();
     // console.log("dateplanted issss" + datePlanted);
-    await SecureStore.setItemAsync(
-      "1_period_start",
-      "2020-06-28T18:50:15.437-07:00"
-    );
-    await SecureStore.setItemAsync(
-      "1_period_end",
-      "2020-07-01T18:50:15.437-07:00"
-    );
     // await SecureStore.setItemAsync("1_period_start", "2");
     await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "2");
@@ -357,6 +349,19 @@ export default class GardenTesting extends Component {
   //     //Settign up the duration of countdown in seconds to re-render
   //   }
 
+  checkIfWilted = async () => {
+    const res = await su.updateWilting(this.state.plant_position);
+    console.log("res is " + res);
+    if (res == 3) {
+      alert("your plant wilted :(");
+    } else if (res == 4) {
+      alert("bruh");
+    } else {
+      alert("new streak started");
+      this.setState({ countdownSet: false });
+      //   this.getCountdownLength();
+    }
+  };
   getCountdownLength = async () => {
     console.log("getCountdownLength called");
     if (this.state.countdownSet != false) {
@@ -412,6 +417,7 @@ export default class GardenTesting extends Component {
     this.checkInitialized();
     this.getInventoryCounts();
     this.getCountdownLength();
+
     // console.log("69");
     // const b = su.getImageName("ferns");
     // const vv = this.show13();
@@ -578,20 +584,30 @@ export default class GardenTesting extends Component {
                   //duration of countdown in seconds
                   timetoShow={("M", "S")}
                   //formate to show
-                  onFinish={() => alert("finished")}
+                  onFinish={() => this.checkIfWilted()}
                   //on Finish call
                   onPress={() => alert("hello")}
                   //on Press call
                   size={20}
+                  //   showSeparator={true}
+                  //   separatorStyle={{ color: "#fff" }}
                   digitStyle={{ backgroundColor: "#333" }}
                   digitTxtStyle={{ color: "#fff" }}
                 />
               ) : (
                 <View></View>
               )}
-
-              {/* <Text style={styles.whiteText}>02:25:36:45</Text> */}
-              <Text style={styles.whiteText}>until wilted</Text>
+              {this.state.fully_watered ? (
+                <View>
+                  <Text></Text>
+                  <Text style={styles.whiteText}>until next reset</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text></Text>
+                  <Text style={styles.whiteText}>until wilted</Text>
+                </View>
+              )}
             </View>
             <View
               style={{
@@ -842,7 +858,7 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: "#fff",
-    fontSize: 30,
+    fontSize: 25,
   },
   smallWhiteText: {
     color: "#ff547c",

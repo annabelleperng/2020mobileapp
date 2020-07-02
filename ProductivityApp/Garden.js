@@ -109,13 +109,13 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("1_status", "2");
     await SecureStore.setItemAsync(
       "1_period_start",
-      "2020-06-2T18:50:15.437-07:00"
+      "2020-06-29T18:50:15.437-07:00" // "2020-06-2T18:50:15.437-07:00"
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-02T18:50:15.437-07:00"
-    );
-    await SecureStore.setItemAsync("timezone", "UTC");
+      "2020-07-01T17:48:35.437-07:00"
+    ); // "2020-07-02T18:50:15.437-07:00"
+    await SecureStore.setItemAsync("timezone", "America/Los_Angeles");
     await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "2");
     await SecureStore.setItemAsync("3_status", "2");
@@ -136,6 +136,7 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("garden_initialized", "true");
     // await su.plantSeed
     console.log("we're here");
+    console.log(await SecureStore.getItemAsync("1_period_end"));
     // su.checkStatus(1, "0");
     // su.checkStatus(1, "1");
   };

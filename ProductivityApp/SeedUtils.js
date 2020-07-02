@@ -104,7 +104,7 @@ export default class SeedUtils extends Component {
    */
   plantSeed = async (position, rarity_event) => {
     console.log("\n\n\nplantSeed called");
-    if (this.checkStatus(position, "0") != 1) {
+    if ((await this.checkStatus(position, "0")) != 1) {
       console.log("error: trying to plant seed where it can't be planted");
       return -1;
     }
@@ -193,14 +193,25 @@ export default class SeedUtils extends Component {
 
   getImageName = async (position) => {
     console.log("\n\n\ngetImageName called");
-    if (this.checkStatus(position, "0") == 1) {
+
+    const statusKey = position.toString() + "_status";
+    const status = await SecureStore.getItemAsync(statusKey);
+
+    if (status == "0") {
       console.log("NO PLANT HERE");
       return "invis "; //update later
-    } else if (this.checkStatus(position, "1") == 1) {
+    } else if (status == "1") {
       console.log("SMOL PLANT");
+      return "invis "; //update later
+    } else if (status == "3") {
+      console.log("CRYING PLANT");
+      return "invis "; //update later
+    } else if (status == "4") {
+      console.log("DYING PLANT");
       return "invis "; //update later
     }
 
+    console.log("THRIVING PLANT");
     const species = await SecureStore.getItemAsync(position + "_species");
     console.log(species + " candy");
     return species + " ";
@@ -213,7 +224,7 @@ export default class SeedUtils extends Component {
    * Returns -1 if unsuccessful, 1 if successful.
    */
   growSeed = async (position) => {
-    if (this.checkStatus(position, "1") != 1) {
+    if ((await this.checkStatus(position, "1")) != 1) {
       console.log("error: you shouldn't be able to grow this plant.");
       return -1;
     }
@@ -258,7 +269,7 @@ export default class SeedUtils extends Component {
    * Returns -1 if unsuccessful, 1 if successful.
    */
   wiltPlant = async (position) => {
-    if (this.checkStatus(position, "2") != 1) {
+    if (awaitthis.checkStatus(position, "2") != 1) {
       console.log("error: you shouldn't be able to wilt this plant.");
       return -1;
     }
@@ -279,7 +290,7 @@ export default class SeedUtils extends Component {
    * Returns -1 if unsuccessful, 1 if successful.
    */
   killPlant = async (position) => {
-    if (this.checkStatus(position, "3") != 1) {
+    if ((await this.checkStatus(position, "3")) != 1) {
       console.log("error: you shouldn't be able to kill this plant.");
       return -1;
     }
@@ -310,7 +321,7 @@ export default class SeedUtils extends Component {
       return 0;
     }
 
-    if (this.checkStatus(position, "1") != 1) {
+    if ((await this.checkStatus(position, "1")) != 1) {
       console.log("error: you shouldn't be able to fertilize this plant.");
       return -1;
     }
@@ -334,7 +345,7 @@ export default class SeedUtils extends Component {
    * returns remainder of waters if not all parameter waters are used.
    */
   waterPlant = async (position, waters) => {
-    if (this.checkStatus(position, "2") != 1) {
+    if ((await this.checkStatus(position, "2")) != 1) {
       console.log("error: you shouldn't be able to water this plant.");
       return -1;
     }
@@ -414,7 +425,7 @@ export default class SeedUtils extends Component {
    * This method should be called in Timer5.js similar to updateLatestSprints.
    */
   updateGrowthStreak = async (position) => {
-    if (this.checkStatus(position, "1") != 1) {
+    if ((await this.checkStatus(position, "1")) != 1) {
       console.log("error: only growing plants have growing streaks");
       return -1;
     }
@@ -484,7 +495,7 @@ export default class SeedUtils extends Component {
   };
 
   updateWilting = async (position) => {
-    if (this.checkStatus(position, "2") != 1) {
+    if ((await this.checkStatus(position, "2")) != 1) {
       console.log("error: only grown plants can wilt");
       return -1;
     }
@@ -495,6 +506,12 @@ export default class SeedUtils extends Component {
     const periodEndKey = position + "_period_end";
     const periodEnd = DateTime.fromISO(
       await SecureStore.getItemAsync(periodEndKey)
+    );
+
+    console.log("end = " + periodEnd.toISO());
+    console.log("current = " + currDate.toISO());
+    console.log(
+      "hardcoded end = " + (await SecureStore.getItemAsync("1_period_end"))
     );
 
     const waterKey = position + "_waters";
@@ -514,15 +531,18 @@ export default class SeedUtils extends Component {
         await SecureStore.setItemAsync(periodStartKey, newStart.toISO());
         await SecureStore.setItemAsync(periodEndKey, newEnd.toISO());
         await SecureStore.setItemAsync(waterKey, "0");
+        console.log("newStart = " + newStart.toISO());
+        console.log("newEnd = " + newEnd.toISO());
+        return 2;
       }
-      return;
+      return 2;
     }
 
     // if current period hasn't ended, do nothing
 
     if (currDate < periodEnd) {
       console.log("updateWilting: streak still in progress");
-      return;
+      return 2;
     }
 
     // if period ended and plant was not fully watered,
@@ -531,13 +551,15 @@ export default class SeedUtils extends Component {
     const diff = currDate.diff(periodEnd).as("hours");
     if (diff < 73) {
       this.wiltPlant(position);
+      return 3;
     } else {
       this.killPlant(position);
+      return 4;
     }
   };
 
   elixirPlant = async (position) => {
-    if (this.checkStatus(position, "3") != 1) {
+    if ((await this.checkStatus(position, "3")) != 1) {
       console.log("error: only wilted plants use elixir");
       return -1;
     }
