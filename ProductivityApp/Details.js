@@ -16,6 +16,7 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 //import CombinedButton from "react-native-combined-button";
 // import { NavigationContainer } from "@react-navigation/native";
@@ -30,6 +31,29 @@ export default class Details extends Component {
       minutes: 10,
     };
   }
+
+  alertThis = () => {
+    Alert.alert(
+      "Hello friends",
+      "What boba you want",
+      [
+        {
+          text: "jasmine green milk tea plus boba and lychee jelly",
+          onPress: () => console.log("Ask me later pressed"),
+        },
+        {
+          text: "adult capri sun WITHOUT BOBA",
+          onPress: () => console.log("adult capri sun WITHOUT BOBA"),
+          style: "cancel",
+        },
+        {
+          text: "osmanthus milk tea with extra boba",
+          onPress: () => console.log("OK Pressed"),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -135,21 +159,21 @@ export default class Details extends Component {
             }}
           >
             <View style={{ flex: 1, backgroundColor: "#b19999" }}>
-              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 0.6 }}></View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.smallText}>You've sprinted for</Text>
                 <Text style={styles.smallText}>25 minutes today.</Text>
                 <Text style={styles.smallText}></Text>
-                <Text style={styles.smallText}></Text>
+
                 <Text style={styles.smallText}>
-                  - <Text style={styles.smallGreenText}>87.5%</Text> working
+                  <Text style={styles.smallGreenText}>87.5%</Text> working
+                </Text>
+
+                <Text style={styles.smallText}>
+                  <Text style={styles.smallRedText}>12.5%</Text> paused
                 </Text>
                 <Text style={styles.smallText}></Text>
-                <Text style={styles.smallText}>
-                  - <Text style={styles.smallRedText}>12.5%</Text> paused
-                </Text>
-                <Text style={styles.smallText}></Text>
-                <Text style={styles.smallText}></Text>
+
                 <TouchableOpacity onPress={() => navigate("Timer5")}>
                   <Text style={styles.smallLinkText}>See more stats!</Text>
                 </TouchableOpacity>
@@ -205,7 +229,7 @@ export default class Details extends Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.alertThis()}>
                   <View
                     style={[
                       styles.pinkButton2,
