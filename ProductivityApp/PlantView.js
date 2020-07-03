@@ -580,7 +580,7 @@ export default class GardenTesting extends Component {
             >
               {this.state.countdownSet ? (
                 <CountDown
-                  until={this.state.totalDuration}
+                  until={50}
                   //duration of countdown in seconds
                   timetoShow={("M", "S")}
                   //formate to show
