@@ -11,7 +11,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
-  TextInput,
+  TextInput
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
@@ -27,6 +27,10 @@ export default class Shop extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gold: -1,
+      canBuyRarePlant: false,
+      canBuyElixir: false,
+      isUpdated: false,
       showCancel: false,
       showBees: false,
       status1: 2,
@@ -60,30 +64,38 @@ export default class Shop extends Component {
       bought10: 0,
       bought11: 0,
       rarity10: "uncommon",
-      rarity11: "uncommon",
+      rarity11: "uncommon"
     };
   }
 
   initialize = async () => {
+    console.log("initializing shop");
+    await SecureStore.setItemAsync("inventory_gold", "1500");
+    this.setState({ gold: 1500 });
+
     const localZone = await SecureStore.getItemAsync("timezone");
-    const localTime = DateTime.local().setZone(localZone);
+    // const localTime = DateTime.local().setZone(localZone);
+    const localTime = DateTime.local();
     const localMidnight = DateTime.fromObject({
       year: localTime.year,
       month: localTime.month,
       day: localTime.day,
       hour: 0,
       minute: 0,
-      second: 0,
-      zone: localZone,
+      second: 0
+      // zone: localZone
     });
+    console.log("local midnight: " + localMidnight.toISO());
+
     const localPrevMidnight = localMidnight.minus({ days: 1 });
+    console.log("local prev midnight: " + localPrevMidnight.toISO());
     const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
     // const localPrev = localPrevMidnight.minus({ hours: 5 });
     // await SecureStore.setItemAsync("shop_refreshed", localPrev.toISO());
     const lastRefreshed = DateTime.fromISO(
       await SecureStore.getItemAsync("shop_refreshed")
     );
-    console.log(lastRefreshed);
+    console.log("lastRefreshed " + lastRefreshed.toISO());
 
     var eventName = await SecureStore.getItemAsync("event_name");
     var eventCountdown = await SecureStore.getItemAsync("event_countdown");
@@ -125,7 +137,7 @@ export default class Shop extends Component {
         bought10: await SecureStore.getItemAsync("bought10"),
         bought11: await SecureStore.getItemAsync("bought11"),
         rarity10: await SecureStore.getItemAsync("rarity10"),
-        rarity11: await SecureStore.getItemAsync("rarity11"),
+        rarity11: await SecureStore.getItemAsync("rarity11")
       });
 
       if ((await SecureStore.getItemAsync("event_name")) != null) {
@@ -133,7 +145,7 @@ export default class Shop extends Component {
           eventName: await SecureStore.getItemAsync("event_name"),
           eventCountdown: Number.parseInt(
             await SecureStore.getItemAsync("event_countdown")
-          ),
+          )
         });
       }
     }
@@ -188,7 +200,7 @@ export default class Shop extends Component {
     }
   };
 
-  buy = async (pos) => {
+  buy = async pos => {
     console.log("buying");
     var boughtVar = "bought" + pos;
     console.log("boughtVar: " + this.state[boughtVar]);
@@ -241,6 +253,7 @@ export default class Shop extends Component {
     await rewardUtils.useGold(Number.parseInt(this.state.itemPrices[pos]));
 
     this.setState({ [boughtVar]: 1 });
+    console.log(this.state[boughtVar]);
 
     console.log(
       "after: " + (await SecureStore.getItemAsync("inventory_seeds")) + "\n\n"
@@ -261,7 +274,7 @@ export default class Shop extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         <View
@@ -271,7 +284,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center",
+              alignItems: "center"
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -297,7 +310,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0,
+              marginTop: 0
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -371,7 +384,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -479,7 +492,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center",
+              alignItems: "center"
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -505,7 +518,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0,
+              marginTop: 0
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -580,7 +593,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -674,7 +687,7 @@ export default class Shop extends Component {
           style={{
             flex: 4,
             backgroundColor: "#57423e",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           {this.state.eventName != "" && this.state.eventName != null ? (
@@ -682,7 +695,7 @@ export default class Shop extends Component {
               style={{
                 flexDirection: "row",
                 flex: 1,
-                alignItems: "center",
+                alignItems: "center"
                 //   marginLeft: screen.width / 14,
               }}
             >
@@ -709,7 +722,7 @@ export default class Shop extends Component {
             <View
               style={{
                 flexDirection: "row",
-                marginTop: 0,
+                marginTop: 0
                 //   marginLeft: screen.width / 14,
               }}
             >
@@ -817,7 +830,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -892,13 +905,23 @@ export default class Shop extends Component {
           <View style={{ flex: 0.2 }}></View>
         </View>
 
-        <View style={{ flex: 2, backgroundColor: "#57423e" }}></View>
+        <View style={{ flex: 1.3, backgroundColor: "#57423e" }}></View>
+        <View
+          style={{
+            flex: 0.7,
+            backgroundColor: "#333333",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Text style={{ color: "#ffffff" }}> gold: {this.state.gold}</Text>
+        </View>
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              marginTop: (screen.height * 3) / 22 - screen.width / 5
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -950,16 +973,16 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
-    height: screen.width / 7,
+    height: screen.width / 7
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9,
+    height: screen.width / 9
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    marginLeft: screen.width / 10
   },
   pinkButton: {
     borderWidth: 2,
@@ -968,39 +991,39 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28,
+    height: screen.height / 28
   },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 20,
+    marginTop: screen.height / 20
   },
   prices: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 16
   },
   poor: {
     color: "#F5493D",
-    fontSize: 16,
+    fontSize: 16
   },
   bought: {
     color: "#B9C4C4",
-    fontSize: 16,
+    fontSize: 16
   },
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
     marginTop: screen.height / 50,
-    textAlign: "center",
+    textAlign: "center"
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
     marginBottom: screen.height / 70,
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
