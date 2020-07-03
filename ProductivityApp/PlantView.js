@@ -59,6 +59,7 @@ export default class GardenTesting extends Component {
       //
       totalDuration: "",
       countdownSet: false,
+      countdownFullySet: false,
     };
   }
 
@@ -358,7 +359,7 @@ export default class GardenTesting extends Component {
       alert("bruh");
     } else {
       alert("new streak started");
-      this.setState({ countdownSet: false });
+      this.setState({ countdownSet: false, countdownFullySet: false });
       //   this.getCountdownLength();
     }
   };
@@ -377,15 +378,24 @@ export default class GardenTesting extends Component {
     if (this.state.countdownSet == false) {
       console.log("WAS FALSE!?!??!?????????????????????");
 
+      this.setState({ countdownSet: true });
       //   this.setState({ countdownSet: true, totalDuration: 50 });
 
       const endKey = posString + "_period_end";
       console.log(endKey + "endKey");
       const end = DateTime.fromISO(await SecureStore.getItemAsync(endKey));
       console.log(end.toISO() + "end");
-      const localZone = await SecureStore.getItemAsync("timezone");
-      console.log("localzone is " + localZone);
-      const currDate = DateTime.local().setZone(localZone);
+      //   const localZone = await SecureStore.getItemAsync("timezone");
+      //   console.log("localzone is " + localZone);
+      const currDate = DateTime.local();
+      //   const currDate2 = DateTime.local().setZone(localZone);
+      //   const currDate3 = DateTime.fromObject({ zone: "America/Los_Angeles" });
+      //   //   const currDate DateTime.local().setZone(localZone);
+
+      //   .fromObject({zone: 'America/Los_Angeles'});
+      console.log("current time is " + currDate.toISO());
+      //   console.log("current time2 is " + currDate.toISO());
+      //   console.log("nowww is " + now.toISO());
       const diff = end.diff(currDate).as("seconds");
       console.log("\n\n\ndiff = " + diff);
 
@@ -394,7 +404,8 @@ export default class GardenTesting extends Component {
       //   const diff = tempend.diff(tempst).as("seconds");
       //   console.log("diff = " + diff);
 
-      this.setState({ totalDuration: diff, countdownSet: true });
+      this.setState({ totalDuration: diff, countdownFullySet: true });
+      // this.setState({ totalDuration: diff });
     }
   };
 
@@ -531,9 +542,7 @@ export default class GardenTesting extends Component {
                   {this.state.inventory_elixir}
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("GardenTesting")
-                  }
+                  onPress={() => alert("Use elixir to revive a wilted plant!")}
                   activeOpacity={0.5}
                   // inventory item: elixir
                 >
@@ -571,14 +580,14 @@ export default class GardenTesting extends Component {
             ></View>
             <View
               style={{
-                flex: 0.5,
+                flex: 0.3,
                 // backgroundColor: "#eac",
                 justifyContent: "center",
                 alignItems: "center",
               }}
               // top third - countdown
             >
-              {this.state.countdownSet ? (
+              {this.state.countdownFullySet ? (
                 <CountDown
                   until={50}
                   //duration of countdown in seconds
@@ -597,13 +606,15 @@ export default class GardenTesting extends Component {
               ) : (
                 <View></View>
               )}
+            </View>
+            <View style={{ flex: 0.5 }}>
               {this.state.fully_watered ? (
-                <View>
+                <View style={{ flex: 0.1 }}>
                   <Text></Text>
                   <Text style={styles.whiteText}>until next reset</Text>
                 </View>
               ) : (
-                <View>
+                <View style={{ flex: 0.1 }}>
                   <Text></Text>
                   <Text style={styles.whiteText}>until wilted</Text>
                 </View>
@@ -618,9 +629,10 @@ export default class GardenTesting extends Component {
               }}
               // top margin
             ></View>
+            <View style={{ flex: 0.2 }}></View>
             <View
               style={{
-                flex: 0.5,
+                flex: 0.7,
                 // backgroundColor: "#ace",
                 justifyContent: "center",
                 alignItems: "center",
@@ -858,7 +870,7 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: "#fff",
-    fontSize: 25,
+    fontSize: 19,
   },
   smallWhiteText: {
     color: "#ff547c",

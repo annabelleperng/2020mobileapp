@@ -129,7 +129,7 @@ export default class SeedUtils extends Component {
 
     //set position_date_planted to current time
     const localZone = await SecureStore.getItemAsync("timezone");
-    const datePlanted = DateTime.local().setZone(localZone).toISO();
+    const datePlanted = DateTime.local().toISO();
     const datePlantedKey = position + "_date_planted";
     console.log("date planted = " + datePlanted);
     await SecureStore.setItemAsync(datePlantedKey, datePlanted);
@@ -237,7 +237,7 @@ export default class SeedUtils extends Component {
 
     //set position_period_start to current date
     const localZone = await SecureStore.getItemAsync("timezone");
-    const periodStart = DateTime.local().setZone(localZone);
+    const periodStart = DateTime.local();
     const periodStartMidnight = DateTime.fromObject({
       year: localTime.year,
       month: localTime.month,
@@ -393,7 +393,7 @@ export default class SeedUtils extends Component {
     //update position_period_start
     const periodStartKey = position + "_period_start";
     const localZone = await SecureStore.getItemAsync("timezone");
-    const localTime = DateTime.local().setZone(localZone);
+    const localTime = DateTime.local();
     const localMidnight = DateTime.fromObject({
       year: localTime.year,
       month: localTime.month,
@@ -452,7 +452,7 @@ export default class SeedUtils extends Component {
     }
 
     const localZone = await SecureStore.getItemAsync("timezone");
-    const currDate = DateTime.local().setZone(localZone);
+    const currDate = DateTime.local();
 
     // const localZone = await SecureStore.getItemAsync("timezone");
     // const localTime = DateTime.local().setZone(localZone).toISO();
@@ -501,7 +501,7 @@ export default class SeedUtils extends Component {
     }
 
     const localZone = await SecureStore.getItemAsync("timezone");
-    const currDate = DateTime.local().setZone(localZone);
+    const currDate = DateTime.local();
 
     const periodEndKey = position + "_period_end";
     const periodEnd = DateTime.fromISO(
