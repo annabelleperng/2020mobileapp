@@ -359,7 +359,7 @@ export default class GardenTesting extends Component {
       alert("bruh");
     } else {
       alert("new streak started");
-      this.setState({ countdownSet: false });
+      this.setState({ countdownSet: false, countdownFullySet: false });
       //   this.getCountdownLength();
     }
   };
@@ -580,7 +580,7 @@ export default class GardenTesting extends Component {
             ></View>
             <View
               style={{
-                flex: 0.5,
+                flex: 0.3,
                 // backgroundColor: "#eac",
                 justifyContent: "center",
                 alignItems: "center",
@@ -606,13 +606,15 @@ export default class GardenTesting extends Component {
               ) : (
                 <View></View>
               )}
+            </View>
+            <View style={{ flex: 0.5 }}>
               {this.state.fully_watered ? (
-                <View>
+                <View style={{ flex: 0.1 }}>
                   <Text></Text>
                   <Text style={styles.whiteText}>until next reset</Text>
                 </View>
               ) : (
-                <View>
+                <View style={{ flex: 0.1 }}>
                   <Text></Text>
                   <Text style={styles.whiteText}>until wilted</Text>
                 </View>
@@ -627,9 +629,10 @@ export default class GardenTesting extends Component {
               }}
               // top margin
             ></View>
+            <View style={{ flex: 0.2 }}></View>
             <View
               style={{
-                flex: 0.5,
+                flex: 0.7,
                 // backgroundColor: "#ace",
                 justifyContent: "center",
                 alignItems: "center",
@@ -867,7 +870,7 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: "#fff",
-    fontSize: 25,
+    fontSize: 19,
   },
   smallWhiteText: {
     color: "#ff547c",

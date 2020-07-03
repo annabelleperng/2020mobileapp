@@ -113,7 +113,7 @@ export default class Garden extends Component {
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-03T17:48:35.437-07:00"
+      "2020-07-03T16:43:25.437-07:00"
     ); // "2020-07-02T18:50:15.437-07:00"
     await SecureStore.setItemAsync("timezone", "America/Los_Angeles");
     await SecureStore.setItemAsync("1_waters", "10");
@@ -143,7 +143,7 @@ export default class Garden extends Component {
 
   updateStuff = async (position) => {
     const localZone = await SecureStore.getItemAsync("timezone");
-    const localTime = DateTime.local().setZone(localZone);
+    const localTime = DateTime.local();
     const periodStartKey = position + "_period_start";
     const periodStart = DateTime.fromISO(
       await SecureStore.getItemAsync(periodStartKey)
