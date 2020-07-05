@@ -18,6 +18,10 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
+
+import * as SecureStore from "expo-secure-store";
+import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
+
 //import CombinedButton from "react-native-combined-button";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from "@react-navigation/stack";
@@ -29,6 +33,10 @@ export default class Details extends Component {
     super(props);
     this.state = {
       minutes: 10,
+      ltStats: false,
+      totalTime: 0,
+      unpausedRatio: 0,
+      pausedRatio: 0,
     };
   }
 
@@ -55,7 +63,48 @@ export default class Details extends Component {
     );
   };
 
+  getStats = async () => {
+    if (this.state.ltStats == false) {
+      this.setState({ ltStats: true });
+
+      let unpaused = Number.parseFloat(
+        await SecureStore.getItemAsync("total_unpaused")
+      );
+      let paused = Number.parseFloat(
+        await SecureStore.getItemAsync("total_paused")
+      );
+
+      if (unpaused == 0 || unpaused == NaN || paused == NaN) {
+        return;
+      }
+
+      let total = unpaused + paused;
+
+      let pausedRatio = Math.floor((paused / total) * 10000) / 100;
+      let unpausedRatio = Math.floor((unpaused / total) * 10000) / 100;
+
+      console.log(
+        "total " +
+          total +
+          "pausedRatio " +
+          pausedRatio +
+          "unpausedRatio " +
+          unpausedRatio
+      );
+      this.setState({
+        totalTime: unpaused,
+        unpausedRatio: unpausedRatio,
+        pausedRatio: pausedRatio,
+      });
+    }
+  };
+
+  refreshPage() {
+    window.location.reload(false);
+  }
+
   render() {
+    this.getStats();
     const { navigate } = this.props.navigation;
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
@@ -162,15 +211,23 @@ export default class Details extends Component {
               <View style={{ flex: 0.6 }}></View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.smallText}>You've sprinted for</Text>
-                <Text style={styles.smallText}>25 minutes today.</Text>
+                <Text style={styles.smallText}>
+                  {this.state.totalTime} minutes total.
+                </Text>
                 <Text style={styles.smallText}></Text>
 
                 <Text style={styles.smallText}>
-                  <Text style={styles.smallGreenText}>87.5%</Text> working
+                  <Text style={styles.smallGreenText}>
+                    {this.state.unpausedRatio}%
+                  </Text>{" "}
+                  working
                 </Text>
 
                 <Text style={styles.smallText}>
-                  <Text style={styles.smallRedText}>12.5%</Text> paused
+                  <Text style={styles.smallRedText}>
+                    {this.state.pausedRatio}%
+                  </Text>{" "}
+                  paused
                 </Text>
                 <Text style={styles.smallText}></Text>
 

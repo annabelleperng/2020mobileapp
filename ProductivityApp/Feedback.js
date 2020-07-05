@@ -16,7 +16,10 @@ export default class Feedback extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { states: [0, 0] };
+    this.state = {
+      states: [0, 0],
+      timer_time: this.props.route.params.timer_time,
+    };
   }
 
   getVal(val) {
@@ -90,6 +93,8 @@ export default class Feedback extends Component {
             onPress={() =>
               this.props.navigation.navigate("Rewards", {
                 timer_time: this.props.route.params.timer_time,
+                happiness: this.state.states[0],
+                productivity: this.state.states[1],
               })
             }
             title="Submit!"

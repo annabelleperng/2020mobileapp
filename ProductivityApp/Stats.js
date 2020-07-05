@@ -15,6 +15,8 @@ import {
   VictoryAxis,
 } from "victory-native";
 
+import * as SecureStore from "expo-secure-store";
+import { RECORDING_OPTION_IOS_OUTPUT_FORMAT_APPLELOSSLESS } from "expo-av/build/Audio";
 const screen = Dimensions.get("window");
 
 // const data = [
@@ -34,6 +36,7 @@ export default class App extends React.Component {
       startTime: this.props.route.params.JSON_ListView_Clicked_Item,
       timer_time: this.props.route.params.timer_time,
       total_time: this.props.route.params.total_time,
+      addedTotals: false,
     };
   }
 
@@ -62,7 +65,68 @@ export default class App extends React.Component {
     }
   }
 
+  updateDailyStats = async () => {
+    if (this.state.addedTotals == false) {
+      let total = Number.parseInt(
+        await SecureStore.getItemAsync("total_sprint_time")
+      );
+      let paused = Number.parseInt(
+        await SecureStore.getItemAsync("total_paused")
+      );
+      let unpaused = Number.parseInt(
+        await SecureStore.getItemAsync("total_unpaused")
+      );
+      if (total == NaN) {
+        total = 0;
+      }
+      if (paused == NaN) {
+        paused = 0;
+      }
+      if (unpaused == NaN) {
+        unpaused = 0;
+      }
+
+      // console.log(this.state);
+      // console.log(this.state.timer_time);
+      // console.log(this.state.total_time);
+      // console.log(paused + " " + unpaused + " " + total);
+
+      total += Number.parseInt(this.state.timer_time);
+
+      unpaused += Number.parseInt(this.state.timer_time);
+
+      paused +=
+        Number.parseFloat(this.state.total_time / 60000) -
+        Number.parseInt(this.state.timer_time);
+
+      console.log(
+        total +
+          " was total; " +
+          unpaused +
+          " was unpaused; " +
+          paused +
+          " was paused"
+      );
+
+      await SecureStore.setItemAsync("total_sprint_time", total + "");
+      await SecureStore.setItemAsync("total_unpaused", unpaused + "");
+      await SecureStore.setItemAsync("total_paused", paused + "");
+
+      this.setState({ addedTotals: true });
+      //   await SecureStore this.state.timer_time
+      // securestore variables:
+      // today_time = (25 + 50 + 10 + 12) = 97
+      // today_productiviity = (100*25 + 85*50 + 86*10 + 95*12) = 8750
+      // today_happiness = similar to today_productivity ^^^
+      // when calculating avg productivity, divide productivity by time
+      // (don't store avgs in securestore)
+      // update time by adding time, update productivity and happiness
+      // by weights (not by averages)
+    }
+  };
+
   render() {
+    this.updateDailyStats();
     const startHours = endHours - Math.floor(this.state.total_time / 3600000);
     const startHours12h = startHours <= 12 ? startHours : startHours % 12;
     const startAMPM = startHours <= 12 ? " AM" : " PM";

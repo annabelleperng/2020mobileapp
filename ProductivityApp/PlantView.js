@@ -359,7 +359,11 @@ export default class GardenTesting extends Component {
       alert("bruh");
     } else {
       alert("new streak started");
-      this.setState({ countdownSet: false, countdownFullySet: false });
+      this.setState({
+        countdownSet: false,
+        countdownFullySet: false,
+        inventory_set: false,
+      });
       //   this.getCountdownLength();
     }
   };
@@ -580,7 +584,7 @@ export default class GardenTesting extends Component {
             ></View>
             <View
               style={{
-                flex: 0.3,
+                flex: 0.5,
                 // backgroundColor: "#eac",
                 justifyContent: "center",
                 alignItems: "center",
@@ -607,14 +611,14 @@ export default class GardenTesting extends Component {
                 <View></View>
               )}
             </View>
-            <View style={{ flex: 0.5 }}>
+            <View style={{ flex: 0.3 }}>
               {this.state.fully_watered ? (
-                <View style={{ flex: 0.1 }}>
+                <View>
                   <Text></Text>
                   <Text style={styles.whiteText}>until next reset</Text>
                 </View>
               ) : (
-                <View style={{ flex: 0.1 }}>
+                <View>
                   <Text></Text>
                   <Text style={styles.whiteText}>until wilted</Text>
                 </View>
@@ -629,10 +633,10 @@ export default class GardenTesting extends Component {
               }}
               // top margin
             ></View>
-            <View style={{ flex: 0.2 }}></View>
+            {/* <View style={{ flex: 0.2 }}></View> */}
             <View
               style={{
-                flex: 0.7,
+                flex: 0.5,
                 // backgroundColor: "#ace",
                 justifyContent: "center",
                 alignItems: "center",
@@ -656,6 +660,7 @@ export default class GardenTesting extends Component {
               )}
               <Text></Text>
             </View>
+            <View style={{ flex: 0.2 }}></View>
             <View
               style={{
                 flex: 1,

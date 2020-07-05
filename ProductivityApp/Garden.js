@@ -113,8 +113,14 @@ export default class Garden extends Component {
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-03T16:43:25.437-07:00"
+      "2020-07-03T16:52:25.437-07:00"
     ); // "2020-07-02T18:50:15.437-07:00"
+    await SecureStore.setItemAsync("weighted_productivity", "0");
+    await SecureStore.setItemAsync("weighted_happiness", "0");
+
+    await SecureStore.setItemAsync("total_sprint_time", "0");
+    await SecureStore.setItemAsync("total_unpaused", "0");
+    await SecureStore.setItemAsync("total_paused", "0");
     await SecureStore.setItemAsync("timezone", "America/Los_Angeles");
     await SecureStore.setItemAsync("1_waters", "10");
     await SecureStore.setItemAsync("2_status", "2");
