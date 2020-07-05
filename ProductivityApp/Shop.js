@@ -11,7 +11,8 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
-  TextInput
+  TextInput,
+  Alert,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
@@ -64,7 +65,7 @@ export default class Shop extends Component {
       bought10: 0,
       bought11: 0,
       rarity10: "uncommon",
-      rarity11: "uncommon"
+      rarity11: "uncommon",
     };
   }
 
@@ -82,7 +83,7 @@ export default class Shop extends Component {
       day: localTime.day,
       hour: 0,
       minute: 0,
-      second: 0
+      second: 0,
       // zone: localZone
     });
     console.log("local midnight: " + localMidnight.toISO());
@@ -101,7 +102,7 @@ export default class Shop extends Component {
     var eventCountdown = await SecureStore.getItemAsync("event_countdown");
     if (eventCountdown == null || eventCountdown == "") {
       if (this.state.eventCountdown > 0) {
-        await SecureStore.setItemAsync("event_name", this.state.eventName);
+        await SecureStore.setItemAsync("event_name", "" + this.state.eventName);
         eventName = this.state.eventName;
         await SecureStore.setItemAsync(
           "event_countdown",
@@ -111,8 +112,9 @@ export default class Shop extends Component {
       }
     }
 
-    console.log(prevDay.isBefore(lastRefreshed));
-
+    console.log(
+      "prevDay before lastRefreshed? " + prevDay.isBefore(lastRefreshed)
+    );
     if (
       lastRefreshed == null ||
       lastRefreshed == "" ||
@@ -137,7 +139,7 @@ export default class Shop extends Component {
         bought10: await SecureStore.getItemAsync("bought10"),
         bought11: await SecureStore.getItemAsync("bought11"),
         rarity10: await SecureStore.getItemAsync("rarity10"),
-        rarity11: await SecureStore.getItemAsync("rarity11")
+        rarity11: await SecureStore.getItemAsync("rarity11"),
       });
 
       if ((await SecureStore.getItemAsync("event_name")) != null) {
@@ -145,12 +147,18 @@ export default class Shop extends Component {
           eventName: await SecureStore.getItemAsync("event_name"),
           eventCountdown: Number.parseInt(
             await SecureStore.getItemAsync("event_countdown")
-          )
+          ),
         });
       }
     }
     console.log(await SecureStore.getItemAsync("event_name"));
 
+    console.log(
+      "prevDay contains lastRefreshed? " + prevDay.contains(lastRefreshed)
+    );
+    console.log(
+      "prevDay after lastRefreshed? " + prevDay.isAfter(lastRefreshed)
+    );
     if (prevDay.contains(lastRefreshed) || prevDay.isAfter(lastRefreshed)) {
       console.log("FIRST TIME IN SHOP TODAY!");
       //initialize
@@ -178,14 +186,16 @@ export default class Shop extends Component {
       } else {
         this.setState({ eventName: eventName });
         this.eventChance();
-        await SecureStore.setItemAsync("price8", this.state.price8);
-        await SecureStore.setItemAsync("price9", this.state.price9);
-        await SecureStore.setItemAsync("price10", this.state.price10);
-        await SecureStore.setItemAsync("price11", this.state.price11);
-        await SecureStore.setItemAsync("rarity10", this.state.rarity10);
-        await SecureStore.setItemAsync("rarity11", this.state.rarity11);
+        await SecureStore.setItemAsync("price8", "" + this.state.price8);
+        await SecureStore.setItemAsync("price9", "" + this.state.price9);
+        await SecureStore.setItemAsync("price10", "" + this.state.price10);
+        await SecureStore.setItemAsync("price11", "" + this.state.price11);
+        await SecureStore.setItemAsync("rarity10", "" + this.state.rarity10);
+        await SecureStore.setItemAsync("rarity11", "" + this.state.rarity11);
       }
     }
+
+    console.log("set shop_refreshed to: " + localTime.toISO());
 
     await SecureStore.setItemAsync("shop_refreshed", localTime.toISO());
   };
@@ -200,7 +210,7 @@ export default class Shop extends Component {
     }
   };
 
-  buy = async pos => {
+  buy = async (pos) => {
     console.log("buying");
     var boughtVar = "bought" + pos;
     console.log("boughtVar: " + this.state[boughtVar]);
@@ -224,27 +234,67 @@ export default class Shop extends Component {
 
     if (pos >= 0 && pos <= 2) {
       await rewardUtils.obtainSeed("none", "C");
+      alert(
+        "Congratulations!\nA new common seed has been added to your inventory."
+      );
     } else if (pos == 3) {
       await rewardUtils.obtainFertilizer(1);
+      alert(
+        "Congratulations!\nOne bag of fertilizer has been added to your inventory."
+      );
     } else if (pos == 4 || pos == 5) {
       await rewardUtils.obtainSeed("none", "U");
+      alert(
+        "Congratulations!\nA new uncommon seed has been added to your inventory."
+      );
     } else if (pos == 6) {
       await rewardUtils.obtainSeed("none", "R");
+      alert(
+        "Congratulations!\nA new rare seed has been added to your inventory."
+      );
     } else if (pos == 7) {
       await rewardUtils.obtainElixir(1);
+      alert(
+        "Congratulations!\nOne elixir potion has been added to your inventory."
+      );
     } else if (pos == 8 || pos == 9) {
       await rewardUtils.obtainSeed(this.state.eventName, "C");
+      alert(
+        "Congratulations!\nA new common " +
+          this.state.eventName +
+          " seed has been added to your inventory."
+      );
     } else if (pos == 10) {
       if (this.state.rarity10 == "uncommon") {
         await rewardUtils.obtainSeed(this.state.eventName, "U");
+        alert(
+          "Congratulations!\nA new uncommon " +
+            this.state.eventName +
+            " seed has been added to your inventory."
+        );
       } else if (this.state.rarity10 == "rare") {
         await rewardUtils.obtainSeed(this.state.eventName, "R");
+        alert(
+          "Congratulations!\nA new rare " +
+            this.state.eventName +
+            " seed has been added to your inventory."
+        );
       }
     } else if (pos == 11) {
       if (this.state.rarity11 == "uncommon") {
         await rewardUtils.obtainSeed(this.state.eventName, "U");
+        alert(
+          "Congratulations!\nA new uncommon " +
+            this.state.eventName +
+            " seed has been added to your inventory."
+        );
       } else if (this.state.rarity11 == "rare") {
         await rewardUtils.obtainSeed(this.state.eventName, "R");
+        alert(
+          "Congratulations!\nA new rare " +
+            this.state.eventName +
+            " seed has been added to your inventory."
+        );
       }
     }
 
@@ -252,6 +302,7 @@ export default class Shop extends Component {
 
     await rewardUtils.useGold(Number.parseInt(this.state.itemPrices[pos]));
 
+    console.log("boughtVar before setting: " + this.state[boughtVar]);
     this.setState({ [boughtVar]: 1 });
     console.log(this.state[boughtVar]);
 
@@ -274,7 +325,7 @@ export default class Shop extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
         <View
@@ -284,7 +335,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center"
+              alignItems: "center",
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -310,7 +361,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0
+              marginTop: 0,
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -384,7 +435,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -492,7 +543,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center"
+              alignItems: "center",
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -518,7 +569,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0
+              marginTop: 0,
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -593,7 +644,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -687,7 +738,7 @@ export default class Shop extends Component {
           style={{
             flex: 4,
             backgroundColor: "#57423e",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           {this.state.eventName != "" && this.state.eventName != null ? (
@@ -695,7 +746,7 @@ export default class Shop extends Component {
               style={{
                 flexDirection: "row",
                 flex: 1,
-                alignItems: "center"
+                alignItems: "center",
                 //   marginLeft: screen.width / 14,
               }}
             >
@@ -722,7 +773,7 @@ export default class Shop extends Component {
             <View
               style={{
                 flexDirection: "row",
-                marginTop: 0
+                marginTop: 0,
                 //   marginLeft: screen.width / 14,
               }}
             >
@@ -830,7 +881,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -911,7 +962,7 @@ export default class Shop extends Component {
             flex: 0.7,
             backgroundColor: "#333333",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Text style={{ color: "#ffffff" }}> gold: {this.state.gold}</Text>
@@ -921,7 +972,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              marginTop: (screen.height * 3) / 22 - screen.width / 5
+              marginTop: (screen.height * 3) / 22 - screen.width / 5,
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -973,16 +1024,16 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
-    height: screen.width / 7
+    height: screen.width / 7,
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10
+    marginLeft: screen.width / 10,
   },
   pinkButton: {
     borderWidth: 2,
@@ -991,39 +1042,39 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
   },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 20
+    marginTop: screen.height / 20,
   },
   prices: {
     color: "#FFFFFF",
-    fontSize: 16
+    fontSize: 16,
   },
   poor: {
     color: "#F5493D",
-    fontSize: 16
+    fontSize: 16,
   },
   bought: {
     color: "#B9C4C4",
-    fontSize: 16
+    fontSize: 16,
   },
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
     marginTop: screen.height / 50,
-    textAlign: "center"
+    textAlign: "center",
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
     marginBottom: screen.height / 70,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
