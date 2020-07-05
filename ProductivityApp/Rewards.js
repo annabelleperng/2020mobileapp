@@ -14,6 +14,7 @@ import {
 } from "react-native";
 
 const screen = Dimensions.get("window");
+
 const utils = new RewardUtils();
 
 export default class Rewards extends React.Component {
@@ -23,6 +24,7 @@ export default class Rewards extends React.Component {
     this.state = {
       hasSet: 0,
       timer_time: this.props.route.params.timer_time,
+      addedWeighted: false,
       water: 0,
       bees: 0,
       timeTilBee: 0,
@@ -84,7 +86,37 @@ export default class Rewards extends React.Component {
     }
   };
 
+  addWeighted = async () => {
+    if (this.state.addedWeighted == false) {
+      console.log(this.state.timer_time);
+      this.setState({ addedWeighted: true });
+      let prod = Number.parseInt(
+        await SecureStore.getItemAsync("weighted_productivity")
+      );
+      let happiness = Number.parseInt(
+        await SecureStore.getItemAsync("weighted_happiness")
+      );
+      if (prod == NaN) {
+        prod = 0;
+      }
+      if (happiness == NaN) {
+        happiness = 0;
+      }
+
+      console.log("prod " + prod + "happiness " + happiness);
+
+      prod += this.state.timer_time * this.props.route.params.productivity;
+      happiness += this.state.timer_time * this.props.route.params.happiness;
+
+      console.log("prod " + prod + "happiness " + happiness);
+
+      await SecureStore.setItemAsync("weighted_productivity", prod + "");
+      await SecureStore.setItemAsync("weighted_happiness", happiness + "");
+    }
+  };
+
   render() {
+    this.addWeighted();
     this.setStreak();
     console.log("start of render: " + DateTime.local().toString());
     // console.log(this.props);

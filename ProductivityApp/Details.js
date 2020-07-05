@@ -99,9 +99,9 @@ export default class Details extends Component {
     }
   };
 
-  refreshPage() {
-    window.location.reload(false);
-  }
+  refreshStats = () => {
+    this.setState({ ltStats: false });
+  };
 
   render() {
     this.getStats();
@@ -229,6 +229,12 @@ export default class Details extends Component {
                   </Text>{" "}
                   paused
                 </Text>
+                <Text style={styles.smallText}></Text>
+
+                <TouchableOpacity onPress={this.refreshStats}>
+                  <Text style={styles.smallLinkText}>Refresh page</Text>
+                </TouchableOpacity>
+
                 <Text style={styles.smallText}></Text>
 
                 <TouchableOpacity onPress={() => navigate("Timer5")}>
