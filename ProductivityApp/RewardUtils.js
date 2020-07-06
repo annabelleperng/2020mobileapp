@@ -150,27 +150,31 @@ export default class App extends React.Component {
 
   obtainSeed = async (event, rarity) => {
     console.log("OBTAINSEED");
-    var prevStr = await SecureStore.getItemAsync("inventory_seeds");
-    var seedTypeIndex = prevStr.indexOf(event + rarity);
-    console.log("seedTypeIndex: " + seedTypeIndex);
-    var newStr = "";
-    if (seedTypeIndex == -1) {
-      newStr = prevStr + "%1" + event + rarity;
-      console.log("IN HERE 1");
-    } else {
-      var prevStrFirst = prevStr.substring(0, seedTypeIndex);
-      var prevStrLast = prevStr.substring(seedTypeIndex);
-      var percentIndex = prevStrFirst.lastIndexOf("%");
-      var count = Number.parseInt(prevStrFirst.substring(percentIndex + 1)) + 1;
-      newStr = prevStr.substring(0, percentIndex + 1) + count + prevStrLast;
-      console.log("IN HERE OTRO");
-    }
-    console.log("newStr: " + newStr);
-    await SecureStore.setItemAsync("inventory_seeds", "" + newStr);
-    console.log(
-      "what after SHOULD be: " +
-        (await SecureStore.getItemAsync("inventory_seeds"))
-    );
-    return newStr;
+    let seedsStr = await SecureStore.getItemAsync("inventory_seeds");
+    let seeds = JSON.parse(seedsStr);
+    seeds[event][rarity] += 1;
+    seedsStr = JSON.stringify(seeds);
+    await SecureStore.setItemAsync("inventory_seeds", seedsStr);
+    // var seedTypeIndex = prevStr.indexOf(event + rarity);
+    // console.log("seedTypeIndex: " + seedTypeIndex);
+    // var newStr = "";
+    // if (seedTypeIndex == -1) {
+    //   newStr = prevStr + "%1" + event + rarity;
+    //   console.log("IN HERE 1");
+    // } else {
+    //   var prevStrFirst = prevStr.substring(0, seedTypeIndex);
+    //   var prevStrLast = prevStr.substring(seedTypeIndex);
+    //   var percentIndex = prevStrFirst.lastIndexOf("%");
+    //   var count = Number.parseInt(prevStrFirst.substring(percentIndex + 1)) + 1;
+    //   newStr = prevStr.substring(0, percentIndex + 1) + count + prevStrLast;
+    //   console.log("IN HERE OTRO");
+    // }
+    // console.log("newStr: " + newStr);
+    // await SecureStore.setItemAsync("inventory_seeds", "" + newStr);
+    // console.log(
+    //   "what after SHOULD be: " +
+    //     (await SecureStore.getItemAsync("inventory_seeds"))
+    // );
+    // return newStr;
   };
 }

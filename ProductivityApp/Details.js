@@ -232,7 +232,7 @@ export default class Details extends Component {
                 <Text style={styles.smallText}></Text>
 
                 <TouchableOpacity onPress={this.refreshStats}>
-                  <Text style={styles.smallLinkText}>Refresh page</Text>
+                  <Text style={styles.smallLinkText}>[Refresh]</Text>
                 </TouchableOpacity>
 
                 <Text style={styles.smallText}></Text>

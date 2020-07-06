@@ -42,7 +42,7 @@ export default class Garden extends Component {
     this.state = {
       showCancel: false,
       showBees: false,
-      status1: 1,
+      status1: 2,
       status2: 2,
       status3: 2,
       status4: 2,
@@ -113,7 +113,7 @@ export default class Garden extends Component {
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-03T16:52:25.437-07:00"
+      "2020-07-05T17:52:25.437-07:00"
     ); // "2020-07-02T18:50:15.437-07:00"
     await SecureStore.setItemAsync("weighted_productivity", "0");
     await SecureStore.setItemAsync("weighted_happiness", "0");
@@ -132,14 +132,19 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("8_status", "0");
     await SecureStore.setItemAsync("9_status", "0");
     await SecureStore.setItemAsync("9_status", "0");
-    await SecureStore.setItemAsync("1_event", "none");
-    await SecureStore.setItemAsync("2_event", "none");
+    await SecureStore.setItemAsync("1_event", "christmas");
+    await SecureStore.setItemAsync("2_event", "valentines");
     await SecureStore.setItemAsync("3_event", "none");
-    await SecureStore.setItemAsync(
-      "inventory_seeds",
-      "%2bitch%1hello%1hi%2i%3am"
-    );
+    await SecureStore.setItemAsync("1_rarity", "R");
+    await SecureStore.setItemAsync("2_rarity", "R");
+    await SecureStore.setItemAsync("3_rarity", "C");
+    // await SecureStore.setItemAsync(
+    //   "inventory_seeds",
+    //   "%2bitch%1hello%1hi%2i%3am"
+    // );
     await SecureStore.setItemAsync("garden_initialized", "true");
+
+    await seedUtils.initializeAllSeeds();
     // await su.plantSeed
     console.log("we're here");
     console.log(await SecureStore.getItemAsync("1_period_end"));
@@ -189,8 +194,8 @@ export default class Garden extends Component {
       //   );
       return;
     }
-    let resEvent = res.substring(2, res.length);
-    let resRarity = res.substring(res.length - 1);
+    let resEvent = res.substring(1, res.length);
+    let resRarity = res.substring(0, 1);
     let resString = "Successfully bred plants!\n\nACQUIRED: 1 ";
     if (resRarity == "R") {
       resString += "RARE ";

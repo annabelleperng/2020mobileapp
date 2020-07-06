@@ -70,7 +70,7 @@ export default class SeedUtils extends Component {
    * - string with information about seed's event type & rarity
    * - empty string if no seed at nth spot)
    */
-  removeSeedFromInventory = async (positionInInventory) => {
+  removeSeedFromInventoryOLD = async (positionInInventory) => {
     let allSeeds = await SecureStore.getItemAsync("inventory_seeds");
     let remaining = ""; // all remaining seeds from inventory
     let index = -1;
@@ -605,8 +605,27 @@ export default class SeedUtils extends Component {
 
     const rarityAKey = positionA + "_rarity";
     const rarityBKey = positionB + "_rarity";
-    const rarityA = Number.parseInt(await SecureStore.getItemAsync(rarityAKey));
-    const rarityB = Number.parseInt(await SecureStore.getItemAsync(rarityBKey));
+
+    let rarityA = await SecureStore.getItemAsync(rarityAKey);
+    let rarityB = await SecureStore.getItemAsync(rarityBKey);
+
+    console.log("RARITYA AND B ARE " + rarityA + "    " + rarityB);
+    if (rarityA == "R") {
+      rarityA = 3;
+    } else if (rarityA == "U") {
+      rarityA = 2;
+    } else {
+      rarityA = 1;
+    }
+
+    if (rarityB == "R") {
+      rarityB = 3;
+    } else if (rarityB == "U") {
+      rarityB = 2;
+    } else {
+      rarityB = 1;
+    }
+
     const sumRarity = rarityA + rarityB;
 
     var uncommonChance = 0;
@@ -632,13 +651,14 @@ export default class SeedUtils extends Component {
     const rarityRand = Math.floor(Math.random() * 100) + 1;
     var rarity = "";
     if (rarityRand < uncommonChance) {
-      rarity = "1";
+      rarity = "C";
     } else if (rarityRand < rareChance) {
-      rarity = "2";
+      rarity = "U";
     } else {
-      rarity = "3";
+      rarity = "R";
     }
-    newSeed = newSeed + rarity;
+
+    var event = "";
 
     const eventAKey = positionA + "_event";
     const eventBKey = positionB + "_event";
@@ -647,17 +667,75 @@ export default class SeedUtils extends Component {
 
     const eventRand = Math.floor(Math.random() * 100) + 1;
     if (eventRand < 35) {
-      newSeed = newSeed + eventA;
+      event = eventA;
     } else if (eventRand < 70) {
-      newSeed = newSeed + eventB;
+      event = eventB;
     } else {
-      newSeed = newSeed + "none";
+      event = "none";
     }
 
-    console.log("new seed = " + newSeed);
-    var allSeeds = await SecureStore.getItemAsync("inventory_seeds");
-    allSeeds = allSeeds + newSeed;
-    await SecureStore.setItemAsync("inventory_seeds", allSeeds);
-    return newSeed;
+    console.log(rarity + event + "                    ");
+    let seedsString = await SecureStore.getItemAsync("inventory_seeds");
+    let seeds = JSON.parse(seedsString);
+    console.log(seedsString);
+    console.log("seeds before breeding: \n", seeds);
+
+    seeds[event][rarity] += 1;
+    console.log("seeds after breeding: \n", seeds);
+
+    seedsString = JSON.stringify(seeds);
+    await SecureStore.setItemAsync("inventory_seeds", seedsString);
+    return rarity + event;
+  };
+
+  initializeAllSeeds = async () => {
+    let seeds = {
+      none: { C: 2, U: 0, R: 0 },
+      christmas: { C: 0, U: 0, R: 0 },
+      valentines: { C: 0, U: 0, R: 0 },
+    };
+
+    console.log(seeds);
+
+    let seedsString = JSON.stringify(seeds);
+
+    console.log(seedsString);
+
+    await SecureStore.setItemAsync("inventory_seeds", seedsString);
+  };
+
+  getAllSeeds = async () => {
+    let seedsString = await SecureStore.getItemAsync("inventory_seeds");
+
+    console.log(seedsString);
+
+    let seeds = JSON.parse(seedsString);
+
+    console.log(seeds);
+
+    return seeds;
+  };
+
+  /* Increases inventory count of seed for given eventName
+   * and given rarity.
+   * If you are using this function, make sure that
+   * seeds has been parsed from SecureStore "inventory_seeds"
+   * using JSON.parse
+   * Example call: increaseBy(seeds, "none", "R", 5)
+   */
+  increaseBy = (seeds, eventName, rarity, increment) => {
+    seeds[eventName][rarity] += increment;
+    return seeds;
+  };
+
+  /* Decreases inventory count of seed for given eventName
+   * and given rarity.
+   * If you are using this function, make sure that
+   * seeds has been parsed from SecureStore "inventory_seeds"
+   * using JSON.parse
+   */
+  decreaseBy = (seeds, eventName, rarity, decrement) => {
+    seeds[eventName][rarity] -= decrement;
+    return seeds;
   };
 }
