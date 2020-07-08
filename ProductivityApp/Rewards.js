@@ -48,7 +48,8 @@ export default class Rewards extends React.Component {
       bees: await utils.earnBees(mins, streak),
       timeTilBee: beeProgress,
       gold: await utils.earnGold(mins, streak),
-      seed: await utils.obtainSeed(streak),
+      seed: await utils.obtainSeed("none", "C"),
+      hasSet: 1,
     });
     console.log(this.state.hasSet);
     // console.log("earning stuff");

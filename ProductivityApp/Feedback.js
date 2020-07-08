@@ -32,75 +32,108 @@ export default class Feedback extends Component {
     console.log(this.props);
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          How happy did you feel during this focus session?
-        </Text>
-        <Slider
-          style={{ width: screen.width * 0.8 }}
-          step={1}
-          minimumValue={0}
-          maximumValue={100}
-          happ={this.state.states[0]}
-          onValueChange={(val) =>
-            this.setState({ states: [val, this.state.states[1]] })
-          }
-          onSlidingComplete={(val) => this.getVal(val)}
-        />
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
-          <Image
-            style={styles.tinyLogoLeft}
-            source={require("./assets/sad_jeno.png")}
-          />
-          <Image
-            style={styles.tinyLogoRight}
-            source={require("./assets/puta.png")}
-          />
-        </View>
-        <Text style={styles.welcome}>
-          {this.state.states[0]} {"\n\n"}
-        </Text>
+        <View
+          style={{
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <View style={{ flex: 0.2 }}></View>
+          <View style={{ flex: 0.5 }}>
+            <Text style={styles.welcome}>
+              How happy did you feel during this focus session?
+            </Text>
+            <Slider
+              style={{ width: screen.width * 0.8, alignSelf: "center" }}
+              step={1}
+              minimumValue={0}
+              maximumValue={100}
+              happ={this.state.states[0]}
+              onValueChange={(val) =>
+                this.setState({ states: [val, this.state.states[1]] })
+              }
+              onSlidingComplete={(val) => this.getVal(val)}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 0.5 }}>
+                <Image
+                  style={styles.tinyLogoLeft}
+                  source={require("./assets/sad_jeno.png")}
+                />
+              </View>
+              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 0.5 }}>
+                <Image
+                  style={styles.tinyLogoRight}
+                  source={require("./assets/puta.png")}
+                />
+              </View>
+            </View>
+            <Text style={styles.welcome}>{this.state.states[0]}</Text>
+          </View>
 
-        <Text style={styles.welcome}>
-          How productive did you feel during this focus session?
-        </Text>
-        <Slider
-          style={{ width: screen.width * 0.8 }}
-          step={1}
-          minimumValue={0}
-          maximumValue={100}
-          prod={this.state.states[1]}
-          onValueChange={(val) =>
-            this.setState({ states: [this.state.states[0], val] })
-          }
-          onSlidingComplete={(val) => this.getVal(val)}
-        />
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
-          <Image
-            style={styles.tinyLogoLeft}
-            source={require("./assets/sad_jeno.png")}
-          />
-          <Image
-            style={styles.tinyLogoRight}
-            source={require("./assets/puta.png")}
-          />
+          <View style={{ flex: 0.5 }}>
+            <Text style={styles.welcome}>
+              How productive did you feel during this focus session?
+            </Text>
+            <Slider
+              style={{ width: screen.width * 0.8, alignSelf: "center" }}
+              step={1}
+              minimumValue={0}
+              maximumValue={100}
+              prod={this.state.states[1]}
+              onValueChange={(val) =>
+                this.setState({ states: [this.state.states[0], val] })
+              }
+              onSlidingComplete={(val) => this.getVal(val)}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 0.5 }}>
+                <Image
+                  style={styles.tinyLogoLeft}
+                  source={require("./assets/sad_jeno.png")}
+                />
+              </View>
+              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 0.5 }}>
+                <Image
+                  style={styles.tinyLogoRight}
+                  source={require("./assets/puta.png")}
+                />
+              </View>
+            </View>
+            <Text style={styles.welcome}>{this.state.states[1]}</Text>
+          </View>
+          <View style={{ flex: 0.1 }}></View>
+          <View style={{ flex: 0.3 }}>
+            <TouchableOpacity>
+              <Button
+                onPress={() =>
+                  this.props.navigation.navigate("Rewards", {
+                    timer_time: this.props.route.params.timer_time,
+                    happiness: this.state.states[0],
+                    productivity: this.state.states[1],
+                  })
+                }
+                title="Submit!"
+                color="#35F2E9" //button bg for android, text for ios
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <Text style={styles.welcome}>
-          {this.state.states[1]} {"\n\n"}
-        </Text>
-
-        <TouchableOpacity>
-          <Button
-            onPress={() =>
-              this.props.navigation.navigate("Rewards", {
-                timer_time: this.props.route.params.timer_time,
-                happiness: this.state.states[0],
-                productivity: this.state.states[1],
-              })
-            }
-            title="Submit!"
-            color="#35F2E9" //button bg for android, text for ios
-          />
-        </TouchableOpacity>
       </View>
     );
   }
@@ -127,14 +160,14 @@ const styles = StyleSheet.create({
   tinyLogoLeft: {
     width: screen.width / 15,
     height: screen.width / 15,
-    marginRight: screen.width / 3,
-    alignItems: "flex-end",
+    // marginRight: screen.width / 3,
+    alignSelf: "center",
   },
   tinyLogoRight: {
     width: screen.width / 15,
     height: screen.width / 15,
-    marginLeft: screen.width / 3,
-    alignItems: "flex-end",
+    // marginLeft: screen.width / 3,
+    alignSelf: "center",
   },
   invisibleNum: {
     fontSize: 20,

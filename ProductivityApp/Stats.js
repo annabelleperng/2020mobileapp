@@ -276,37 +276,31 @@ export default class App extends React.Component {
         <View
           style={{
             flexDirection: "row",
-            alignContent: "space-between",
-            marginTop: 0,
+            alignItems: "center",
           }}
         >
-          <Text style={styles.leftTimes}>Started at {"        "}</Text>
-          <Text style={styles.rightTimes}>Ended at </Text>
+          <View style={{ flex: 0.15 }}></View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text style={styles.leftTimes}>Started at</Text>
+            <Text style={styles.leftTimesSmol}>
+              {(startHours12h < 10 ? "0" + startHours12h : startHours12h) +
+                ":" +
+                (startMins < 10 ? "0" + startMins : startMins) +
+                startAMPM}
+            </Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text style={styles.rightTimes}>Ended at</Text>
+            <Text style={styles.rightTimesSmol}>
+              {(endHours12h < 10 ? "0" + endHours12h : endHours12h) +
+                ":" +
+                (endMins < 10 ? "0" + endMins : endMins) +
+                endAMPM}
+            </Text>
+          </View>
+          <View style={{ flex: 0.15 }}></View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignContent: "space-between",
-            marginTop: 3,
-            marginBottom: 15,
-          }}
-        >
-          <Text style={styles.leftTimesSmol}>
-            {(startHours12h < 10 ? "0" + startHours12h : startHours12h) +
-              ":" +
-              (startMins < 10 ? "0" + startMins : startMins) +
-              startAMPM}
-            {"          "}
-          </Text>
-          <Text style={styles.rightTimesSmol}>
-            {" "}
-            {(endHours12h < 10 ? "0" + endHours12h : endHours12h) +
-              ":" +
-              (endMins < 10 ? "0" + endMins : endMins) +
-              endAMPM}{" "}
-          </Text>
-        </View>
-        <TouchableOpacity>
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
           <Button
             onPress={() =>
               this.props.navigation.navigate("Feedback", {

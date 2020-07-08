@@ -13,6 +13,7 @@ import { screensEnabled } from "react-native-screens";
 import DateTime from "luxon/src/datetime.js";
 import Duration from "luxon/src/duration.js";
 import Interval from "luxon/src/interval.js";
+import * as SecureStore from "expo-secure-store";
 
 const screen = Dimensions.get("window");
 

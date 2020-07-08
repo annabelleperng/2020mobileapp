@@ -165,6 +165,7 @@ export default class Garden extends Component {
     console.log("difference is" + diff);
     if (diff.hours() >= 24) {
       rewardUtils.updateStreak();
+      var i;
       for (i = 1; i <= 9; i++) {
         seedUtils.updateWilting(i);
       }

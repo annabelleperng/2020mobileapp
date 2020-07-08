@@ -26,6 +26,7 @@ export default class App extends React.Component {
     });
     const localPrevMidnight = localMidnight.minus({ days: 1 });
     const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+    await SecureStore.getItemAsync("latest_sprint");
     const latestSprintDay = DateTime.fromISO(
       await SecureStore.getItemAsync("latest_sprint")
     );
@@ -39,7 +40,7 @@ export default class App extends React.Component {
     }
     await SecureStore.setItemAsync("streak_length", "" + streakLength);
     console.log("\n\n\n\n\nUpdated streak to " + streakLength);
-
+    var i;
     for (i = 1; i <= 9; i++) {
       utils.updateGrowthStreak(i);
     }
