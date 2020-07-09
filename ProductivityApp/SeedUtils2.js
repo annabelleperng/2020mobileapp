@@ -23,15 +23,44 @@ export default class SeedUtils extends Component {
     super(props);
   }
 
-  /* Plants a rarity_event seed at the given position.
-   * Position is just a number in the range [1, 9].
-   * rarity_event is a string with information about the seed's
-   * rarity and event, such as such as 2christmas or 1none.
+  /*
+   * Plants a rarity, event seed.
+   * plant is parsed JSON object from SecureStore which contains
+   * information about a plant at a specific position.
+   *   ex. rarity: "C"
+   *   ex. event: "none"
    */
-  plantSeed = async (plant, rarity, event) => {};
+  plantSeed = async (plant, rarity, event) => {
+    console.log("plantSeed called");
 
-  /* Rolls for species when a seed is planted. Stores in SecureStore as
-   * a string.
+    if (plant["status"] != 0) {
+      console.log("error: trying to plant seed where it can't be planted");
+      return -1;
+    }
+
+    plant["status"] = 1;
+
+    plant["permanent"]["rarity"] = rarity;
+    plant["permanent"]["event"] = event;
+
+    const species = this.determineSpecies(rarity, event);
+    plant["permanent"]["species"] = species;
+
+    const datePlanted = DateTime.local().toISO();
+    plant["permanent"]["date_planted"] = datePlanted;
+
+    plant["one"]["grow_streak_length"] = 0;
+    plant["one"]["grow_start"] = DateTime.local().toISO();
+    plant["one"]["grow_offset"] = await SecureStore.getItemAsync(
+      "streak_length"
+    );
+
+    console.log("plantSeed finished\n\n\n");
+    return 1;
+  };
+
+  /*
+   * Rolls for species when a seed is planted.
    * Calls helper functions for each event type; default is "none".
    */
   determineSpecies = (rarity, event) => {
@@ -76,7 +105,32 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  growSeed = async (plant) => {};
+  growSeed = async (plant) => {
+    if (plant["status"] != 1) {
+      console.log("error: you shouldn't be able to grow this plant.");
+      return -1;
+    }
+
+    plant["status"] = 2;
+    plant["two"]["current_waters"] = 0;
+
+    const periodStart = DateTime.local();
+    const periodStartMidnight = DateTime.fromObject({
+      year: localTime.year,
+      month: localTime.month,
+      day: localTime.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      zone: localZone,
+    }); // the midnight that just passed
+    const periodEndMidnight = periodStartMidnight.plus({ day: 4 });
+
+    plant["two"]["water_start"] = periodStartMidnight.ISO();
+    plant["two"]["water_end"] = periodEndMidnight.ISO();
+
+    return 1;
+  };
 
   /*
    * Helper function.
@@ -85,7 +139,17 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  wiltPlant = async (plant) => {};
+  wiltPlant = async (plant) => {
+    if (plant["status"] != 2) {
+      console.log("error: you shouldn't be able to wilt this plant.");
+      return -1;
+    }
+
+    // sets status to 3 - wilted
+    plant["status"] = 3;
+
+    return 1;
+  };
 
   /*
    * Helper function.
@@ -94,7 +158,16 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  killPlant = async (plant) => {};
+  killPlant = async (plant) => {
+    if (plant["status"] != 3) {
+      console.log("error: you shouldn't be able to kill this plant.");
+      return -1;
+    }
+
+    plant["status"] = 4;
+
+    return 1;
+  };
 
   /* Fertilizes plant at position if it's not fully grown.
    * Returns:
@@ -102,14 +175,36 @@ export default class SeedUtils extends Component {
    * 0 if not enough fertilizers to fertilize plant;
    * 1 if successful
    */
-  fertilizePlant = async (plant) => {};
+  fertilizePlant = async (plant) => {
+    let fertilizerAmount = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_fertilizer")
+    );
+    if (fertilizerAmount == NaN) {
+      console.log("BAD ERROR: this should never happen");
+      console.log("fertilizer never initialized");
+      return -1;
+    }
+    if (fertilizerAmount < 1) {
+      console.log("error: not enough fertilizer");
+      return 0;
+    }
 
-  /* Returns # of waters remaining if not all waters in parameter are used;
-   * returns -1 if plant can't be watered (not present or not fully grown),
-   * returns -1 if not enough waters,
-   * returns remainder of waters if not all parameter waters are used.
-   */
-  waterPlant = async (plant, waters) => {};
+    if (plant["status"] != 1) {
+      console.log("error: you shouldn't be able to fertilize this plant.");
+      return -1;
+    }
+
+    plant["status"] = 2;
+    plant["two"]["current_waters"] = 0;
+
+    fertilizerAmount -= 1;
+    await SecureStore.setItemAsync(
+      "inventory_fertilizer",
+      fertilizerAmount + ""
+    );
+
+    return 1;
+  };
 
   /* Updates position_growth_streak_start (GSS) and position_growth_streak_length (GSL).
    * If GSS == -1, set to current time.
@@ -192,9 +287,14 @@ export default class SeedUtils extends Component {
     let plant = {
       status: 0,
       position: position,
-      permanent: { event: "", rarity: "", species: "" },
+      permanent: { event: "", rarity: "", species: "", date_planted: "" },
       zero: { zero_image: "" },
-      one: { one_image: "", grow_start: 0, grow_end: 0, grow_streak_length: 0 },
+      one: {
+        one_image: "",
+        grow_start: "",
+        grow_offset: 0,
+        grow_streak_length: 0,
+      },
       two: { two_image: "", current_waters: 0, water_start: "", water_end: "" },
       three: { three_image: "", wilt_start: "", wilt_end: "" },
       four: { four_image: "" },
