@@ -422,7 +422,6 @@ export default class SeedUtils extends Component {
     console.log(seedsString);
 
     let seeds = JSON.parse(seedsString);
-    t;
 
     console.log(seeds);
 

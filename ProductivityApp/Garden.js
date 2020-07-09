@@ -152,22 +152,35 @@ export default class Garden extends Component {
     // su.checkStatus(1, "1");
   };
 
-  updateStuff = async (position) => {
-    const localZone = await SecureStore.getItemAsync("timezone");
+  updateStuff = async (plant) => {
     const localTime = DateTime.local();
-    const periodStartKey = position + "_period_start";
-    const periodStart = DateTime.fromISO(
-      await SecureStore.getItemAsync(periodStartKey)
+
+    const gardenLastUpdated = DateTime.fromISO(
+      await SecureStore.getItemAsync("garden_last_updated")
     );
+    console.log("garden last updated: " + gardenLastUpdated);
+
+    // let start;
+    // if (plant["status"] == 2) {
+    //   start = DateTime.fromISO(
+    //     plant["two"]["water_start"]
+    //   );
+    // } else  if (plant["status"] == 3) {
+    //   start = DateTime.fromISO(plant["three"]["wilt_start"]);
+    // }
+
     console.log("localTime is " + localTime.toISO());
     console.log("periodStart is " + periodStart.toISO());
-    const diff = localTime.diff(periodStart);
+    const diff = localTime.diff(gardenLastUpdated);
     console.log("difference is" + diff);
     if (diff.hours() >= 24) {
       rewardUtils.updateStreak();
       var i;
       for (i = 1; i <= 9; i++) {
-        seedUtils.updateWilting(i);
+        let plantStr = await SecureStore("" + i + "_plant");
+        let plant = JSON.parse(plantStr);
+        seedUtils.updateWilting(plant);
+        seedUtils.updateGrowthStreak(plant);
       }
     }
   };
