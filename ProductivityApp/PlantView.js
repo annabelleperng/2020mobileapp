@@ -34,16 +34,18 @@ import { screensEnabled } from "react-native-screens";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
-    // this.initializeGarden();
     this.state = {
-      plant_position: 1,
+      plant_position: this.props.route.params.position,
       //   plant_waters: 0,
+
       showCancel: false,
       image1: "invis ",
       temp: false,
+
       //   soundLoaded: false,
       //   shouldBePlaying: true,
       //   isPlaying: true,
+
       progress: 0, //current # waters
       inventory_water: 0,
       inventory_fertilizer: 0,
@@ -79,39 +81,8 @@ export default class GardenTesting extends Component {
     // this.stopPlaying();
   };
 
-  initializeGarden = async () => {
-    // console.log("initializing garden");
-    // await SecureStore.setItemAsync("inventory_water", "1000");
-    // await SecureStore.setItemAsync("inventory_bees", "200");
-    // await SecureStore.setItemAsync("inventory_seeds", "");
-    // await SecureStore.setItemAsync("inventory_gold", "1500");
-    // await SecureStore.setItemAsync("inventory_fertilizer", "2");
-    // await SecureStore.setItemAsync("inventory_elixir", "1");
-    // await SecureStore.setItemAsync("1_status", "2");
-    // // const localZone = await SecureStore.getItemAsync("timezone");
-    // // const datePlanted = DateTime.local().setZone(localZone).toISO();
-    // // console.log("dateplanted issss" + datePlanted);
-    // // await SecureStore.setItemAsync("1_period_start", "2");
-    // await SecureStore.setItemAsync("1_waters", "10");
-    // await SecureStore.setItemAsync("2_status", "2");
-    // await SecureStore.setItemAsync("3_status", "2");
-    // await SecureStore.setItemAsync("4_status", "0");
-    // await SecureStore.setItemAsync("5_status", "0");
-    // await SecureStore.setItemAsync("6_status", "0");
-    // await SecureStore.setItemAsync("7_status", "0");
-    // await SecureStore.setItemAsync("8_status", "0");
-    // await SecureStore.setItemAsync("9_status", "0");
-    // await SecureStore.setItemAsync("9_status", "0");
-    // await SecureStore.setItemAsync(
-    //   "inventory_seeds",
-    //   "%2bitch%1hello%1hi%2i%3am"
-    // );
-    // await SecureStore.setItemAsync("garden_initialized", "true");
-    // // await su.plantSeed
-    // console.log("we're here");
-    // su.checkStatus(1, "0");
-    // su.checkStatus(1, "1");
-  };
+  initializeGarden = async () => {};
+
   toggleCancel = () => {
     console.log(" ");
     if (this.state.showCancel) {
@@ -322,34 +293,6 @@ export default class GardenTesting extends Component {
     console.log("DONE CHECKING WATERING OPTIONS I THINK");
   };
 
-  //   componentDidMount = async () => {
-  //     var that = this;
-
-  //     //We are showing the coundown timer for a given expiry date-time
-  //     //If you are making an quize type app then you need to make a simple timer
-  //     //which can be done by using the simple like given below
-  //     //that.setState({ totalDuration: 30 }); //which is 30 sec
-
-  //     var date = moment().utcOffset("+05:30").format("YYYY-MM-DD hh:mm:ss");
-  //     //Getting the current date-time with required formate and UTC
-
-  //     var expirydate = "2020-10-23 04:00:45"; //You can set your own date-time
-  //     //Let suppose we have to show the countdown for above date-time
-
-  //     var diffr = moment.duration(moment(expirydate).diff(moment(date)));
-  //     //difference of the expiry date-time given and current date-time
-
-  //     var hours = parseInt(diffr.asHours());
-  //     var minutes = parseInt(diffr.minutes());
-  //     var seconds = parseInt(diffr.seconds());
-
-  //     var d = hours * 60 * 60 + minutes * 60 + seconds;
-  //     //converting in seconds
-
-  //     that.setState({ totalDuration: 50 });
-  //     //Settign up the duration of countdown in seconds to re-render
-  //   }
-
   checkIfWilted = async () => {
     const res = await su.updateWilting(this.state.plant_position);
     console.log("res is " + res);
@@ -416,6 +359,7 @@ export default class GardenTesting extends Component {
   render() {
     // btwn 1.5 and 2
     console.log(this.state.totalDuration);
+    console.log("POSITIONNN IS " + this.state.plant_position);
     const barWidth = screen.width / 1.7;
     const progressCustomStyles = {
       backgroundColor: "#91faff",
