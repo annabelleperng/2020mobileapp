@@ -13,8 +13,9 @@ export default class App extends React.Component {
   }
 
   updateStreak = async () => {
-    const localZone = await SecureStore.getItemAsync("timezone");
-    const localTime = DateTime.local().setZone(localZone);
+    // const localZone = await SecureStore.getItemAsync("timezone");
+    // const localTime = DateTime.local().setZone(localZone);
+    const localTime = DateTime.local();
     const localMidnight = DateTime.fromObject({
       year: localTime.year,
       month: localTime.month,
@@ -22,20 +23,28 @@ export default class App extends React.Component {
       hour: 0,
       minute: 0,
       second: 0,
-      zone: localZone,
+      // zone: localZone,
     });
     const localPrevMidnight = localMidnight.minus({ days: 1 });
-    const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
-    await SecureStore.getItemAsync("latest_sprint");
+
+    //TESTING
+    // const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
+    // const pastMidnight = localPrevMidnight.minus({ days: 2 }).toISO();
+    // console.log("pastMidnight: " + pastMidnight);
+    // await SecureStore.setItemAsync("latest_sprint", pastMidnight);
+
     const latestSprintDay = DateTime.fromISO(
       await SecureStore.getItemAsync("latest_sprint")
     );
-    const streakLength = Number.parseInt(
+    console.log("latestSprintDay: " + latestSprintDay.toISO());
+    let streakLength = Number.parseInt(
       await SecureStore.getItemAsync("streak_length")
     );
     if (prevDay.contains(latestSprintDay)) {
+      console.log("STREAK BOOSTED");
       streakLength += 1;
     } else if (prevDay.isAfter(latestSprintDay)) {
+      console.log("STREAK RESET");
       streakLength = 0;
     }
     await SecureStore.setItemAsync("streak_length", "" + streakLength);

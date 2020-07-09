@@ -39,8 +39,12 @@ export default class Rewards extends React.Component {
 
   earnStuff = async (mins) => {
     console.log("\n\nstart of earnStuff: " + DateTime.local().toString());
-    const streak = await SecureStore.getItemAsync("streak_length");
-    console.log(streak);
+    var streak = this.state.prevStreak;
+    if (this.state.currStreak == 0) {
+      console.log("BROKE STREAK!!");
+      streak = 0;
+    }
+    console.log("using streak: " + streak);
     const beeProgress = await SecureStore.getItemAsync("bee_in_progress");
     console.log(beeProgress);
     this.setState({
@@ -53,7 +57,7 @@ export default class Rewards extends React.Component {
     });
     console.log(this.state.hasSet);
     // console.log("earning stuff");
-    utils.updateStreak();
+    // utils.updateStreak();
     console.log("YOYOYOYOYOYOYOYOYOYOYO");
     // console.log(SecureStore.getItemAsync("inventory_water"));
     // console.log(SecureStore.getItemAsync("inventory_bees"));
@@ -64,15 +68,16 @@ export default class Rewards extends React.Component {
   doStuff = async () => {
     if (this.state.hasSet == 0) {
       this.setState({ hasSet: 1 });
-      console.log("hasSet was 0");
       console.log("\n\nstart of doStuff: " + DateTime.local().toString());
       const prevS = await SecureStore.getItemAsync("streak_length");
       console.log("\n\nprevS from doStuff = " + prevS);
       this.setState({ prevStreak: prevS });
-      await this.earnStuff(this.state.timer_time);
+      // await this.earnStuff(this.state.timer_time);
+      await utils.updateStreak();
       const currS = await SecureStore.getItemAsync("streak_length");
       console.log("\n\ncurrS from doStuff = " + currS);
       this.setState({ currStreak: currS });
+      await this.earnStuff(this.state.timer_time);
       console.log("end of doStuff: " + DateTime.local().toString());
     } else {
       console.log("hasSet was not 0");
@@ -135,7 +140,7 @@ export default class Rewards extends React.Component {
         {console.log("curr: " + this.state.currStreak)}
         {this.state.currStreak == "" ? (
           <Text style={{ marginTop: 5 }}>Calculating...</Text>
-        ) : !(this.state.prevStreak == this.state.currStreak) ? (
+        ) : this.state.prevStreak < this.state.currStreak ? (
           <View>
             <Text style={styles.yay}>
               {"Streak increased!\nYour resource multiplier for tomorrow is 1." +
@@ -154,13 +159,13 @@ export default class Rewards extends React.Component {
                 ) : (
                   <Text>days </Text>
                 )}
-                to build a streak{"\n "}
+                to build a streak{" "}
               </Text>
             ) : (
-              <Text>to build your streak {"\n "}</Text>
+              <Text>to build your streak </Text>
             )}
             and earn a boosted resource multiplier!
-            {this.state.currStreak >= 3 ? (
+            {this.state.prevStreak >= 3 && this.state.currStreak > 0 ? (
               <Text>
                 {"\n"}Your resource multiplier today was 1.
                 {this.state.prevStreak}.

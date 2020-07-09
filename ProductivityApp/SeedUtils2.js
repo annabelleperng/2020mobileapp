@@ -206,17 +206,95 @@ export default class SeedUtils extends Component {
     return 1;
   };
 
-  /* Updates position_growth_streak_start (GSS) and position_growth_streak_length (GSL).
-   * If GSS == -1, set to current time.
-   * Otherwise, sets GSS and GSL according depending on time difference between this sprint and last sprint.
-   *
-   * This method should be called in Timer5.js similar to updateLatestSprints.
+  updateGrowthStreak = async (plant) => {
+    if (plant["status"] != 1) {
+      console.log("error: only growing plants have growing streaks");
+      return -1;
+    }
+
+    var offset = plant["one"]["grow_offset"];
+
+    var length =
+      Number.parseInt(await SecureStore.getItemAsync("streak_length")) - offset;
+    if (length < 0) {
+      length = 0;
+      offset = 0;
+    }
+
+    plant["one"]["growth_streak_length"] = length;
+    plant["one"]["grow_offset"] = offset;
+
+    if (length == 3) {
+      this.growSeed(position);
+    }
+  };
+
+  updateWilting = async (plant) => {
+    if (plant["status"] != 2) {
+      console.log("error: only grown plants can wilt");
+      return -1;
+    }
+
+    const currDate = DateTime.local();
+    const periodEnd = DateTime.fromISO(plant["three"]["wilt_end"]);
+
+    const waters = Number.parseInt(plant["two"]["current_waters"]);
+
+    // if enough waters and current period ended,
+    // start new period
+
+    if (waters >= 15) {
+      console.log("updateWilting: streak upheld!");
+      if (currDate > periodEnd) {
+        console.log("updateWilting: new streak started!");
+        const newStart = periodEnd;
+        const newEnd = periodEnd.plus({ day: 3 });
+
+        plant["two"]["water_start"] = newStart.toISO();
+        plant["two"]["water_end"] = newEnd.toISO();
+        plant["two"]["current_waters"] = "0";
+      }
+    }
+
+    // if current period hasn't ended, do nothing
+
+    if (currDate < periodEnd) {
+      console.log("updateWilting: streak still in progress");
+      return 2;
+    }
+
+    // if period ended and plant was not fully watered,
+    // wilt plant (kill after 3 days without elixir)
+
+    const diff = currDate.diff(periodEnd).as("hours");
+    if (diff < 73) {
+      this.wiltPlant(position);
+      return 3;
+    } else {
+      this.killPlant(position);
+      return 4;
+    }
+  };
+
+  /* Takes in wilted plant parsed using JSON.parse from SecureStore.
+   * Uses up 1 elixir and restores status to grown.
    */
-  updateGrowthStreak = async (plant) => {};
+  elixirPlant = async (plant) => {
+    if (plant["status"] != 3) {
+      console.log("error: only wilted plants use elixir");
+      return -1;
+    }
 
-  updateWilting = async (plant) => {};
-
-  elixirPlant = async (plant) => {};
+    var elixir = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_elixir")
+    );
+    if (elixir == 0) {
+      return -1;
+    }
+    elixir -= 1;
+    await SecureStore.setItemAsync("inventory_elixir", "" + elixir);
+    plant["status"] = 2;
+  };
 
   useBees = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_bees");
@@ -229,7 +307,98 @@ export default class SeedUtils extends Component {
     return newCount;
   };
 
-  breedPlants = async (plantA, plantB) => {};
+  /* Takes in 2 plants to be breeded
+   * that have been parsed using JSON.parse from SecureStore.
+   * Takes in seeds, also parsed using JSON.parse from SecureStore,
+   * and adds a new seed to seeds.
+   */
+  breedPlants = async (plantA, plantB, seeds) => {
+    if (plantA["status"] != 2) {
+      console.log("error: plant A isn't grown and can't breed");
+      return -1;
+    }
+    if (plantB["status"] != 2) {
+      console.log("error: plant B isn't grown and can't breed");
+      return -1;
+    }
+
+    var beeCheck = this.useBees(1);
+    if (beeCheck == -1) {
+      return -1;
+    }
+
+    let rarityA = plantA["permanent"]["rarity"];
+    let rarityB = plantB["permanent"]["rarity"];
+
+    console.log("RARITYA AND B ARE " + rarityA + "    " + rarityB);
+    if (rarityA == "R") {
+      rarityA = 3;
+    } else if (rarityA == "U") {
+      rarityA = 2;
+    } else {
+      rarityA = 1;
+    }
+
+    if (rarityB == "R") {
+      rarityB = 3;
+    } else if (rarityB == "U") {
+      rarityB = 2;
+    } else {
+      rarityB = 1;
+    }
+
+    const sumRarity = rarityA + rarityB;
+
+    var uncommonChance = 0;
+    var rareChance = 0;
+
+    if (sumRarity == 2) {
+      uncommonChance = 50;
+      rareChance = 95;
+    } else if (sumRarity == 3) {
+      uncommonChance = 40;
+      rareChance = 85;
+    } else if (sumRarity == 4) {
+      uncommonChance = 30;
+      rareChance = 75;
+    } else if (sumRarity == 5) {
+      uncommonChance = 20;
+      rareChance = 60;
+    } else {
+      uncommonChance = 5;
+      rareChance = 35;
+    }
+
+    const rarityRand = Math.floor(Math.random() * 100) + 1;
+    var rarity = "";
+    if (rarityRand < uncommonChance) {
+      rarity = "C";
+    } else if (rarityRand < rareChance) {
+      rarity = "U";
+    } else {
+      rarity = "R";
+    }
+
+    var event = "";
+
+    const eventA = plantA["permanent"]["event"];
+    const eventB = plantB["permanent"]["event"];
+
+    const eventRand = Math.floor(Math.random() * 100) + 1;
+    if (eventRand < 35) {
+      event = eventA;
+    } else if (eventRand < 70) {
+      event = eventB;
+    } else {
+      event = "none";
+    }
+
+    console.log(rarity + event + "                    ");
+
+    console.log("seeds before breeding: \n", seeds);
+    seeds["event"]["rarity"] += 1;
+    console.log("seeds after breeding: \n", seeds);
+  };
 
   initializeAllSeeds = async () => {
     let seeds = {
