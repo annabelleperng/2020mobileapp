@@ -40,28 +40,28 @@ export default class Details extends Component {
     };
   }
 
-  alertThis = () => {
-    Alert.alert(
-      "Hello friends",
-      "What boba you want",
-      [
-        {
-          text: "jasmine green milk tea plus boba and lychee jelly",
-          onPress: () => console.log("Ask me later pressed"),
-        },
-        {
-          text: "adult capri sun WITHOUT BOBA",
-          onPress: () => console.log("adult capri sun WITHOUT BOBA"),
-          style: "cancel",
-        },
-        {
-          text: "osmanthus milk tea with extra boba",
-          onPress: () => console.log("OK Pressed"),
-        },
-      ],
-      { cancelable: false }
-    );
-  };
+  // alertThis = () => {
+  //   Alert.alert(
+  //     "Hello friends",
+  //     "What boba you want",
+  //     [
+  //       {
+  //         text: "jasmine green milk tea plus boba and lychee jelly",
+  //         onPress: () => console.log("Ask me later pressed"),
+  //       },
+  //       {
+  //         text: "adult capri sun WITHOUT BOBA",
+  //         onPress: () => console.log("adult capri sun WITHOUT BOBA"),
+  //         style: "cancel",
+  //       },
+  //       {
+  //         text: "osmanthus milk tea with extra boba",
+  //         onPress: () => console.log("OK Pressed"),
+  //       },
+  //     ],
+  //     { cancelable: false }
+  //   );
+  // };
 
   getStats = async () => {
     if (this.state.ltStats == false) {
@@ -292,7 +292,7 @@ export default class Details extends Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
-                <TouchableOpacity onPress={() => this.alertThis()}>
+                <TouchableOpacity onPress={() => navigate("Settings")}>
                   <View
                     style={[
                       styles.pinkButton2,

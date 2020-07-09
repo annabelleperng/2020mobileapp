@@ -29,6 +29,9 @@ export default class StopWatch extends Component {
       start: new Date(),
       startedFirst: false,
       confirm: false,
+      motivation:
+        "This is your personal motivational quote if you entered one. Or we'll just pick from ours.",
+      motivationSet: false,
     };
   }
 
@@ -115,8 +118,21 @@ export default class StopWatch extends Component {
     console.log("I am");
   };
 
+  setMotivation = async () => {
+    let motivation = await SecureStore.getItemAsync("motivation");
+    if (motivation == null || motivation.trim() == "") {
+      motivation = this.state.motivation;
+      await SecureStore.setItemAsync("motivation", motivation);
+    }
+    this.setState({ motivation: motivation, motivationSet: true });
+  };
+
   render() {
     // console.log("hello");
+
+    if (!this.state.motivationSet) {
+      this.setMotivation();
+    }
 
     return (
       //   <View style={styles.MainContainer}>
@@ -200,10 +216,7 @@ export default class StopWatch extends Component {
         </View>
         <View style={{ flex: 2.5, backgroundColor: "#000" }}>
           <View style={styles.containerChopped}>
-            <Text style={styles.red}>
-              This is your personal motivational quote if you entered one. Or
-              we'll just pick from ours.
-            </Text>
+            <Text style={styles.red}>{this.state.motivation}</Text>
           </View>
         </View>
       </View>
