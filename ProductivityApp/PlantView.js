@@ -80,35 +80,35 @@ export default class GardenTesting extends Component {
   };
 
   initializeGarden = async () => {
-    console.log("initializing garden");
-    await SecureStore.setItemAsync("inventory_water", "1000");
-    await SecureStore.setItemAsync("inventory_bees", "200");
-    await SecureStore.setItemAsync("inventory_seeds", "");
-    await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "2");
-    await SecureStore.setItemAsync("inventory_elixir", "1");
-    await SecureStore.setItemAsync("1_status", "2");
-    // const localZone = await SecureStore.getItemAsync("timezone");
-    // const datePlanted = DateTime.local().setZone(localZone).toISO();
-    // console.log("dateplanted issss" + datePlanted);
-    // await SecureStore.setItemAsync("1_period_start", "2");
-    await SecureStore.setItemAsync("1_waters", "10");
-    await SecureStore.setItemAsync("2_status", "2");
-    await SecureStore.setItemAsync("3_status", "2");
-    await SecureStore.setItemAsync("4_status", "0");
-    await SecureStore.setItemAsync("5_status", "0");
-    await SecureStore.setItemAsync("6_status", "0");
-    await SecureStore.setItemAsync("7_status", "0");
-    await SecureStore.setItemAsync("8_status", "0");
-    await SecureStore.setItemAsync("9_status", "0");
-    await SecureStore.setItemAsync("9_status", "0");
-    await SecureStore.setItemAsync(
-      "inventory_seeds",
-      "%2bitch%1hello%1hi%2i%3am"
-    );
-    await SecureStore.setItemAsync("garden_initialized", "true");
-    // await su.plantSeed
-    console.log("we're here");
+    // console.log("initializing garden");
+    // await SecureStore.setItemAsync("inventory_water", "1000");
+    // await SecureStore.setItemAsync("inventory_bees", "200");
+    // await SecureStore.setItemAsync("inventory_seeds", "");
+    // await SecureStore.setItemAsync("inventory_gold", "1500");
+    // await SecureStore.setItemAsync("inventory_fertilizer", "2");
+    // await SecureStore.setItemAsync("inventory_elixir", "1");
+    // await SecureStore.setItemAsync("1_status", "2");
+    // // const localZone = await SecureStore.getItemAsync("timezone");
+    // // const datePlanted = DateTime.local().setZone(localZone).toISO();
+    // // console.log("dateplanted issss" + datePlanted);
+    // // await SecureStore.setItemAsync("1_period_start", "2");
+    // await SecureStore.setItemAsync("1_waters", "10");
+    // await SecureStore.setItemAsync("2_status", "2");
+    // await SecureStore.setItemAsync("3_status", "2");
+    // await SecureStore.setItemAsync("4_status", "0");
+    // await SecureStore.setItemAsync("5_status", "0");
+    // await SecureStore.setItemAsync("6_status", "0");
+    // await SecureStore.setItemAsync("7_status", "0");
+    // await SecureStore.setItemAsync("8_status", "0");
+    // await SecureStore.setItemAsync("9_status", "0");
+    // await SecureStore.setItemAsync("9_status", "0");
+    // await SecureStore.setItemAsync(
+    //   "inventory_seeds",
+    //   "%2bitch%1hello%1hi%2i%3am"
+    // );
+    // await SecureStore.setItemAsync("garden_initialized", "true");
+    // // await su.plantSeed
+    // console.log("we're here");
     // su.checkStatus(1, "0");
     // su.checkStatus(1, "1");
   };

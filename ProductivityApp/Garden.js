@@ -18,6 +18,7 @@ import {
   Modal,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
+import SeedUtils2 from "./SeedUtils2";
 import RewardUtils from "./RewardUtils";
 
 import * as SecureStore from "expo-secure-store";
@@ -27,6 +28,7 @@ import { enableScreens } from "react-native-screens";
 
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
+const seedUtils2 = new SeedUtils2();
 const rewardUtils = new RewardUtils();
 
 let bees = {
@@ -42,6 +44,17 @@ export default class Garden extends Component {
     this.state = {
       showCancel: false,
       showBees: false,
+
+      plant1: "",
+      plant2: "",
+      plant3: "",
+      plant4: "",
+      plant5: "",
+      plant6: "",
+      plant7: "",
+      plant8: "",
+      plant9: "",
+
       status1: 2,
       status2: 2,
       status3: 2,
@@ -67,6 +80,8 @@ export default class Garden extends Component {
       inventory_bees: 0,
       modalVisible: false,
       acquiredSeed: "",
+
+      plantsInitialized: false,
     };
   }
 
@@ -118,6 +133,9 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("weighted_productivity", "0");
     await SecureStore.setItemAsync("weighted_happiness", "0");
 
+    let currDate = DateTime.local().toISO();
+    await SecureStore.setItemAsync("garden_last_updated", currDate);
+
     await SecureStore.setItemAsync("total_sprint_time", "0");
     await SecureStore.setItemAsync("total_unpaused", "0");
     await SecureStore.setItemAsync("total_paused", "0");
@@ -138,6 +156,8 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("1_rarity", "R");
     await SecureStore.setItemAsync("2_rarity", "R");
     await SecureStore.setItemAsync("3_rarity", "C");
+
+    await seedUtils2.createPlants();
     // await SecureStore.setItemAsync(
     //   "inventory_seeds",
     //   "%2bitch%1hello%1hi%2i%3am"
@@ -327,6 +347,46 @@ export default class Garden extends Component {
       console.log("bees = " + bees);
     }
   };
+
+  initializePlants = async () => {
+    if (this.state.plantsInitialized == false) {
+      this.setState({ plantsInitialized: true });
+
+      let plant1 = JSON.parse(await SecureStore.getItemAsync("1_plant"));
+      let plant2 = JSON.parse(await SecureStore.getItemAsync("2_plant"));
+      let plant3 = JSON.parse(await SecureStore.getItemAsync("3_plant"));
+      let plant4 = JSON.parse(await SecureStore.getItemAsync("4_plant"));
+      let plant5 = JSON.parse(await SecureStore.getItemAsync("5_plant"));
+      let plant6 = JSON.parse(await SecureStore.getItemAsync("6_plant"));
+      let plant7 = JSON.parse(await SecureStore.getItemAsync("7_plant"));
+      let plant8 = JSON.parse(await SecureStore.getItemAsync("8_plant"));
+      let plant9 = JSON.parse(await SecureStore.getItemAsync("9_plant"));
+
+      this.setState({
+        plant1: plant1,
+        plant2: plant2,
+        plant3: plant3,
+        plant4: plant4,
+        plant5: plant5,
+        plant6: plant6,
+        plant7: plant7,
+        plant8: plant8,
+        plant9: plant9,
+      });
+      this.initializePlant(plant1);
+      this.initializePlant(plant2);
+      this.initializePlant(plant3);
+      this.initializePlant(plant4);
+      this.initializePlant(plant5);
+      this.initializePlant(plant6);
+      this.initializePlant(plant7);
+      this.initializePlant(plant8);
+      this.initializePlant(plant9);
+    }
+    // SecureStore.getItemAsync("1_plant")
+  };
+
+  initializePlant = (plant) => {};
 
   render() {
     // this.updateStuff();
