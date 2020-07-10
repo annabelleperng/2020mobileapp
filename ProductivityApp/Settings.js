@@ -7,6 +7,7 @@ import {
   View,
   Dimensions,
   Image,
+  KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
 
@@ -17,11 +18,37 @@ export default class Settings extends React.Component {
     super(props);
 
     this.state = {
-      motivationUpdated: false,
+      prevMotivation: "",
+      motivationUpdated: "0",
       motivation:
         "This is your personal motivational quote if you entered one. Or we'll just pick from ours.",
     };
   }
+
+  updateMotivation = async () => {
+    let motiv = await SecureStore.getItemAsync("motivation");
+    console.log("motiv: " + motiv);
+    if (motiv != null && motiv != "") {
+      console.log("in here");
+      this.setState({
+        motivation: motiv,
+      });
+    }
+    this.setState({
+      prevMotivation: this.state.motivation,
+      motivationUpdated: "1",
+    });
+    console.log("prevMotivation: " + this.state.prevMotivation);
+    console.log("motivationUpdated: " + this.state.motivationUpdated);
+  };
+
+  //   getPrevMotivation = async () => {
+  //     let motiv = await SecureStore.getItemAsync("motivation");
+  //     if (motiv != null && motiv != "") {
+  //         motiv = this.state.motivation;
+  //     }
+  //     return motiv;
+  //   };
 
   setMotivationalQuote(text) {
     this.setState({ motivation: text });
@@ -31,39 +58,55 @@ export default class Settings extends React.Component {
     await SecureStore.setItemAsync("motivation", this.state.motivation);
   };
 
-  updateMotivation = async () => {
-    let motiv = await SecureStore.getItemAsync("motivation");
-    if (motiv != null && motiv != "") {
-      this.setState({ motivationUpdated: true, motivation: motiv });
-    }
-  };
-
   render() {
-    if (!this.state.motivationUpdated) {
+    if (this.state.motivationUpdated == "0") {
       this.updateMotivation();
     }
+
     return (
       //music? colors?
       <View style={styles.container}>
-        <Text>Edit your personal motivational quote here!</Text>
-        <TextInput
-          style={{
-            height: 60,
-            borderColor: "gray",
-            borderWidth: 1,
-            marginHorizontal: screen.width / 10,
-          }}
-          onChangeText={(text) => this.setMotivationalQuote(text)}
-          //   keyboardType="default"
-          placeholder={this.state.motivation}
-          placeholderTextColor="#9E9D9B"
-          maxLength={140}
-          multiline={true}
-          returnKeyType="done"
-        />
-        <TouchableOpacity onPress={this.storeMotivationalQuote}>
-          <Text>Set my motivational quote!</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", flex: 0.4, alignItems: "center" }}>
+          <View style={{ flex: 0.1 }}></View>
+          <View style={{ flex: 0.3 }}>
+            <Text>Edit your personal motivational quote here!</Text>
+          </View>
+          <View style={{ flex: 0.05 }}></View>
+          <View style={{ flex: 0.6 }}>
+            <TextInput
+              style={{
+                width: screen.width / 2,
+                borderColor: "gray",
+                borderWidth: 1,
+                alignSelf: "center",
+                padding: screen.width / 50,
+              }}
+              onChangeText={(text) => this.setMotivationalQuote(text)}
+              //   keyboardType="default"
+              placeholder={this.state.prevMotivation}
+              placeholderTextColor="#9E9D9B"
+              maxLength={140}
+              multiline={true}
+              returnKeyType="done"
+            />
+            <TouchableOpacity
+              onPress={this.storeMotivationalQuote}
+              style={[
+                styles.button,
+                {
+                  backgroundColor: "#36F5F5",
+                  alignSelf: "center",
+                },
+              ]}
+            >
+              <Text style={{ textAlign: "center" }}>Set quote!</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 0.1 }}></View>
+        </View>
+        <View
+          style={{ flexDirection: "row", flex: 0.7, alignItems: "center" }}
+        ></View>
       </View>
     );
   }
@@ -110,5 +153,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 60,
     color: "#FCCC00",
+  },
+  button: {
+    width: "50%",
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 7,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 20,
   },
 });
