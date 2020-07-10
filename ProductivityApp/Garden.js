@@ -128,7 +128,7 @@ export default class Garden extends Component {
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-05T17:52:25.437-07:00"
+      "2020-07-09T17:52:25.437-07:00"
     ); // "2020-07-02T18:50:15.437-07:00"
     await SecureStore.setItemAsync("weighted_productivity", "0");
     await SecureStore.setItemAsync("weighted_happiness", "0");

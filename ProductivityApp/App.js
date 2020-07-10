@@ -23,6 +23,7 @@ import Details from "./Details";
 import TextInput from "./TextInput";
 import Stats from "./Stats";
 import Garden from "./Garden";
+import Garden2 from "./Garden2";
 import Shop from "./Shop";
 import RewardUtils from "./RewardUtils";
 import GardenTesting from "./GardenTesting";
@@ -68,6 +69,7 @@ export default function App() {
           <Stack.Screen name="TextInput" component={TextInput} />
           <Stack.Screen name="Timer5" component={Timer5} />
           <Stack.Screen name="Garden" component={Garden} />
+          <Stack.Screen name="Garden2" component={Garden2} />
           <Stack.Screen name="Stats" component={Stats} />
           <Stack.Screen name="Shop" component={Shop} />
           <Stack.Screen name="RewardUtils" component={RewardUtils} />
