@@ -90,7 +90,7 @@ export default class Shop extends Component {
   };
 
   garden = (e, r) => {
-    this.props.navigation.navigate("Seeds", { event: e, rarity: r });
+    // this.props.navigation.navigate("Seeds", { event: e, rarity: r });
   };
 
   render() {
