@@ -11,6 +11,7 @@ import {
   ImageStore,
   Button,
   TouchableNativeFeedbackBase,
+  Alert,
 } from "react-native";
 
 import CountDown from "react-native-countdown-component";
@@ -24,9 +25,11 @@ import SeedUtils from "./SeedUtils";
 const su = new SeedUtils();
 
 let images = {
-  "ferns ": require("./assets/fernsbig.png"),
-  "tulips ": require("./assets/tulipsbig.png"),
-  "invis ": require("./assets/invis.png"),
+  invis: require("./assets/invis.png"),
+  growing: require("./assets/growinglarge.png"),
+  plantpot: require("./assets/plantpotlarge.png"),
+  ferns: require("./assets/fernsbig.png"),
+  tulips: require("./assets/tulipsbig.png"),
 };
 
 import * as SecureStore from "expo-secure-store";
@@ -34,16 +37,18 @@ import { screensEnabled } from "react-native-screens";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
-    // this.initializeGarden();
     this.state = {
-      plant_position: 1,
+      plant_position: this.props.route.params.position,
       //   plant_waters: 0,
+
       showCancel: false,
       image1: "invis ",
       temp: false,
+
       //   soundLoaded: false,
       //   shouldBePlaying: true,
       //   isPlaying: true,
+
       progress: 0, //current # waters
       inventory_water: 0,
       inventory_fertilizer: 0,
@@ -60,6 +65,12 @@ export default class GardenTesting extends Component {
       totalDuration: "",
       countdownSet: false,
       countdownFullySet: false,
+      //
+      plant_image: "",
+      plant: "",
+      //
+      alert_title: "",
+      alert_info: "",
     };
   }
 
@@ -79,39 +90,8 @@ export default class GardenTesting extends Component {
     // this.stopPlaying();
   };
 
-  initializeGarden = async () => {
-    // console.log("initializing garden");
-    // await SecureStore.setItemAsync("inventory_water", "1000");
-    // await SecureStore.setItemAsync("inventory_bees", "200");
-    // await SecureStore.setItemAsync("inventory_seeds", "");
-    // await SecureStore.setItemAsync("inventory_gold", "1500");
-    // await SecureStore.setItemAsync("inventory_fertilizer", "2");
-    // await SecureStore.setItemAsync("inventory_elixir", "1");
-    // await SecureStore.setItemAsync("1_status", "2");
-    // // const localZone = await SecureStore.getItemAsync("timezone");
-    // // const datePlanted = DateTime.local().setZone(localZone).toISO();
-    // // console.log("dateplanted issss" + datePlanted);
-    // // await SecureStore.setItemAsync("1_period_start", "2");
-    // await SecureStore.setItemAsync("1_waters", "10");
-    // await SecureStore.setItemAsync("2_status", "2");
-    // await SecureStore.setItemAsync("3_status", "2");
-    // await SecureStore.setItemAsync("4_status", "0");
-    // await SecureStore.setItemAsync("5_status", "0");
-    // await SecureStore.setItemAsync("6_status", "0");
-    // await SecureStore.setItemAsync("7_status", "0");
-    // await SecureStore.setItemAsync("8_status", "0");
-    // await SecureStore.setItemAsync("9_status", "0");
-    // await SecureStore.setItemAsync("9_status", "0");
-    // await SecureStore.setItemAsync(
-    //   "inventory_seeds",
-    //   "%2bitch%1hello%1hi%2i%3am"
-    // );
-    // await SecureStore.setItemAsync("garden_initialized", "true");
-    // // await su.plantSeed
-    // console.log("we're here");
-    // su.checkStatus(1, "0");
-    // su.checkStatus(1, "1");
-  };
+  initializeGarden = async () => {};
+
   toggleCancel = () => {
     console.log(" ");
     if (this.state.showCancel) {
@@ -158,8 +138,9 @@ export default class GardenTesting extends Component {
     );
 
     // gets this plant's current water count
-    let pos = this.state.plant_position + "_waters";
-    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+    let plant_water = plant["two"]["current_waters"];
 
     // waters plant once
     inventory_water = inventory_water - 1;
@@ -167,7 +148,8 @@ export default class GardenTesting extends Component {
 
     // sets SecureStore values
     await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
-    await SecureStore.setItemAsync(pos, "" + plant_water);
+    plant["two"]["current_waters"] = plant_water;
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
 
     // updates progress bar, display number
     this.increase("progress", 6.67);
@@ -182,8 +164,9 @@ export default class GardenTesting extends Component {
     );
 
     // gets this plant's current water count
-    let pos = this.state.plant_position + "_waters";
-    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+    let plant_water = plant["two"]["current_waters"];
 
     // waters plant five times
     inventory_water = inventory_water - 5;
@@ -191,7 +174,8 @@ export default class GardenTesting extends Component {
 
     // sets SecureStore values
     await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
-    await SecureStore.setItemAsync(pos, "" + plant_water);
+    plant["two"]["current_waters"] = plant_water;
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
 
     // updates progress bar, display number
     this.increase("progress", 33.35);
@@ -206,8 +190,9 @@ export default class GardenTesting extends Component {
     );
 
     // gets this plant's current water count
-    let pos = this.state.plant_position + "_waters";
-    let plant_water = Number.parseInt(await SecureStore.getItemAsync(pos));
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+    let plant_water = plant["two"]["current_waters"];
     let needed = 15 - plant_water;
 
     // waters plant till fully watered
@@ -216,12 +201,66 @@ export default class GardenTesting extends Component {
 
     // sets SecureStore values
     await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
-    await SecureStore.setItemAsync(pos, "" + plant_water);
+    plant["two"]["current_waters"] = plant_water;
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
 
     // updates progress bar, display number
     this.increase("progress", 100);
     await this.checkWateringOptions();
     this.setState({ inventory_water: inventory_water });
+  };
+
+  determineImage = (plant) => {
+    if (plant["status"] == 4) {
+      return plant["four"]["four_image"];
+    } else if (plant["status"] == 3) {
+      return plant["three"]["three_image"];
+    } else if (plant["status"] == 2) {
+      return plant["two"]["two_image"];
+    } else if (plant["status"] == 1) {
+      return plant["one"]["one_image"];
+    } else {
+      return plant["zero"]["zero_image"];
+    }
+  };
+
+  determineInfo = (plant) => {
+    if (plant["status"] == 0) {
+      var title = "Empty Pot";
+      var info = "Plant a seed from your inventory to start growing!";
+      this.setState({ alert_title: title, alert_info: info });
+      return;
+    }
+
+    var title = plant["permanent"]["species"];
+    var info = "\n";
+
+    if (plant["permanent"]["rarity"] == "R") {
+      info += "Rarity: RARE\n\n";
+    } else if (plant["permanent"]["rarity"] == "U") {
+      info += "Rarity: UNCOMMON\n\n";
+    } else {
+      info += "Rarity: COMMON\n\n";
+    }
+
+    info += "Event: " + plant["permanent"]["event"] + "\n\n";
+
+    if (plant["status"] == 4) {
+      info += "Status: Dead\n\nUse the shovel to dig up dead plants.";
+    } else if (plant["status"] == 3) {
+      info += "Status: Wilted\n\nUse elixir to revive wilted plants.";
+    } else if (plant["status"] == 2) {
+      info +=
+        "Status: Fully Grown\n\nKeep your plant watered! " +
+        "Needs 15 waters every 3 days.";
+    } else {
+      info +=
+        "Status: Growing\n\nThis plant will grow up after you sprint " +
+        "for 3 days in a row! You can also use fertilizer to speed it up.";
+    }
+
+    console.log(info);
+    this.setState({ alert_title: title, alert_info: info });
   };
 
   show13 = async () => {
@@ -237,6 +276,7 @@ export default class GardenTesting extends Component {
 
   getInventoryCounts = async () => {
     if (this.state.inventory_set == false) {
+      this.setState({ inventory_set: true });
       let water = Number.parseInt(
         await SecureStore.getItemAsync("inventory_water")
       );
@@ -249,9 +289,15 @@ export default class GardenTesting extends Component {
       let elixir = Number.parseInt(
         await SecureStore.getItemAsync("inventory_elixir")
       );
-      let pos_waters = Number.parseInt(
-        await SecureStore.getItemAsync(this.state.plant_position + "_waters")
+      let plant = JSON.parse(
+        await SecureStore.getItemAsync(this.state.plant_position + "_plant")
       );
+
+      let image = this.determineImage(plant);
+
+      this.determineInfo(plant);
+
+      let pos_waters = plant["two"]["current_waters"];
       pos_waters *= 6.67;
       console.log(this.state.plant_position + "_waters");
       this.setState({
@@ -260,7 +306,7 @@ export default class GardenTesting extends Component {
         inventory_bees: bees,
         inventory_elixir: elixir,
         progress: pos_waters,
-        inventory_set: true,
+        plant_image: image,
       });
       this.checkWateringOptions();
     }
@@ -276,8 +322,10 @@ export default class GardenTesting extends Component {
   /* Determines which buttons - x1, x5, MAX - to show for
    * watering if the plant can be watered. */
   checkWateringOptions = async () => {
-    let pos = this.state.plant_position.toString() + "_waters";
-    let pos_waters = Number.parseInt(await SecureStore.getItemAsync(pos));
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+    let pos_waters = plant["two"]["current_waters"];
+
     let one = false;
     let five = false;
     let max = false;
@@ -322,34 +370,6 @@ export default class GardenTesting extends Component {
     console.log("DONE CHECKING WATERING OPTIONS I THINK");
   };
 
-  //   componentDidMount = async () => {
-  //     var that = this;
-
-  //     //We are showing the coundown timer for a given expiry date-time
-  //     //If you are making an quize type app then you need to make a simple timer
-  //     //which can be done by using the simple like given below
-  //     //that.setState({ totalDuration: 30 }); //which is 30 sec
-
-  //     var date = moment().utcOffset("+05:30").format("YYYY-MM-DD hh:mm:ss");
-  //     //Getting the current date-time with required formate and UTC
-
-  //     var expirydate = "2020-10-23 04:00:45"; //You can set your own date-time
-  //     //Let suppose we have to show the countdown for above date-time
-
-  //     var diffr = moment.duration(moment(expirydate).diff(moment(date)));
-  //     //difference of the expiry date-time given and current date-time
-
-  //     var hours = parseInt(diffr.asHours());
-  //     var minutes = parseInt(diffr.minutes());
-  //     var seconds = parseInt(diffr.seconds());
-
-  //     var d = hours * 60 * 60 + minutes * 60 + seconds;
-  //     //converting in seconds
-
-  //     that.setState({ totalDuration: 50 });
-  //     //Settign up the duration of countdown in seconds to re-render
-  //   }
-
   checkIfWilted = async () => {
     const res = await su.updateWilting(this.state.plant_position);
     console.log("res is " + res);
@@ -367,55 +387,82 @@ export default class GardenTesting extends Component {
       //   this.getCountdownLength();
     }
   };
+
   getCountdownLength = async () => {
     console.log("getCountdownLength called");
+
     if (this.state.countdownSet != false) {
       return;
     }
     const pos = this.state.plant_position;
+    const posString = pos + "";
     if (pos < 1 || pos >= 9) {
-      console.log("position not set correctly");
+      console.log("position not set correctly in PlantView");
       return;
     }
-    const posString = pos + "";
 
     if (this.state.countdownSet == false) {
-      console.log("WAS FALSE!?!??!?????????????????????");
-
       this.setState({ countdownSet: true });
-      //   this.setState({ countdownSet: true, totalDuration: 50 });
 
-      const endKey = posString + "_period_end";
-      console.log(endKey + "endKey");
-      const end = DateTime.fromISO(await SecureStore.getItemAsync(endKey));
+      const plantKey = pos + "_plant";
+      let plant = JSON.parse(await SecureStore.getItemAsync(plantKey));
+
+      const end = DateTime.fromISO(plant["two"]["water_end"]);
       console.log(end.toISO() + "end");
-      //   const localZone = await SecureStore.getItemAsync("timezone");
-      //   console.log("localzone is " + localZone);
-      const currDate = DateTime.local();
-      //   const currDate2 = DateTime.local().setZone(localZone);
-      //   const currDate3 = DateTime.fromObject({ zone: "America/Los_Angeles" });
-      //   //   const currDate DateTime.local().setZone(localZone);
 
-      //   .fromObject({zone: 'America/Los_Angeles'});
+      const currDate = DateTime.local();
+
       console.log("current time is " + currDate.toISO());
-      //   console.log("current time2 is " + currDate.toISO());
-      //   console.log("nowww is " + now.toISO());
       const diff = end.diff(currDate).as("seconds");
       console.log("\n\n\ndiff = " + diff);
 
-      //   const tempst = DateTime.fromISO("2020-06-28T18:50:15.437-07:00");
-      //   const tempend = DateTime.fromISO("2020-07-01T18:50:15.437-07:00");
-      //   const diff = tempend.diff(tempst).as("seconds");
-      //   console.log("diff = " + diff);
-
       this.setState({ totalDuration: diff, countdownFullySet: true });
-      // this.setState({ totalDuration: diff });
     }
+  };
+
+  displayJsxMessage = () => {
+    console.log("displayJsxMessage called");
+    if (this.state.showCancel) {
+      return <Text style={styles.smallWhiteText}> Hello, JSX! </Text>;
+    } else {
+      return (
+        <View style={{ backgroundColor: "#fff" }}>
+          <Text style={styles.smallWhiteText}> Goodbye, JSX! </Text>
+        </View>
+      );
+    }
+  };
+
+  showInfo = () => {
+    // let title =
+    // let info = "Fully Grown\n\n"
+    // console.log("hi");
+    // const pos = this.state.plant_position;
+    // console.log(pos);
+    // console.log(this.state.image1);
+    // let info = this.state.image1;
+    // console.log(info + " ");
+
+    const info = this.state.alert_info;
+    const title = this.state.alert_title;
+
+    Alert.alert(
+      title.toString().toUpperCase(),
+      info.toString(),
+      [
+        {
+          text: "OK",
+          onPress: () => console.log("Ask me later pressed"),
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
     // btwn 1.5 and 2
     console.log(this.state.totalDuration);
+    console.log("POSITIONNN IS " + this.state.plant_position);
     const barWidth = screen.width / 1.7;
     const progressCustomStyles = {
       backgroundColor: "#91faff",
@@ -453,13 +500,15 @@ export default class GardenTesting extends Component {
           }}
           // top part
         >
-          <View style={styles.whiteRoundedCorners}>
-            <Image
-              style={styles.largePlant}
-              source={require("./assets/fernsbig.png")}
-              // large plant image with rounded corners
-            />
-          </View>
+          <TouchableOpacity onPress={this.showInfo}>
+            <View style={styles.whiteRoundedCorners}>
+              <Image
+                style={styles.largePlant}
+                source={images[this.state.plant_image]}
+                // large plant image with rounded corners
+              />
+            </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -470,6 +519,7 @@ export default class GardenTesting extends Component {
         >
           {/* <Text style={styles.whiteText}>Blue-Pleated Rhododendron</Text> */}
         </View>
+
         <View
           style={{
             flex: 21,
@@ -724,7 +774,9 @@ export default class GardenTesting extends Component {
             flex: 2,
             backgroundColor: "#222",
           }}
-        ></View>
+        >
+          <View>{this.displayJsxMessage()}</View>
+        </View>
 
         <View
           style={{

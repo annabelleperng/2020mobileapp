@@ -145,6 +145,9 @@ export default class Details extends Component {
             >
               view your past statistics!
             </Text>
+            <TouchableOpacity onPress={() => navigate("Garden2")}>
+              <Text>Click for Garden2</Text>
+            </TouchableOpacity>
           </View>
 
           <View

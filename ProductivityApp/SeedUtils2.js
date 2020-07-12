@@ -456,9 +456,9 @@ export default class SeedUtils extends Component {
       status: 0,
       position: position,
       permanent: { event: "", rarity: "", species: "", date_planted: "" },
-      zero: { zero_image: "" },
+      zero: { zero_image: "plantpot" },
       one: {
-        one_image: "",
+        one_image: "growing",
         grow_start: "",
         grow_offset: 0,
         grow_streak_length: 0,

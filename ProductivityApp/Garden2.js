@@ -121,14 +121,13 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("inventory_gold", "1500");
     await SecureStore.setItemAsync("inventory_fertilizer", "2");
     await SecureStore.setItemAsync("inventory_elixir", "1");
-    await SecureStore.setItemAsync("1_status", "2");
     await SecureStore.setItemAsync(
       "1_period_start",
       "2020-06-29T18:50:15.437-07:00" // "2020-06-2T18:50:15.437-07:00"
     );
     await SecureStore.setItemAsync(
       "1_period_end",
-      "2020-07-09T17:52:25.437-07:00"
+      "2020-07-05T17:52:25.437-07:00"
     ); // "2020-07-02T18:50:15.437-07:00"
     await SecureStore.setItemAsync("weighted_productivity", "0");
     await SecureStore.setItemAsync("weighted_happiness", "0");
@@ -139,37 +138,42 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("total_sprint_time", "0");
     await SecureStore.setItemAsync("total_unpaused", "0");
     await SecureStore.setItemAsync("total_paused", "0");
-    await SecureStore.setItemAsync("timezone", "America/Los_Angeles");
-    await SecureStore.setItemAsync("1_waters", "10");
-    await SecureStore.setItemAsync("2_status", "2");
-    await SecureStore.setItemAsync("3_status", "2");
-    await SecureStore.setItemAsync("4_status", "0");
-    await SecureStore.setItemAsync("5_status", "0");
-    await SecureStore.setItemAsync("6_status", "0");
-    await SecureStore.setItemAsync("7_status", "0");
-    await SecureStore.setItemAsync("8_status", "0");
-    await SecureStore.setItemAsync("9_status", "0");
-    await SecureStore.setItemAsync("9_status", "0");
-    await SecureStore.setItemAsync("1_event", "christmas");
-    await SecureStore.setItemAsync("2_event", "valentines");
-    await SecureStore.setItemAsync("3_event", "none");
-    await SecureStore.setItemAsync("1_rarity", "R");
-    await SecureStore.setItemAsync("2_rarity", "R");
-    await SecureStore.setItemAsync("3_rarity", "C");
-
     await seedUtils2.createPlants();
-    // await SecureStore.setItemAsync(
-    //   "inventory_seeds",
-    //   "%2bitch%1hello%1hi%2i%3am"
-    // );
+
     await SecureStore.setItemAsync("garden_initialized", "true");
 
-    await seedUtils.initializeAllSeeds();
-    // await su.plantSeed
+    await seedUtils2.initializeAllSeeds();
+
+    let hardcoded_plant = {
+      status: 2,
+      position: 1,
+      permanent: {
+        event: "none",
+        rarity: "C",
+        species: "snowcrested fern",
+        date_planted: "",
+      },
+      zero: { zero_image: "plantpot" },
+      one: {
+        one_image: "growing",
+        grow_start: "",
+        grow_offset: 0,
+        grow_streak_length: 0,
+      },
+      two: {
+        two_image: "ferns",
+        current_waters: 8,
+        water_start: "",
+        water_end: "2020-07-09T17:52:25.437-07:00",
+      },
+      three: { three_image: "", wilt_start: "", wilt_end: "" },
+      four: { four_image: "" },
+    };
+
+    let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
+    await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+
     console.log("we're here");
-    console.log(await SecureStore.getItemAsync("1_period_end"));
-    // su.checkStatus(1, "0");
-    // su.checkStatus(1, "1");
   };
 
   updateStuff = async (plant) => {
@@ -199,10 +203,8 @@ export default class Garden extends Component {
       for (i = 1; i <= 9; i++) {
         let plantStr = await SecureStore("" + i + "_plant");
         let plant = JSON.parse(plantStr);
-        seedUtils2.updateWilting(plant);
-        seedUtils2.updateGrowthStreak(plant);
-        plantStr = JSON.stringify(plant);
-        await SecureStore("" + i + "_plant");
+        seedUtils.updateWilting(plant);
+        seedUtils.updateGrowthStreak(plant);
       }
     }
   };
@@ -418,7 +420,11 @@ export default class Garden extends Component {
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("PlantView")}
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 1,
+                  })
+                }
               >
                 <Image
                   style={styles.plants}
@@ -427,16 +433,32 @@ export default class Garden extends Component {
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/tulipsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 2,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/tulipsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/fernsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 3,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -490,7 +512,13 @@ export default class Garden extends Component {
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <TouchableOpacity onPress={this.toggleCancel}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 4,
+                  })
+                }
+              >
                 <Image
                   style={styles.plants}
                   source={require("./assets/fernsbig.png")}
@@ -498,16 +526,32 @@ export default class Garden extends Component {
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/tulipsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 5,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/tulipsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/fernsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 6,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -587,7 +631,13 @@ export default class Garden extends Component {
           >
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <TouchableOpacity onPress={this.toggleCancel}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 7,
+                  })
+                }
+              >
                 <Image
                   style={styles.plants}
                   source={require("./assets/fernsbig.png")}
@@ -595,16 +645,32 @@ export default class Garden extends Component {
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/tulipsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 8,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/tulipsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Image
-                style={styles.plants}
-                source={require("./assets/fernsbig.png")}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PlantView", {
+                    position: 9,
+                  })
+                }
+              >
+                <Image
+                  style={styles.plants}
+                  source={require("./assets/fernsbig.png")}
+                />
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
