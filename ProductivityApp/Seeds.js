@@ -51,7 +51,7 @@ export default class Shop extends Component {
       initialized: false,
       eventName: "",
       eventCountdown: -1,
-      itemPrices: ["100", "100", "100", "300", "150", "150", "200", "600"],
+      itemPrices: ["3", "0", "10", "1", "4", "2", "30", "0"],
       price8: "???",
       price9: "???",
       price10: "???",
@@ -341,16 +341,16 @@ export default class Shop extends Component {
                   )}
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.bought6 == 1 ? (
+                  {this.state.bought5 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/rare_seed_bought.png")}
+                      source={require("./assets/uncommon_seed_bought.png")}
                     />
                   ) : (
                     <TouchableOpacity>
                       <Image
                         style={styles.items}
-                        source={require("./assets/rare_seed.png")}
+                        source={require("./assets/uncommon_seed.png")}
                       />
                     </TouchableOpacity>
                   )}
@@ -479,46 +479,46 @@ export default class Shop extends Component {
               >
                 <View style={{ flex: 0.2 }}></View>
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.bought0 == 1 ? (
+                  {this.state.bought6 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/common_seed_bought.png")}
+                      source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
                     <TouchableOpacity>
                       <Image
                         style={styles.items}
-                        source={require("./assets/common_seed.png")}
+                        source={require("./assets/rare_seed.png")}
                       />
                     </TouchableOpacity>
                   )}
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.bought1 == 1 ? (
+                  {this.state.bought6 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/common_seed_bought.png")}
+                      source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
                     <TouchableOpacity>
                       <Image
                         style={styles.items}
-                        source={require("./assets/common_seed.png")}
+                        source={require("./assets/rare_seed.png")}
                       />
                     </TouchableOpacity>
                   )}
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.bought2 == 1 ? (
+                  {this.state.bought6 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/common_seed_bought.png")}
+                      source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
                     <TouchableOpacity>
                       <Image
                         style={styles.items}
-                        source={require("./assets/common_seed.png")}
+                        source={require("./assets/rare_seed.png")}
                       />
                     </TouchableOpacity>
                   )}
