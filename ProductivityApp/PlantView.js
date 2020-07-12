@@ -39,6 +39,7 @@ export default class GardenTesting extends Component {
     super(props);
     this.state = {
       plant_position: this.props.route.params.position,
+      plant_status: 0,
       //   plant_waters: 0,
 
       showCancel: false,
@@ -307,6 +308,7 @@ export default class GardenTesting extends Component {
         inventory_elixir: elixir,
         progress: pos_waters,
         plant_image: image,
+        plant_status: plant["status"],
       });
       this.checkWateringOptions();
     }
@@ -385,6 +387,57 @@ export default class GardenTesting extends Component {
         inventory_set: false,
       });
       //   this.getCountdownLength();
+    }
+  };
+
+  showInventoryThird = () => {
+    if (this.state.plant_status == 4) {
+    } else if (this.state.plant_status == 3) {
+    } else if (this.state.plant_status == 2) {
+    } else if (this.state.plant_status == 1) {
+    } else {
+    }
+
+    if (this.state.plant_status == 2) {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={styles.smallWhiteText}>
+            SELL
+            {/* {this.state.inventory_bees} */}
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: bee / shovel
+          >
+            <Image
+              source={require("./assets/largeshovel.png")}
+              style={styles.menuIcons}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={styles.smallWhiteText}>
+            SELL2
+            {/* {this.state.inventory_bees} */}
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: bee / shovel
+          >
+            <Image
+              source={require("./assets/largeshovel.png")}
+              style={styles.menuIcons}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     }
   };
 
@@ -555,7 +608,7 @@ export default class GardenTesting extends Component {
                   ></Image>
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
+              {/* <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.smallWhiteText}>
                   {this.state.inventory_fertilizer}
                 </Text>
@@ -571,11 +624,11 @@ export default class GardenTesting extends Component {
                     style={styles.menuIcons}
                   ></Image>
                 </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
+              </View> */}
+              {this.showInventoryThird()}
+              {/* <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.smallWhiteText}>
                   SELL
-                  {/* {this.state.inventory_bees} */}
                 </Text>
 
                 <TouchableOpacity
@@ -590,7 +643,7 @@ export default class GardenTesting extends Component {
                     style={styles.menuIcons}
                   ></Image>
                 </TouchableOpacity>
-              </View>
+              </View> */}
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.smallWhiteText}>
                   {this.state.inventory_elixir}
@@ -661,7 +714,7 @@ export default class GardenTesting extends Component {
                 <View></View>
               )}
             </View>
-            <View style={{ flex: 0.3 }}>
+            <View style={{ flex: Platform.OS == "android" ? 0.9 : 0.3 }}>
               {this.state.fully_watered ? (
                 <View>
                   <Text></Text>
