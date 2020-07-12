@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import {
   StyleSheet,
@@ -6,9 +6,8 @@ import {
   TextInput,
   View,
   Dimensions,
-  Image,
-  KeyboardAvoidingView,
   TouchableOpacity,
+  Switch,
 } from "react-native";
 
 const screen = Dimensions.get("window");
@@ -18,6 +17,7 @@ export default class Settings extends React.Component {
     super(props);
 
     this.state = {
+      value: false,
       prevMotivation: "",
       motivationUpdated: "0",
       motivation:
@@ -101,6 +101,24 @@ export default class Settings extends React.Component {
             >
               <Text style={{ textAlign: "center" }}>Set quote!</Text>
             </TouchableOpacity>
+          </View>
+          <View style={{ flex: 0.1 }}></View>
+        </View>
+        <View style={{ flexDirection: "row", flex: 0.2, alignItems: "center" }}>
+          <View style={{ flex: 0.1 }}></View>
+          <View style={{ flex: 0.3 }}>
+            <Text>Sound</Text>
+          </View>
+          <View style={{ flex: 0.05 }}></View>
+          <View style={{ flex: 0.6 }}>
+            <Switch
+              trackColor={{ false: "#777777", true: "#818181" }}
+              thumbColor={"#000000"}
+              value={this.state.value}
+              onValueChange={(value) => {
+                this.setState({ value: value });
+              }}
+            />
           </View>
           <View style={{ flex: 0.1 }}></View>
         </View>

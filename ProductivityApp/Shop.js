@@ -71,8 +71,8 @@ export default class Shop extends Component {
 
   initialize = async () => {
     console.log("initializing shop");
-    await SecureStore.setItemAsync("inventory_gold", "1500");
-    this.setState({ gold: 1500 });
+    let goldAmt = await SecureStore.getItemAsync("inventory_gold");
+    this.setState({ gold: goldAmt });
 
     const localZone = await SecureStore.getItemAsync("timezone");
     // const localTime = DateTime.local().setZone(localZone);
@@ -234,8 +234,18 @@ export default class Shop extends Component {
 
     if (pos >= 0 && pos <= 2) {
       await rewardUtils.obtainSeed("none", "C");
-      alert(
-        "Congratulations!\nA new common seed has been added to your inventory."
+      // alert(
+      //   "Congratulations!\nA new common seed has been added to your inventory."
+      // );
+      Alert.alert(
+        "Transaction Successful",
+        "Congratulations!\nA new common seed has been added to your inventory.",
+        [
+          {
+            text: "OKAY",
+          },
+        ],
+        { cancelable: false }
       );
     } else if (pos == 3) {
       await rewardUtils.obtainFertilizer(1);
@@ -254,8 +264,18 @@ export default class Shop extends Component {
       );
     } else if (pos == 7) {
       await rewardUtils.obtainElixir(1);
-      alert(
-        "Congratulations!\nOne elixir potion has been added to your inventory."
+      // alert(
+      //   "Congratulations!\nOne elixir potion has been added to your inventory."
+      // );
+      Alert.alert(
+        "Transaction Successful",
+        "Congratulations!\nOne elixir potion has been added to your inventory.",
+        [
+          {
+            text: "OKAY",
+          },
+        ],
+        { cancelable: false }
       );
     } else if (pos == 8 || pos == 9) {
       await rewardUtils.obtainSeed(this.state.eventName, "C");
@@ -304,11 +324,14 @@ export default class Shop extends Component {
 
     console.log("boughtVar before setting: " + this.state[boughtVar]);
     this.setState({ [boughtVar]: 1 });
-    console.log(this.state[boughtVar]);
 
     console.log(
       "after: " + (await SecureStore.getItemAsync("inventory_seeds")) + "\n\n"
     );
+
+    let goldAmt = await SecureStore.getItemAsync("inventory_gold");
+    this.setState({ gold: goldAmt });
+    console.log("gold after buying: " + this.state.gold);
   };
 
   render() {
@@ -449,7 +472,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[0]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[0]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[0]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[0]}</Text>
                 </View>
@@ -480,7 +504,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[1]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[1]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[1]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[1]}</Text>
                 </View>
@@ -501,7 +526,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[2]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[2]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[2]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[2]}</Text>
                 </View>
@@ -522,7 +548,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[3]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[3]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[3]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[3]}</Text>
                 </View>
@@ -658,7 +685,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[4]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[4]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[4]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[4]}</Text>
                 </View>
@@ -679,7 +707,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[5]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[5]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[5]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[5]}</Text>
                 </View>
@@ -700,7 +729,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[6]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[6]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[6]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[6]}</Text>
                 </View>
@@ -721,7 +751,8 @@ export default class Shop extends Component {
                 <View>
                   <Text style={styles.bought}>{this.state.itemPrices[7]}</Text>
                 </View>
-              ) : gold < Number.parseInt(this.state.itemPrices[7]) ? (
+              ) : this.state.gold <
+                Number.parseInt(this.state.itemPrices[7]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[7]}</Text>
                 </View>
@@ -891,7 +922,7 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {gold < Number.parseInt(this.state.itemPrices[8]) ? (
+              {this.state.gold < Number.parseInt(this.state.itemPrices[8]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.price8}</Text>
                 </View>
@@ -908,7 +939,7 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {gold < Number.parseInt(this.state.itemPrices[9]) ? (
+              {this.state.gold < Number.parseInt(this.state.itemPrices[9]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.price9}</Text>
                 </View>
@@ -925,7 +956,7 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {gold < Number.parseInt(this.state.itemPrices[10]) ? (
+              {this.state.gold < Number.parseInt(this.state.itemPrices[10]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.price10}</Text>
                 </View>
@@ -942,7 +973,8 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {gold < Number.parseInt(this.state.itemPrices[11]) == 1 ? (
+              {this.state.gold < Number.parseInt(this.state.itemPrices[11]) ==
+              1 ? (
                 <View>
                   <Text style={styles.poor}>{this.state.price11}</Text>
                 </View>
@@ -965,6 +997,7 @@ export default class Shop extends Component {
             justifyContent: "center",
           }}
         >
+          {console.log("gold: " + this.state.gold)}
           <Text style={{ color: "#ffffff" }}> gold: {this.state.gold}</Text>
         </View>
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
