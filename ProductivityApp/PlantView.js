@@ -391,17 +391,119 @@ export default class GardenTesting extends Component {
   };
 
   showInventoryThird = () => {
+    // shows additional inventory item.
+    // 4 - shovel
+    // 3 - elixir
+    // 2 - sell
+    // 1 - fertilizer
+    // 0 - seeds
+
     if (this.state.plant_status == 4) {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={[styles.smallWhiteText, { color: "#d1d1d1" }]}>
+            DIG UP
+          </Text>
+
+          <View style={{ flex: 0.1 }}></View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: shovel
+          >
+            <Image
+              source={require("./assets/largeshovel.png")}
+              style={styles.menuIcons}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     } else if (this.state.plant_status == 3) {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={[styles.smallWhiteText, { color: "#6bbf21" }]}>
+            {this.state.inventory_elixir}
+          </Text>
+
+          <View style={{ flex: 0.1 }}></View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: elixir
+          >
+            <Image
+              source={require("./assets/largeelixir3.png")}
+              style={styles.menuIcons2}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     } else if (this.state.plant_status == 2) {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={[styles.smallWhiteText, { color: "#cf8165" }]}>
+            SELL
+          </Text>
+
+          <View style={{ flex: 0.1 }}></View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: sell
+          >
+            <Image
+              source={require("./assets/sellxlarge2.png")}
+              style={styles.menuIcons3}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     } else if (this.state.plant_status == 1) {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={[styles.smallWhiteText, { color: "#b07437" }]}>
+            {this.state.inventory_fertilizer}
+          </Text>
+
+          <View style={{ flex: 0.1 }}></View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: fertilizer
+          >
+            <Image
+              source={require("./assets/fertilizer.png")}
+              style={styles.menuIcons}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     } else {
+      return (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={[styles.smallWhiteText, { color: "#de9e5d" }]}>
+            SEEDS
+          </Text>
+
+          <View style={{ flex: 0.1 }}></View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            activeOpacity={0.5}
+            // inventory item: seeds
+          >
+            <Image
+              source={require("./assets/common_seed.png")}
+              style={styles.menuIcons}
+            ></Image>
+          </TouchableOpacity>
+        </View>
+      );
     }
 
     if (this.state.plant_status == 2) {
       return (
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={styles.smallWhiteText}>
+          <Text style={[styles.smallWhiteText, { color: "#d1d1d1" }]}>
             SELL
             {/* {this.state.inventory_bees} */}
           </Text>
@@ -412,8 +514,8 @@ export default class GardenTesting extends Component {
             // inventory item: bee / shovel
           >
             <Image
-              source={require("./assets/largeshovel.png")}
-              style={styles.menuIcons}
+              source={require("./assets/largeelixir3.png")}
+              style={styles.menuIcons2}
             ></Image>
           </TouchableOpacity>
         </View>
@@ -590,11 +692,14 @@ export default class GardenTesting extends Component {
             }}
           >
             <View style={styles.inventoryOutline}>
-              <View style={{ flex: 0.2 }}></View>
+              <View
+                style={{ flex: Platform.OS == "android" ? 0.2 : 0.38 }}
+              ></View>
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.smallWhiteText}>
+                <Text style={[styles.smallWhiteText, { color: "#37d2ed" }]}>
                   {this.state.inventory_water}
                 </Text>
+                <View style={{ flex: 0.05 }}></View>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("GardenTesting")
@@ -645,16 +750,17 @@ export default class GardenTesting extends Component {
                 </TouchableOpacity>
               </View> */}
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.smallWhiteText}>
-                  {this.state.inventory_elixir}
+                <Text style={[styles.smallWhiteText, { color: "#ff4b1f" }]}>
+                  SHOP
                 </Text>
+                <View style={{ flex: 0.1 }}></View>
                 <TouchableOpacity
-                  onPress={() => alert("Use elixir to revive a wilted plant!")}
+                  onPress={() => this.props.navigation.navigate("Shop")}
                   activeOpacity={0.5}
                   // inventory item: elixir
                 >
                   <Image
-                    source={require("./assets/largeelixir3.png")}
+                    source={require("./assets/largeshop2.png")}
                     style={styles.menuIcons2}
                   ></Image>
                 </TouchableOpacity>
@@ -884,15 +990,15 @@ const styles = StyleSheet.create({
     height: screen.width / 11, // 11
   },
   menuIcons2: {
-    width: screen.width / 9,
-    height: screen.width / 9,
+    width: screen.width / 10, // 9
+    height: screen.width / 10, // 9
     // marginLeft: screen.width / 10,
   },
   menuIcons3: {
-    width: screen.width / 11,
-    height: screen.width / 11,
-    borderWidth: 1,
-    borderColor: "#854832",
+    width: screen.width / 9.3,
+    height: screen.width / 9.3,
+    // borderWidth: 1,
+    // borderColor: "#854832",
   },
   inventoryOutline: {
     borderWidth: 5,
