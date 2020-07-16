@@ -145,7 +145,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 2,
+      status: 3,
       position: 1,
       permanent: {
         event: "none",
@@ -166,7 +166,11 @@ export default class Garden extends Component {
         water_start: "",
         water_end: "2020-07-11T17:52:25.437-07:00",
       },
-      three: { three_image: "", wilt_start: "", wilt_end: "" },
+      three: {
+        three_image: "",
+        wilt_start: "",
+        wilt_end: "2020-07-16T17:52:25.437-07:00",
+      },
       four: { four_image: "" },
     };
 
@@ -423,6 +427,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 1,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -437,6 +443,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 2,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -451,6 +459,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 3,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -516,6 +526,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 4,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -530,6 +542,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 5,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -544,6 +558,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 6,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -635,6 +651,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 7,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -649,6 +667,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 8,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
@@ -663,6 +683,8 @@ export default class Garden extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
                     position: 9,
+                    event: "",
+                    rarity: "",
                   })
                 }
               >
