@@ -1001,10 +1001,112 @@ export default class GardenTesting extends Component {
             backgroundColor: "#111",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "row",
           }}
           // right side for progress bar and buttons
         >
-          <Text style={styles.smallWhiteText}>Hi</Text>
+          <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 10 }}>
+            <Text style={styles.whiteText}>
+              Plant a seed from your inventory to start growing!
+            </Text>
+            <Text></Text>
+            <Text></Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("Seeds", {
+                  position: this.plant_position,
+                })
+              }
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 10,
+                  borderColor: "#525252",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={[
+                    styles.rectangularText,
+                    { fontSize: 18, color: "#eee" },
+                  ]}
+                >
+                  PLANT SEED
+                </Text>
+
+                {/* <Text style={[styles.rectangularText, { fontSize: 18 }]}>
+                  REVITALIZE
+                </Text> */}
+              </View>
+            </TouchableOpacity>
+            <Text></Text>
+            <Text></Text>
+            <Text style={styles.whiteText}>Get more seeds:</Text>
+            <Text></Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#25bcdb",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>Sprint</Text>
+              </View>
+            </TouchableOpacity>
+            <Text></Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Shop")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#5ea9d1",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>
+                  Buy from Shop
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <Text></Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Garden2")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#a6b4e3",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>
+                  Breed Plants
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1 }}></View>
         </View>
       );
     }

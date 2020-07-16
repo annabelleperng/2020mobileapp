@@ -145,7 +145,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 3,
+      status: 0,
       position: 1,
       permanent: {
         event: "none",
