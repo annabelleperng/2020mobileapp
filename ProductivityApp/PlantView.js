@@ -214,30 +214,75 @@ export default class GardenTesting extends Component {
   };
 
   useElixir = async () => {
-    // if (this.state.plant_status == 1) {
-    // }
-    // let key = this.state.plant_position + "_plant";
-    // let plant = JSON.parse(await SecureStore.getItemAsync(key));
-    // // gets inventory elixir count
-    // let inventory_elixir = Number.parseInt(
-    //   await SecureStore.getItemAsync("inventory_elixir")
-    // );
-    // // gets this plant's current water count
-    // let key = this.state.plant_position + "_plant";
-    // let plant = JSON.parse(await SecureStore.getItemAsync(key));
-    // let plant_water = plant["two"]["current_waters"];
-    // let needed = 15 - plant_water;
-    // // waters plant till fully watered
-    // inventory_water = inventory_water - needed;
-    // plant_water = plant_water + needed;
-    // // sets SecureStore values
-    // await SecureStore.setItemAsync("inventory_water", "" + inventory_water);
-    // plant["two"]["current_waters"] = plant_water;
-    // await SecureStore.setItemAsync(key, JSON.stringify(plant));
-    // // updates progress bar, display number
-    // this.increase("progress", 100);
-    // await this.checkWateringOptions();
-    // this.setState({ inventory_water: inventory_water });
+    if (this.state.plant_status != 3) {
+      console.log("cannot use elixir on a plant that isn't wilted");
+      return -1;
+    }
+
+    // gets inventory elixir count
+    let inventory_elixir = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_elixir")
+    );
+
+    if (inventory_elixir < 1) {
+      console.log("not enough elixir to use");
+      return -1;
+    }
+
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+
+    inventory_elixir -= 1;
+
+    this.setState({
+      progress: 100,
+    });
+
+    Alert.alert(
+      "SUCCESS!",
+      "You used x1 FERTILIZER to revitalize the plant.",
+      [
+        {
+          text: "OK",
+        },
+      ],
+      { cancelable: false }
+    );
+
+    plant["status"] = 2;
+    plant["two"]["current_waters"] = 0;
+    const start = DateTime.local();
+    const startMidnight = DateTime.fromObject({
+      year: start.year,
+      month: start.month,
+      day: start.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+    }); // the midnight that just passed
+
+    const endMidnight = startMidnight.plus({ day: 4 });
+    plant["two"]["water_start"] = start.toISO();
+    plant["two"]["water_end"] = endMidnight.toISO();
+
+    this.setState({
+      plant_status: 2,
+      inventory_water: 0,
+      progress: 0,
+    });
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync("inventory_elixir", "" + inventory_elixir);
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
+
+    // updates progress bar, display number
+    this.increase("progress", 100);
+    this.setState({
+      inventory_elixir: inventory_elixir,
+      countdownSet: false,
+      countdownFullySet: false,
+      inventory_set: false,
+    });
   };
 
   determineImage = (plant) => {
@@ -306,6 +351,8 @@ export default class GardenTesting extends Component {
   /* Master setup function */
   getInventoryCounts = async () => {
     if (this.state.inventory_set == false) {
+      console.log("getInventoryCounts called");
+
       this.setState({ inventory_set: true });
       let water = Number.parseInt(
         await SecureStore.getItemAsync("inventory_water")
@@ -327,8 +374,6 @@ export default class GardenTesting extends Component {
 
       this.determineInfo(plant);
 
-      await this.prepareSpecifics(plant);
-
       this.setState({
         inventory_water: water,
         inventory_fertilizer: fertilizer,
@@ -337,6 +382,8 @@ export default class GardenTesting extends Component {
         plant_image: image,
         plant_status: plant["status"],
       });
+
+      await this.prepareSpecifics(plant);
     }
   };
 
@@ -823,7 +870,7 @@ export default class GardenTesting extends Component {
           </View>
           <View style={{ flex: 0.1 }}></View>
           <View style={{ flex: 0.8 }}>
-            <TouchableOpacity onPress={this.water_max.bind(this)}>
+            <TouchableOpacity onPress={this.useElixir.bind(this)}>
               <View
                 style={{
                   borderWidth: 1.2,
@@ -835,9 +882,29 @@ export default class GardenTesting extends Component {
                   justifyContent: "center",
                 }}
               >
-                <Text style={[styles.rectangularText, { fontSize: 18 }]}>
+                {this.state.inventory_elixir > 0 ? (
+                  <Text
+                    style={[
+                      styles.rectangularText,
+                      { fontSize: 18, color: "#eee" },
+                    ]}
+                  >
+                    REVITALIZE
+                  </Text>
+                ) : (
+                  <Text
+                    style={[
+                      styles.rectangularText,
+                      { fontSize: 18, color: "#525252" },
+                    ]}
+                  >
+                    REVITALIZE
+                  </Text>
+                )}
+
+                {/* <Text style={[styles.rectangularText, { fontSize: 18 }]}>
                   REVITALIZE
-                </Text>
+                </Text> */}
               </View>
             </TouchableOpacity>
           </View>
@@ -990,6 +1057,7 @@ export default class GardenTesting extends Component {
   };
 
   render() {
+    // console.log(this.state.inventory_elixir + "elixir");
     // btwn 1.5 and 2
     console.log(this.state.totalDuration);
     console.log("POSITIONNN IS " + this.state.plant_position);
