@@ -226,6 +226,9 @@ export default class GardenTesting extends Component {
 
     if (inventory_elixir < 1) {
       console.log("not enough elixir to use");
+      alert(
+        "You don't have enough elixir! " + "Elixir can be bought from the shop."
+      );
       return -1;
     }
 
@@ -240,7 +243,7 @@ export default class GardenTesting extends Component {
 
     Alert.alert(
       "SUCCESS!",
-      "You used x1 FERTILIZER to revitalize the plant.",
+      "You used x1 ELIXIR to revitalize the plant.",
       [
         {
           text: "OK",
@@ -279,6 +282,83 @@ export default class GardenTesting extends Component {
     this.increase("progress", 100);
     this.setState({
       inventory_elixir: inventory_elixir,
+      countdownSet: false,
+      countdownFullySet: false,
+      inventory_set: false,
+    });
+  };
+
+  useFertilizer = async () => {
+    if (this.state.plant_status != 1) {
+      console.log("cannot use fertilizer on a plant that isn't growing");
+      return -1;
+    }
+
+    // gets inventory elixir count
+    let inventory_fertilizer = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_fertilizer")
+    );
+
+    if (inventory_fertilizer < 1) {
+      console.log("not enough fertilizer to use");
+      alert(
+        "You don't have enough fertilizer! " +
+          "Fertilizer can be bought from the shop. " +
+          "\n\nThis plant will grow up on its own after you sprint for " +
+          "3 days in a row."
+      );
+      return -1;
+    }
+
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+
+    inventory_fertilizer -= 1;
+
+    Alert.alert(
+      "SUCCESS!",
+      "You used x1 FERTILIZER to speed up the growing process.",
+      [
+        {
+          text: "OK",
+        },
+      ],
+      { cancelable: false }
+    );
+
+    plant["status"] = 2;
+    plant["two"]["current_waters"] = 0;
+    const start = DateTime.local();
+    const startMidnight = DateTime.fromObject({
+      year: start.year,
+      month: start.month,
+      day: start.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+    }); // the midnight that just passed
+
+    const endMidnight = startMidnight.plus({ day: 4 });
+    plant["two"]["water_start"] = start.toISO();
+    plant["two"]["water_end"] = endMidnight.toISO();
+
+    this.setState({
+      plant_status: 2,
+      inventory_water: 0,
+      progress: 0,
+    });
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync(
+      "inventory_fertilizer",
+      "" + inventory_fertilizer
+    );
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
+
+    // updates progress bar, display number
+    this.increase("progress", 100);
+    this.setState({
+      inventory_fertilizer: inventory_fertilizer,
       countdownSet: false,
       countdownFullySet: false,
       inventory_set: false,
@@ -334,6 +414,9 @@ export default class GardenTesting extends Component {
         "for 3 days in a row! You can also use fertilizer to speed it up.";
     }
 
+    if (plant["status"] == 1) {
+      title = "SPECIES UNKNOWN";
+    }
     this.setState({ alert_title: title, alert_info: info });
   };
 
