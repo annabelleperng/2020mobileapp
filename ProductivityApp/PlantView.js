@@ -12,6 +12,7 @@ import {
   Button,
   TouchableNativeFeedbackBase,
   Alert,
+  Platform,
 } from "react-native";
 
 import CountDown from "react-native-countdown-component";
@@ -365,6 +366,31 @@ export default class GardenTesting extends Component {
     });
   };
 
+  useShovel = async () => {
+    if (this.state.plant_status != 4) {
+      console.log("cannot use shovel on a plant that isn't dead");
+      return -1;
+    }
+
+    await su.createPlant(this.state.plant_position);
+    Alert.alert(
+      "SUCCESS",
+      "Shovel used!",
+      [
+        {
+          text: "OK",
+        },
+      ],
+      { cancelable: false }
+    );
+
+    this.setState({
+      countdownSet: false,
+      countdownFullySet: false,
+      inventory_set: false,
+    });
+  };
+
   determineImage = (plant) => {
     if (plant["status"] == 4) {
       return plant["four"]["four_image"];
@@ -488,6 +514,9 @@ export default class GardenTesting extends Component {
     else if (plant["status"] == 2) {
       let pos_waters = plant["two"]["current_waters"];
       pos_waters *= 6.67;
+      if (pos_waters > 100) {
+        pos_waters = 100;
+      }
       //   console.log(this.state.plant_position + "_waters");
       this.setState({
         progress: pos_waters,
@@ -595,7 +624,7 @@ export default class GardenTesting extends Component {
 
           <View style={{ flex: 0.1 }}></View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            onPress={() => this.useShovel()}
             activeOpacity={0.5}
             // inventory item: shovel
           >
@@ -675,7 +704,11 @@ export default class GardenTesting extends Component {
 
           <View style={{ flex: 0.1 }}></View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            onPress={() =>
+              this.props.navigation.navigate("Seeds", {
+                position: this.plant_position,
+              })
+            }
             activeOpacity={0.5}
             // inventory item: seeds
           >
@@ -703,10 +736,157 @@ export default class GardenTesting extends Component {
       //   maxValue: 105,
     };
 
-    if (this.state.plant_status == 1) {
+    if (this.state.plant_status == 0) {
+      return (
+        <View
+          style={{
+            flex: 2,
+            backgroundColor: "#111",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+          // right side for progress bar and buttons
+        >
+          <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 10 }}>
+            {/* {Platform.OS == "android" ? (
+                <Text style={styles.whiteText}>
+                  Tap the seed button in your inventory to start growing!
+                </Text>
+              ) : (
+                <Text style={styles.whiteText}>
+                  Plant a seed from your inventory to start growing!
+                </Text>
+              )} */}
+
+            <Text style={styles.whiteText}>
+              Tap the seed button in your inventory to start growing!
+            </Text>
+
+            {/* <Text></Text>
+              Plant a seed from your inventory to start growing!
+              <Text></Text> */}
+            <Text></Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("Seeds", {
+                  position: this.plant_position,
+                })
+              }
+            >
+              {/* {Platform.OS == "android" ? (
+                  <View></View>
+                ) : (
+                  <View
+                    style={{
+                      borderWidth: 1.2,
+                      width: screen.width / 2,
+                      height: screen.width / 10,
+                      borderColor: "#525252",
+                      color: "#1ce",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.rectangularText,
+                        { fontSize: 18, color: "#eee" },
+                      ]}
+                    >
+                      PLANT SEED
+                    </Text>
+                  </View>
+                )} */}
+            </TouchableOpacity>
+
+            {Platform.OS == "android" ? (
+              <View style={{ flex: 0 }}></View>
+            ) : (
+              <View style={{ flex: 0.1 }}></View>
+            )}
+            {/* <Text></Text>
+              <Text></Text> */}
+            <Text style={styles.whiteText}>Get more seeds:</Text>
+            <View style={{ flex: 0.1 }}></View>
+            {/* <Text></Text> */}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Details")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#25bcdb",
+                  color: "#1ce",
+                  backgroundColor: "#1a2a3d",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>Sprint</Text>
+              </View>
+            </TouchableOpacity>
+            {Platform.OS == "android" ? (
+              <View style={{ flex: 0.1 }}></View>
+            ) : (
+              <View style={{ flex: 0.08 }}></View>
+            )}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Shop")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#5ea9d1",
+                  color: "#1ce",
+                  backgroundColor: "#111c2b",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>
+                  Buy from Shop
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {Platform.OS == "android" ? (
+              <View style={{ flex: 0.1 }}></View>
+            ) : (
+              <View style={{ flex: 0.08 }}></View>
+            )}
+            {/* <Text></Text> */}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Garden2")}
+            >
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 13,
+                  borderColor: "#a6b4e3",
+                  color: "#1ce",
+                  backgroundColor: "#0c1521",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 16 }}>
+                  Breed Plants
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1 }}></View>
+        </View>
+      );
+    } else if (this.state.plant_status == 1) {
       return <View></View>; // BTS
-    }
-    if (this.state.plant_status == 2) {
+    } else if (this.state.plant_status == 2) {
       return (
         <View
           style={{
@@ -799,7 +979,7 @@ export default class GardenTesting extends Component {
               <Text style={styles.smallWhiteText}>FULLY WATERED</Text>
             ) : (
               <Text style={styles.smallWhiteText}>
-                {Math.floor(this.state.progress / 6.67)}/15 WATERS
+                {Math.floor(this.state.progress / 6.66)}/15 WATERS
               </Text>
             )}
             <Text></Text>
@@ -911,14 +1091,20 @@ export default class GardenTesting extends Component {
               </View>
             ) : (
               <View>
-                <Text></Text>
+                <View
+                  style={{
+                    marginBottom:
+                      Platform.OS == "android" ? screen.height / 60 : 0,
+                  }}
+                ></View>
+                {/* <Text></Text> */}
                 <Text style={styles.whiteText}>until dead</Text>
               </View>
             )}
           </View>
           <View
             style={{
-              flex: 0.3,
+              flex: Platform.OS == "android" ? 0.1 : 0.2,
               // backgroundColor: "#eac",
               justifyContent: "center",
               alignItems: "center",
@@ -943,16 +1129,25 @@ export default class GardenTesting extends Component {
               backgroundColorOnComplete="#ff427b"
               // progress bar
             />
-            <Text></Text>
-            {this.state.fully_watered ? (
-              <Text style={styles.smallWhiteText}>FULLY WATERED</Text>
+
+            {Platform.OS == "android" ? (
+              <View style={{ marginBottom: screen.height / 60 }}></View>
             ) : (
-              <Text style={styles.smallWhiteText}>0/1 ELIXIR</Text>
+              <View style={{ marginBottom: screen.height / 80 }}></View>
             )}
+            {/* <Text></Text> */}
+
+            <Text style={styles.smallWhiteText}>0/1 ELIXIR</Text>
+
             <Text></Text>
           </View>
           <View style={{ flex: 0.1 }}></View>
           <View style={{ flex: 0.8 }}>
+            <View
+              style={{
+                marginTop: Platform.OS == "android" ? 0 : screen.height / 120,
+              }}
+            ></View>
             <TouchableOpacity onPress={this.useElixir.bind(this)}>
               <View
                 style={{
@@ -993,6 +1188,52 @@ export default class GardenTesting extends Component {
           </View>
         </View>
       );
+    } else if (this.state.plant_status == 4) {
+      return (
+        <View
+          style={{
+            flex: 2,
+            backgroundColor: "#111",
+            justifyContent: "center",
+            // alignItems: "center",
+            // flexDirection: "row",
+          }}
+          // right side for progress bar and buttons
+        >
+          <Text
+            style={{
+              color: "#ff5271",
+              fontSize: 20,
+              marginLeft: screen.width / 30,
+              marginRight: screen.width / 30,
+            }}
+          >
+            Your plant has died!
+          </Text>
+          <Text></Text>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 18,
+              marginLeft: screen.width / 30,
+              marginRight: screen.width / 30,
+            }}
+          >
+            Plants die if they have not been revived in time after wilting.
+          </Text>
+          <Text></Text>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 18,
+              marginLeft: screen.width / 30,
+              marginRight: screen.width / 30,
+            }}
+          >
+            Use the shovel in your inventory to dig it up.
+          </Text>
+        </View>
+      );
     } else {
       return (
         <View
@@ -1005,108 +1246,7 @@ export default class GardenTesting extends Component {
           }}
           // right side for progress bar and buttons
         >
-          <View style={{ flex: 1 }}></View>
-          <View style={{ flex: 10 }}>
-            <Text style={styles.whiteText}>
-              Plant a seed from your inventory to start growing!
-            </Text>
-            <Text></Text>
-            <Text></Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigate("Seeds", {
-                  position: this.plant_position,
-                })
-              }
-            >
-              <View
-                style={{
-                  borderWidth: 1.2,
-                  width: screen.width / 2,
-                  height: screen.width / 10,
-                  borderColor: "#525252",
-                  color: "#1ce",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text
-                  style={[
-                    styles.rectangularText,
-                    { fontSize: 18, color: "#eee" },
-                  ]}
-                >
-                  PLANT SEED
-                </Text>
-
-                {/* <Text style={[styles.rectangularText, { fontSize: 18 }]}>
-                  REVITALIZE
-                </Text> */}
-              </View>
-            </TouchableOpacity>
-            <Text></Text>
-            <Text></Text>
-            <Text style={styles.whiteText}>Get more seeds:</Text>
-            <Text></Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
-            >
-              <View
-                style={{
-                  borderWidth: 1.2,
-                  width: screen.width / 2,
-                  height: screen.width / 13,
-                  borderColor: "#25bcdb",
-                  color: "#1ce",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Sprint</Text>
-              </View>
-            </TouchableOpacity>
-            <Text></Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Shop")}
-            >
-              <View
-                style={{
-                  borderWidth: 1.2,
-                  width: screen.width / 2,
-                  height: screen.width / 13,
-                  borderColor: "#5ea9d1",
-                  color: "#1ce",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>
-                  Buy from Shop
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <Text></Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Garden2")}
-            >
-              <View
-                style={{
-                  borderWidth: 1.2,
-                  width: screen.width / 2,
-                  height: screen.width / 13,
-                  borderColor: "#a6b4e3",
-                  color: "#1ce",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>
-                  Breed Plants
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flex: 1 }}></View>
+          <Text style={{ color: "#fff", fontSize: 30 }}>Loading...</Text>
         </View>
       );
     }
@@ -1409,19 +1549,19 @@ export default class GardenTesting extends Component {
             backgroundColor: "#222",
           }}
         >
-          <View>{this.displayJsxMessage()}</View>
+          {/* <View>{this.displayJsxMessage()}</View> */}
         </View>
 
         <View
           style={{
-            flex: 7, //7
+            flex: Platform.OS == "android" ? 5 : 7, //7
             backgroundColor: "#a9d9de",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Garden")}
+            onPress={() => this.props.navigation.navigate("Garden2")}
             activeOpacity={0.5}
           >
             <View style={styles.red}>

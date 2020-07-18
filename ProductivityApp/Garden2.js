@@ -145,7 +145,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 0,
+      status: 4,
       position: 1,
       permanent: {
         event: "none",
@@ -164,12 +164,12 @@ export default class Garden extends Component {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-11T17:52:25.437-07:00",
+        water_end: "2020-07-18T17:52:25.437-07:00",
       },
       three: {
         three_image: "",
         wilt_start: "",
-        wilt_end: "2020-07-16T17:52:25.437-07:00",
+        wilt_end: "2020-07-18T17:52:25.437-07:00",
       },
       four: { four_image: "" },
     };
