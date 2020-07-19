@@ -132,8 +132,8 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("inventory_bees", "5");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "2");
-    await SecureStore.setItemAsync("inventory_elixir", "1");
+    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_elixir", "10");
     await SecureStore.setItemAsync(
       "1_period_start",
       "2020-06-29T18:50:15.437-07:00" // "2020-06-2T18:50:15.437-07:00"
@@ -158,7 +158,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 2,
+      status: 4,
       position: 1,
       permanent: {
         event: "none",
@@ -177,9 +177,13 @@ export default class Garden extends Component {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-11T17:52:25.437-07:00"
+        water_end: "2020-07-18T17:52:25.437-07:00"
       },
-      three: { three_image: "", wilt_start: "", wilt_end: "" },
+      three: {
+        three_image: "",
+        wilt_start: "",
+        wilt_end: "2020-07-18T17:52:25.437-07:00"
+      },
       four: { four_image: "" }
     };
 
@@ -489,7 +493,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 1
+                    position: 1,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -503,7 +509,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 2
+                    position: 2,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -517,7 +525,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 3
+                    position: 3,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -606,7 +616,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 4
+                    position: 4,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -620,7 +632,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 5
+                    position: 5,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -634,7 +648,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 6
+                    position: 6,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -749,7 +765,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 7
+                    position: 7,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -763,7 +781,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 8
+                    position: 8,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
@@ -777,7 +797,9 @@ export default class Garden extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("PlantView", {
-                    position: 9
+                    position: 9,
+                    event: "",
+                    rarity: ""
                   })
                 }
               >
