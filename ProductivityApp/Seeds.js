@@ -32,6 +32,8 @@ export default class Shop extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      plant_position: 1,
+
       gold: -1,
       canBuyRarePlant: false,
       canBuyElixir: false,
@@ -94,6 +96,7 @@ export default class Shop extends Component {
   };
 
   render() {
+    const { navigate } = this.props.navigation;
     // this.updateStuff();
     if (!this.state.initialized) {
       this.initialize();
@@ -154,7 +157,15 @@ export default class Shop extends Component {
                       source={require("./assets/common_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity onPress={this.garden("none", "C")}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed.png")}
@@ -169,7 +180,15 @@ export default class Shop extends Component {
                       source={require("./assets/common_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed.png")}
@@ -184,7 +203,15 @@ export default class Shop extends Component {
                       source={require("./assets/common_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed.png")}
@@ -317,7 +344,15 @@ export default class Shop extends Component {
                       source={require("./assets/uncommon_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed.png")}
@@ -332,7 +367,15 @@ export default class Shop extends Component {
                       source={require("./assets/uncommon_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed.png")}
@@ -347,7 +390,15 @@ export default class Shop extends Component {
                       source={require("./assets/uncommon_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed.png")}
@@ -485,7 +536,15 @@ export default class Shop extends Component {
                       source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed.png")}
@@ -500,7 +559,15 @@ export default class Shop extends Component {
                       source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed.png")}
@@ -515,7 +582,15 @@ export default class Shop extends Component {
                       source={require("./assets/rare_seed_bought.png")}
                     />
                   ) : (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate("PlantView", {
+                          position: this.state.plant_position,
+                          event: "none",
+                          rarity: "C"
+                        })
+                      }
+                    >
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed.png")}
@@ -767,7 +842,8 @@ export default class Shop extends Component {
                 backgroundColor: "#472b25",
                 alignItems: "center",
                 flexDirection: "row",
-                justifyContent: "center"
+                justifyContent: "center",
+                marginBottom: 10
               }}
             >
               <View style={{ flex: 0.2 }}></View>
@@ -901,14 +977,15 @@ export default class Shop extends Component {
 
 const styles = StyleSheet.create({
   items: {
-    marginTop: 0,
+    marginTop: screen.height / 80,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
     height: screen.width / 7
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
+    marginBottom: 10
   },
   menuIcons2: {
     width: screen.width / 9,
@@ -958,11 +1035,11 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight
+    flex: 1
+    // marginTop: Constants.statusBarHeight
   },
   scrollView: {
-    backgroundColor: "pink",
-    marginHorizontal: 20
+    backgroundColor: "pink"
+    // marginHorizontal: 20
   }
 });
