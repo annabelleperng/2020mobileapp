@@ -27,36 +27,60 @@ export default class SeedUtils extends Component {
    * Plants a rarity, event seed.
    * plant is parsed JSON object from SecureStore which contains
    * information about a plant at a specific position.
+   * ***EDITED to take position instead of previous plant.
    *   ex. rarity: "C"
    *   ex. event: "none"
    */
-  plantSeed = async (plant, rarity, event) => {
+  plantSeed = async (position, rarity, event) => {
     console.log("plantSeed called");
 
-    if (plant["status"] != 0) {
-      console.log("error: trying to plant seed where it can't be planted");
-      return -1;
-    }
+    // if (plant["status"] != 0) {
+    //   console.log("error: trying to plant seed where it can't be planted");
+    //   return -1;
+    // }
 
-    plant["status"] = 1;
+    // const pos = plant["position"];
 
-    plant["permanent"]["rarity"] = rarity;
-    plant["permanent"]["event"] = event;
+    let newPlant = {
+      status: 1,
+      position: position,
+      permanent: {
+        event: event,
+        rarity: rarity,
+        species: "",
+        date_planted: "",
+      },
+      zero: { zero_image: "plantpot" },
+      one: {
+        one_image: "growing",
+        grow_start: "",
+        grow_offset: 0,
+        grow_streak_length: 0,
+      },
+      two: { two_image: "", current_waters: 0, water_start: "", water_end: "" },
+      three: { three_image: "", wilt_start: "", wilt_end: "" },
+      four: { four_image: "" },
+    };
 
     const species = this.determineSpecies(rarity, event);
-    plant["permanent"]["species"] = species;
+    newPlant["permanent"]["species"] = species;
 
     const datePlanted = DateTime.local().toISO();
-    plant["permanent"]["date_planted"] = datePlanted;
+    newPlant["permanent"]["date_planted"] = datePlanted;
 
-    plant["one"]["grow_streak_length"] = 0;
-    plant["one"]["grow_start"] = DateTime.local().toISO();
-    plant["one"]["grow_offset"] = await SecureStore.getItemAsync(
+    newPlant["one"]["grow_streak_length"] = 0;
+    newPlant["one"]["grow_start"] = DateTime.local().toISO();
+    newPlant["one"]["grow_offset"] = await SecureStore.getItemAsync(
       "streak_length"
     );
 
+    await SecureStore.setItemAsync(
+      position + "_plant",
+      JSON.stringify(newPlant)
+    );
+
     console.log("plantSeed finished\n\n\n");
-    return 1;
+    return newPlant;
   };
 
   /*
