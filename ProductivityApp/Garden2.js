@@ -36,7 +36,8 @@ const rewardUtils = new RewardUtils();
 let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
-  "color ": require("./assets/largebee.png")
+  "color ": require("./assets/largebee.png"),
+  "notif ": require("./assets/dostuff.png")
 };
 
 export default class Garden extends Component {
@@ -57,15 +58,6 @@ export default class Garden extends Component {
       plant8: "",
       plant9: "",
 
-      status1: 2,
-      status2: 2,
-      status3: 2,
-      status4: 2,
-      status5: 1,
-      status6: 2,
-      status7: 2,
-      status8: 2,
-      status9: 1,
       bee1: "invis ",
       bee2: "invis ",
       bee3: "invis ",
@@ -84,17 +76,7 @@ export default class Garden extends Component {
       modalVisible: false,
       acquiredSeed: "",
 
-      plantsInitialized: false,
-
-      showExclamation1: 0,
-      showExclamation2: 0,
-      showExclamation3: 0,
-      showExclamation4: 0,
-      showExclamation5: 0,
-      showExclamation6: 0,
-      showExclamation7: 0,
-      showExclamation8: 0,
-      showExclamation9: 0
+      plantsInitialized: false
     };
   }
 
@@ -304,51 +286,61 @@ export default class Garden extends Component {
       return;
     }
     this.setState({ showBees: true });
-    if (this.state.status1 == 2) {
+    if (this.state.plant1["status"] == 2) {
       this.setState({ bee1: "bw " });
-    }
-    if (this.state.status2 == 2) {
+    } else this.setState({ bee1: "invis " });
+
+    if (this.state.plant2["status"] == 2) {
       this.setState({ bee2: "bw " });
-    }
-    if (this.state.status3 == 2) {
+    } else this.setState({ bee2: "invis " });
+
+    if (this.state.plant3["status"] == 2) {
       this.setState({ bee3: "bw " });
-    }
-    if (this.state.status4 == 2) {
+    } else this.setState({ bee3: "invis " });
+
+    if (this.state.plant4["status"] == 2) {
       this.setState({ bee4: "bw " });
-    }
-    if (this.state.status5 == 2) {
+    } else this.setState({ bee4: "invis " });
+
+    if (this.state.plant5["status"] == 2) {
       this.setState({ bee5: "bw " });
-    }
-    if (this.state.status6 == 2) {
+    } else this.setState({ bee5: "invis " });
+
+    if (this.state.plant6["status"] == 2) {
       this.setState({ bee6: "bw " });
-    }
-    if (this.state.status7 == 2) {
+    } else this.setState({ bee6: "invis " });
+
+    if (this.state.plant7["status"] == 2) {
       this.setState({ bee7: "bw " });
-    }
-    if (this.state.status8 == 2) {
+    } else this.setState({ bee7: "invis " });
+
+    if (this.state.plant8["status"] == 2) {
       this.setState({ bee8: "bw " });
-    }
-    if (this.state.status9 == 2) {
+    } else this.setState({ bee8: "invis " });
+
+    if (this.state.plant9["status"] == 2) {
       this.setState({ bee9: "bw " });
-    }
+    } else this.setState({ bee9: "invis " });
   };
 
   hideBees = () => {
     this.setState({
       showBees: false,
-      bee1: "invis ",
-      bee2: "invis ",
-      bee3: "invis ",
-      bee4: "invis ",
-      bee5: "invis ",
-      bee6: "invis ",
-      bee7: "invis ",
-      bee8: "invis ",
-      bee9: "invis ",
+      // bee1: "invis ",
+      // bee2: "invis ",
+      // bee3: "invis ",
+      // bee4: "invis ",
+      // bee5: "invis ",
+      // bee6: "invis ",
+      // bee7: "invis ",
+      // bee8: "invis ",
+      // bee9: "invis ",
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0
     });
+
+    this.showNotifs();
   };
 
   toggleBees = () => {
@@ -404,60 +396,84 @@ export default class Garden extends Component {
       this.initializePlant(plant8);
       this.initializePlant(plant9);
 
-      this.state.plant1["status"] = 4;
-      console.log("cant take big dick but i suck on it");
-      this.setState({ status1: 4 });
-      if (
-        this.state.plant1["status"] == 4 ||
-        (this.state.plant1["status"] == 3 && rewardUtils.getWater() >= 15)
-      ) {
-        this.setState({ showExclamation1: 1 });
-      }
-      if (
-        plant2.status == 4 ||
-        (plant2.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation2: 1 });
-      if (
-        plant3.status == 4 ||
-        (plant3.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation3: 1 });
-      if (
-        plant4.status == 4 ||
-        (plant4.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation4: 1 });
-      if (
-        plant5.status == 4 ||
-        (plant5.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation5: 1 });
-      if (
-        plant6.status == 4 ||
-        (plant6.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation6: 1 });
-      if (
-        plant7.status == 4 ||
-        (plant7.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation7: 1 });
-      if (
-        plant8.status == 4 ||
-        (plant8.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation8: 1 });
-      if (
-        plant9.status == 4 ||
-        (plant9.status == 3 && rewardUtils.getWater() >= 15)
-      )
-        this.setState({ showExclamation9: 1 });
+      this.state.plant1["status"] = 2;
+      this.state.plant3["status"] = 2;
+      this.state.plant4["status"] = 2;
+      this.state.plant5["status"] = 2;
+      this.state.plant8["status"] = 2;
 
-      this.setState({ plantSynced: true });
+      this.state.plant1["two"]["current_waters"] = 74;
+      this.state.plant5["two"]["current_waters"] = 32;
+
+      this.showNotifs();
+
+      // SecureStore.getItemAsync("1_plant")
     }
+  };
 
-    // SecureStore.getItemAsync("1_plant")
+  showNotifs = () => {
+    if (
+      (this.state.plant1["status"] == 2 || this.state.plant1["status"] == 3) &&
+      this.state.plant1["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee1: "notif " });
+    else this.setState({ bee1: "invis " });
+
+    if (
+      (this.state.plant2["status"] == 2 || this.state.plant2["status"] == 3) &&
+      this.state.plant2["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee2: "notif " });
+    else this.setState({ bee2: "invis " });
+
+    if (
+      (this.state.plant3["status"] == 2 || this.state.plant3["status"] == 3) &&
+      this.state.plant3["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee3: "notif " });
+    else this.setState({ bee3: "invis " });
+
+    if (
+      (this.state.plant4["status"] == 2 || this.state.plant4["status"] == 3) &&
+      this.state.plant4["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee4: "notif " });
+    else this.setState({ bee4: "invis " });
+
+    if (
+      (this.state.plant5["status"] == 2 || this.state.plant5["status"] == 3) &&
+      this.state.plant5["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee5: "notif " });
+    else this.setState({ bee5: "invis " });
+
+    if (
+      (this.state.plant6["status"] == 2 || this.state.plant6["status"] == 3) &&
+      this.state.plant6["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee6: "notif " });
+    else this.setState({ bee6: "invis " });
+
+    if (
+      (this.state.plant7["status"] == 2 || this.state.plant7["status"] == 3) &&
+      this.state.plant7["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee7: "notif " });
+    else this.setState({ bee7: "invis " });
+
+    if (
+      (this.state.plant8["status"] == 2 || this.state.plant8["status"] == 3) &&
+      this.state.plant8["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee8: "notif " });
+    else this.setState({ bee8: "invis " });
+
+    if (
+      (this.state.plant9["status"] == 2 || this.state.plant9["status"] == 3) &&
+      this.state.plant9["two"]["current_waters"] <= 15
+    )
+      this.setState({ bee9: "notif " });
+    else this.setState({ bee9: "invis " });
   };
 
   initializePlant = plant => {};
@@ -552,23 +568,22 @@ export default class Garden extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee1", 1)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee1]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation1 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee1", 1)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee1]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee2", 2)}>
+            {/* <TouchableOpacity onPress={() => this.selectBreeding("bee2", 2)}>
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee2]}
@@ -581,22 +596,34 @@ export default class Garden extends Component {
               />
             ) : (
               <View></View>
+            )} */}
+            {this.state.showBees == false ? (
+              <Image
+                style={[styles.smallButton]}
+                source={bees[this.state.bee2]}
+              />
+            ) : (
+              <TouchableOpacity onPress={() => this.selectBreeding("bee2", 2)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee2]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee3", 3)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee3]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation3 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee3", 3)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee3]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 0.2 }}></View>
@@ -701,51 +728,48 @@ export default class Garden extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee4", 4)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee4]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation4 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee4", 4)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee4]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee5", 5)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee5]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation5 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee5", 5)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee5]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee6", 6)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee6]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation6 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee6", 6)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee6]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 0.2 }}></View>
@@ -823,51 +847,48 @@ export default class Garden extends Component {
         >
           <View style={{ flex: 0.2 }}></View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee7", 7)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee7]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation7 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee7", 7)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee7]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee8", 8)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee8]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation8 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee8", 8)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee8]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.selectBreeding("bee9", 9)}>
+            {this.state.showBees == false ? (
               <Image
                 style={[styles.smallButton]}
                 source={bees[this.state.bee9]}
               />
-            </TouchableOpacity>
-            {this.state.showBees == 0 && this.state.showExclamation9 == 1 ? (
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/dostuff.png")}
-              />
             ) : (
-              <View></View>
+              <TouchableOpacity onPress={() => this.selectBreeding("bee9", 9)}>
+                <Image
+                  style={[styles.smallButton]}
+                  source={bees[this.state.bee9]}
+                />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ flex: 0.2 }}></View>
