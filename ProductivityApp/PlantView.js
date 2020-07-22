@@ -51,7 +51,6 @@ export default class GardenTesting extends Component {
       //   plant_waters: 0,
 
       showCancel: false,
-      image1: "invis ",
       temp: false,
 
       //   soundLoaded: false,
@@ -664,21 +663,18 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
-    if (this.state.seed_decision == true) {
-      console.log("\n\n\n\n\n\nhewwo");
-      await su.plantSeed(
-        this.state.plant_position,
-        this.state.seed_event,
-        this.state.seed_rarity
-      );
-    } else {
-      await su.plantSeed(
-        this.state.plant_position,
-        this.state.seed_event,
-        this.state.seed_rarity
-      );
-      console.log("\n\n\n\n\n\ngoodbye");
-    }
+    console.log("notice meee\n\n\n");
+    await su.plantSeed(
+      this.state.plant_position,
+      this.state.seed_event,
+      this.state.seed_rarity
+    );
+
+    let pl = await SecureStore.getItemAsync(
+      this.state.plant_position + "_plant"
+    );
+    console.log("\n\n\nHI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(JSON.stringify(pl));
     this.setState({ inventory_set: false });
     await this.getInventoryCounts();
   };
