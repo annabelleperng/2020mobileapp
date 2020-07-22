@@ -40,6 +40,14 @@ let bees = {
   "notif ": require("./assets/dostuff.png"),
 };
 
+let images = {
+  invis: require("./assets/invis.png"),
+  growing: require("./assets/growinglarge.png"),
+  plantpot: require("./assets/plantpotlarge.png"),
+  ferns: require("./assets/fernsbig.png"),
+  tulips: require("./assets/tulipsbig.png"),
+};
+
 export default class Garden extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +75,17 @@ export default class Garden extends Component {
       bee7: "invis ",
       bee8: "invis ",
       bee9: "invis ",
+
+      plant_image_1: "",
+      plant_image_2: "",
+      plant_image_3: "",
+      plant_image_4: "",
+      plant_image_5: "",
+      plant_image_6: "",
+      plant_image_7: "",
+      plant_image_8: "",
+      plant_image_9: "",
+
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0,
@@ -134,11 +153,11 @@ export default class Garden extends Component {
         water_end: "2020-07-18T17:52:25.437-07:00",
       },
       three: {
-        three_image: "",
+        three_image: "ferns",
         wilt_start: "",
         wilt_end: "2020-07-18T17:52:25.437-07:00",
       },
-      four: { four_image: "" },
+      four: { four_image: "ferns" },
     };
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
@@ -352,6 +371,7 @@ export default class Garden extends Component {
         plant8: plant8,
         plant9: plant9,
       });
+
       this.initializePlant(plant1);
       this.initializePlant(plant2);
       this.initializePlant(plant3);
@@ -361,6 +381,18 @@ export default class Garden extends Component {
       this.initializePlant(plant7);
       this.initializePlant(plant8);
       this.initializePlant(plant9);
+
+      this.setState({
+        plant_image_1: this.determineImage(plant1),
+        plant_image_2: this.determineImage(plant2),
+        plant_image_3: this.determineImage(plant3),
+        plant_image_4: this.determineImage(plant4),
+        plant_image_5: this.determineImage(plant5),
+        plant_image_6: this.determineImage(plant6),
+        plant_image_7: this.determineImage(plant7),
+        plant_image_8: this.determineImage(plant8),
+        plant_image_9: this.determineImage(plant9),
+      });
 
       this.state.plant1["status"] = 2;
       this.state.plant3["status"] = 2;
@@ -372,8 +404,6 @@ export default class Garden extends Component {
       this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
-
-      // SecureStore.getItemAsync("1_plant")
     }
   };
 
@@ -442,6 +472,20 @@ export default class Garden extends Component {
     else this.setState({ bee9: "invis " });
   };
 
+  determineImage = (plant) => {
+    if (plant["status"] == 4) {
+      return plant["four"]["four_image"];
+    } else if (plant["status"] == 3) {
+      return plant["three"]["three_image"];
+    } else if (plant["status"] == 2) {
+      return plant["two"]["two_image"];
+    } else if (plant["status"] == 1) {
+      return plant["one"]["one_image"];
+    } else {
+      return plant["zero"]["zero_image"];
+    }
+  };
+
   initializePlant = (plant) => {};
 
   render() {
@@ -483,7 +527,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_1]}
                 />
               </TouchableOpacity>
             </View>
@@ -499,7 +543,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_2]}
                 />
               </TouchableOpacity>
             </View>
@@ -515,7 +559,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_3]}
                 />
               </TouchableOpacity>
             </View>
@@ -617,7 +661,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_4]}
                 />
               </TouchableOpacity>
             </View>
@@ -633,7 +677,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_5]}
                 />
               </TouchableOpacity>
             </View>
@@ -649,7 +693,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_6]}
                 />
               </TouchableOpacity>
             </View>
@@ -763,7 +807,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_7]}
                 />
               </TouchableOpacity>
             </View>
@@ -779,7 +823,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_8]}
                 />
               </TouchableOpacity>
             </View>
@@ -795,7 +839,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_9]}
                 />
               </TouchableOpacity>
             </View>
