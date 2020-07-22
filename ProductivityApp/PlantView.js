@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import {
   StyleSheet,
   Text,
@@ -35,6 +35,7 @@ let images = {
 
 import * as SecureStore from "expo-secure-store";
 import { screensEnabled } from "react-native-screens";
+import { RECORDING_OPTION_IOS_OUTPUT_FORMAT_APPLELOSSLESS } from "expo-av/build/Audio";
 export default class GardenTesting extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +44,8 @@ export default class GardenTesting extends Component {
 
       seed_event: this.props.route.params.event,
       seed_rarity: this.props.route.params.rarity,
+      seeds_set: false,
+      seed_decision: false,
 
       plant_status: 0,
       //   plant_waters: 0,
@@ -78,10 +81,27 @@ export default class GardenTesting extends Component {
       alert_title: "",
       alert_info: "",
     };
+
+    console.log(this.props);
   }
 
   checkInitialized = async () => {
     console.log("checking if initialized!");
+
+    if (this.props.route.params.event != "" && this.state.seed_event == "") {
+      console.log("clown");
+      this.setState({
+        plant_position: this.props.route.params.position,
+
+        seed_event: this.props.route.params.event,
+        seed_rarity: this.props.route.params.rarity,
+        inventory_set: false,
+      });
+
+      this.showInventoryThird();
+      this.showRightSide();
+    }
+    console.log(this.state);
     // const initialized = await SecureStore.getItemAsync("garden_initialized");
     // if (initialized === null) {
     //   console.log("not initialized");
@@ -357,7 +377,7 @@ export default class GardenTesting extends Component {
     await SecureStore.setItemAsync(key, JSON.stringify(plant));
 
     // updates progress bar, display number
-    this.increase("progress", 100);
+    // this.increase("progress", 100);
     this.setState({
       inventory_fertilizer: inventory_fertilizer,
       countdownSet: false,
@@ -459,8 +479,9 @@ export default class GardenTesting extends Component {
 
   /* Master setup function */
   getInventoryCounts = async () => {
+    console.log("getInventoryCounts called");
     if (this.state.inventory_set == false) {
-      console.log("getInventoryCounts called");
+      console.log("getInventoryCounts is happening");
 
       this.setState({ inventory_set: true });
       let water = Number.parseInt(
@@ -607,6 +628,61 @@ export default class GardenTesting extends Component {
     }
   };
 
+  checkSeeds = async () => {
+    if (
+      this.state.seed_event == "" ||
+      this.state.seed_rarity == "" ||
+      this.state.seeds_set == true
+    ) {
+      return;
+    }
+
+    this.setState({ seeds_set: true });
+
+    let title = "Success! Seed planted.";
+    let info = "\n";
+
+    if (this.state.seed_rarity == "R") {
+      info += "Rarity: RARE\n\n";
+    } else if (this.state.seed_rarity == "U") {
+      info += "Rarity: UNCOMMON\n\n";
+    } else {
+      info += "Rarity: COMMON\n\n";
+    }
+
+    info += "Event Type: " + this.state.seed_event.toUpperCase();
+
+    Alert.alert(
+      title.toString(),
+      info.toString(),
+      [
+        {
+          text: "OK",
+          onPress: () => this.setState({ seed_decision: true }),
+        },
+      ],
+      { cancelable: false }
+    );
+
+    if (this.state.seed_decision == true) {
+      console.log("\n\n\n\n\n\nhewwo");
+      await su.plantSeed(
+        this.state.plant_position,
+        this.state.seed_event,
+        this.state.seed_rarity
+      );
+    } else {
+      await su.plantSeed(
+        this.state.plant_position,
+        this.state.seed_event,
+        this.state.seed_rarity
+      );
+      console.log("\n\n\n\n\n\ngoodbye");
+    }
+    this.setState({ inventory_set: false });
+    await this.getInventoryCounts();
+  };
+
   showInventoryThird = () => {
     // shows additional inventory item.
     // 4 - shovel
@@ -684,7 +760,7 @@ export default class GardenTesting extends Component {
 
           <View style={{ flex: 0.1 }}></View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            onPress={() => this.useFertilizer()}
             activeOpacity={0.5}
             // inventory item: fertilizer
           >
@@ -1374,11 +1450,13 @@ export default class GardenTesting extends Component {
       [
         {
           text: "OK",
-          onPress: () => console.log("Ask me later pressed"),
+          onPress: () => this.setState({ temp: 1 }),
         },
       ],
       { cancelable: false }
     );
+
+    console.log(this.state.temp + " = temp");
   };
 
   render() {
@@ -1401,6 +1479,7 @@ export default class GardenTesting extends Component {
     // this.getPlantWaterCount();
     this.checkInitialized();
     this.getInventoryCounts();
+    this.checkSeeds();
     // this.getCountdownLength();
 
     // console.log("69");
