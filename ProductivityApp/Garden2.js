@@ -231,7 +231,6 @@ export default class Garden extends Component {
     //   return;
     // }
     if (this.state[plant]["status"] != 2) {
-      console.log("can't take big dick but i suck on it");
       return;
     }
     if (
