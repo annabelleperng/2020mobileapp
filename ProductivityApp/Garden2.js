@@ -80,34 +80,6 @@ export default class Garden extends Component {
     };
   }
 
-  toggleCancel = () => {
-    console.log("toggleCancel called");
-    console.log(" ");
-    // this.state.showCancel = !this.state.showCancel;
-    // var showC = !this.state.showCancel;
-    // console.log(this.state.showCancel);
-    // console.log("aeafa " + !this.state.showCancel);
-    if (this.state.showCancel) {
-      this.setState({ showCancel: false });
-    } else {
-      this.setState({ showCancel: true });
-    }
-  };
-
-  _renderCancel = () => {
-    if (this.state.showCancel) {
-      return (
-        <TouchableHighlight onPress={this.toggleCancel()}>
-          <View>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </View>
-        </TouchableHighlight>
-      );
-    } else {
-      return null;
-    }
-  };
-
   initializeGarden = async () => {
     console.log("initializing garden");
     await SecureStore.setItemAsync("inventory_water", "1000");
@@ -223,12 +195,6 @@ export default class Garden extends Component {
         acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed.",
       });
       this.hideBees();
-      //   Alert.alert(
-      //     "ERROR",
-      //     "Could not breed plants! No bees consumed.",
-      //     [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      //     { cancelable: false }
-      //   );
       return;
     }
     let resEvent = res.substring(1, res.length);
