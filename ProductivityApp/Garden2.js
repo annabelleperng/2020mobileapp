@@ -100,11 +100,6 @@ export default class Garden extends Component {
   }
 
   initializeGarden = async () => {
-    // let initialized = await SecureStore.getItemAsync("garden_initialized");
-    // if (initialized == "true") {
-    //   console.log(this.state);
-    //   return;
-    // }
     console.log("initializing garden");
     await SecureStore.setItemAsync("inventory_water", "1000");
     await SecureStore.setItemAsync("inventory_bees", "5");
@@ -136,7 +131,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 1,
+      status: 4,
       position: 1,
       permanent: {
         event: "none",
@@ -249,8 +244,13 @@ export default class Garden extends Component {
     if (this.state.showBees == false) {
       return;
     }
-    const status = "status" + position;
-    if (this.state[status] != 2) {
+    // const status = "status" + position;
+    const plant = "plant" + position;
+    // if (this.state[status] != 2) {
+    //   return;
+    // }
+    if (this.state[plant]["status"] != 2) {
+      console.log("can't take big dick but i suck on it");
       return;
     }
     if (
@@ -377,7 +377,6 @@ export default class Garden extends Component {
         plant9: plant9,
       });
 
-      console.log(plant7);
       this.initializePlant(plant1);
       this.initializePlant(plant2);
       this.initializePlant(plant3);
