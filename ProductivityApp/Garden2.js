@@ -131,7 +131,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 4,
+      status: 1,
       position: 1,
       permanent: {
         event: "none",
@@ -193,8 +193,10 @@ export default class Garden extends Component {
       for (i = 1; i <= 9; i++) {
         let plantStr = await SecureStore("" + i + "_plant");
         let plant = JSON.parse(plantStr);
-        seedUtils.updateWilting(plant);
-        seedUtils.updateGrowthStreak(plant);
+        seedUtils2.updateWilting(plant);
+        seedUtils2.updateGrowthStreak(plant);
+        plantStr = JSON.stringify(plant);
+        await SecureStore("" + i + "_plant");
       }
     }
   };
