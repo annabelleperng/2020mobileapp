@@ -144,7 +144,7 @@ export default class Garden extends Component {
         one_image: "growing",
         grow_start: "",
         grow_offset: 0,
-        grow_streak_length: 0,
+        grow_streak_length: 3,
       },
       two: {
         two_image: "ferns",

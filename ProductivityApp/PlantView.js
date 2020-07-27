@@ -560,6 +560,37 @@ export default class GardenTesting extends Component {
         this.setState({ progress: 66 });
       } else if (growthStreak == 3) {
         this.setState({ progress: 100 });
+        plant["status"] = 2;
+        plant["two"]["current_waters"] = 0;
+        const start = DateTime.local();
+        const startMidnight = DateTime.fromObject({
+          year: start.year,
+          month: start.month,
+          day: start.day,
+          hour: 0,
+          minute: 0,
+          second: 0,
+        }); // the midnight that just passed
+
+        const endMidnight = startMidnight.plus({ day: 4 });
+        plant["two"]["water_start"] = start.toISO();
+        plant["two"]["water_end"] = endMidnight.toISO();
+
+        this.setState({
+          plant_status: 2,
+          inventory_water: 0,
+          progress: 0,
+        });
+
+        await SecureStore.setItemAsync(key, JSON.stringify(plant));
+
+        // updates progress bar, display number
+        // this.increase("progress", 100);
+        this.setState({
+          countdownSet: false,
+          countdownFullySet: false,
+          inventory_set: false,
+        });
       }
     }
     //
@@ -1036,7 +1067,7 @@ export default class GardenTesting extends Component {
               // progress bar
             />
             <Text></Text>
-            <Text style={styles.smallWhiteText}>0/1 FERTILIZER</Text>
+            <Text style={styles.smallWhiteText}>0/3 DAYS OF SPRINTING</Text>
             <Text></Text>
           </View>
           <View style={{ flex: 0.1 }}></View>
