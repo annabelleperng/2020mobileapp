@@ -550,6 +550,7 @@ export default class GardenTesting extends Component {
     //
     //
     else if (plant["status"] == 1) {
+      let key = this.state.plant_position + "_plant";
       let growthStreak = plant["one"]["grow_streak_length"];
       this.setState({ growth_streak_length: growthStreak });
       if (growthStreak == 0) {
