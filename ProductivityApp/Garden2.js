@@ -52,6 +52,8 @@ export default class Garden extends Component {
   constructor(props) {
     super(props);
     this.initializeGarden();
+    console.log("Constructed");
+    this.assureRefresh();
     this.state = {
       showCancel: false,
       showBees: false,
@@ -98,6 +100,14 @@ export default class Garden extends Component {
       plantsInitialized: false,
     };
   }
+
+  assureRefresh = () => {
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+  };
 
   initializeGarden = async () => {
     console.log("initializing garden");
@@ -150,12 +160,12 @@ export default class Garden extends Component {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-18T17:52:25.437-07:00",
+        water_end: "2020-07-28T17:52:25.437-07:00",
       },
       three: {
         three_image: "ferns",
         wilt_start: "",
-        wilt_end: "2020-07-18T17:52:25.437-07:00",
+        wilt_end: "2020-07-28T17:52:25.437-07:00",
       },
       four: { four_image: "ferns" },
     };
@@ -165,6 +175,10 @@ export default class Garden extends Component {
 
     console.log("we're here");
   };
+  componentDidMount() {
+    console.log("hello");
+    this.assureRefresh();
+  }
 
   updateStuff = async (plant) => {
     const localTime = DateTime.local();
@@ -495,10 +509,17 @@ export default class Garden extends Component {
 
   initializePlant = (plant) => {};
 
+  refreshPlants = () => {
+    this.setState({ plantsInitialized: false });
+  };
+
   render() {
     // this.updateStuff();
+    console.log("HIIIIIIIIIIIIIIIIIIII");
+    console.log(this.state.plantsInitialized);
     // const isModalVisible = true;
     // const setModalVisible = true;
+    this.assureRefresh();
     this.syncInventory();
     if (this.state.plantSynced == false) this.initializePlants();
 
@@ -999,7 +1020,7 @@ export default class Garden extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("GardenTesting")}
+                onPress={this.refreshPlants}
                 activeOpacity={0.5}
               >
                 <Image

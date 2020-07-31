@@ -102,7 +102,7 @@ export default class GardenTesting extends Component {
       this.showInventoryThird();
       this.showRightSide();
     }
-    console.log(this.state);
+    // console.log(this.state);
     // const initialized = await SecureStore.getItemAsync("garden_initialized");
     // if (initialized === null) {
     //   console.log("not initialized");
@@ -1021,15 +1021,19 @@ export default class GardenTesting extends Component {
             }}
             // top margin
           ></View>
-          <View style={{ flex: Platform.OS == "android" ? 0.9 : 0.3 }}>
+          <View
+            style={{
+              flex: Platform.OS == "android" ? 0.9 : 0.3,
+            }}
+          >
             <View>
               <Text></Text>
               {3 - this.state.growth_streak_length == 1 ? (
-                <View>
+                <View style={{ alignItems: "center" }}>
                   <Text style={styles.whiteText}>
                     {3 - this.state.growth_streak_length} more day of sprinting
-                    until grown
                   </Text>
+                  <Text style={styles.whiteText}>until fully grown</Text>
                 </View>
               ) : (
                 <View>
@@ -1593,6 +1597,7 @@ export default class GardenTesting extends Component {
   render() {
     // console.log(this.state.inventory_elixir + "elixir");
     // btwn 1.5 and 2
+    const { navigate } = this.props.navigation;
     console.log(this.state.totalDuration);
     console.log("POSITIONNN IS " + this.state.plant_position);
     const barWidth = screen.width / 1.7;
@@ -1771,7 +1776,7 @@ export default class GardenTesting extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Garden2")}
+            onPress={() => navigate("Garden2")}
             activeOpacity={0.5}
           >
             <View style={styles.red}>
