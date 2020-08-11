@@ -28,10 +28,7 @@ export default class App extends React.Component {
     const localPrevMidnight = localMidnight.minus({ days: 1 });
 
     //TESTING
-    // const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
-    // const pastMidnight = localPrevMidnight.minus({ days: 2 }).toISO();
-    // console.log("pastMidnight: " + pastMidnight);
-    // await SecureStore.setItemAsync("latest_sprint", pastMidnight);
+    const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
 
     const latestSprintDay = DateTime.fromISO(
       await SecureStore.getItemAsync("latest_sprint")

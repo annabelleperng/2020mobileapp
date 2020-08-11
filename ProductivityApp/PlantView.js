@@ -51,7 +51,6 @@ export default class GardenTesting extends Component {
       //   plant_waters: 0,
 
       showCancel: false,
-      image1: "invis ",
       temp: false,
 
       //   soundLoaded: false,
@@ -80,6 +79,8 @@ export default class GardenTesting extends Component {
       //
       alert_title: "",
       alert_info: "",
+
+      growth_streak_length: 0,
     };
 
     console.log(this.props);
@@ -101,7 +102,7 @@ export default class GardenTesting extends Component {
       this.showInventoryThird();
       this.showRightSide();
     }
-    console.log(this.state);
+    // console.log(this.state);
     // const initialized = await SecureStore.getItemAsync("garden_initialized");
     // if (initialized === null) {
     //   console.log("not initialized");
@@ -549,6 +550,49 @@ export default class GardenTesting extends Component {
     //
     //
     else if (plant["status"] == 1) {
+      let key = this.state.plant_position + "_plant";
+      let growthStreak = plant["one"]["grow_streak_length"];
+      this.setState({ growth_streak_length: growthStreak });
+      if (growthStreak == 0) {
+        this.setState({ progress: 0 });
+      } else if (growthStreak == 1) {
+        this.setState({ progress: 33 });
+      } else if (growthStreak == 2) {
+        this.setState({ progress: 66 });
+      } else if (growthStreak == 3) {
+        this.setState({ progress: 100 });
+        plant["status"] = 2;
+        plant["two"]["current_waters"] = 0;
+        const start = DateTime.local();
+        const startMidnight = DateTime.fromObject({
+          year: start.year,
+          month: start.month,
+          day: start.day,
+          hour: 0,
+          minute: 0,
+          second: 0,
+        }); // the midnight that just passed
+
+        const endMidnight = startMidnight.plus({ day: 4 });
+        plant["two"]["water_start"] = start.toISO();
+        plant["two"]["water_end"] = endMidnight.toISO();
+
+        this.setState({
+          plant_status: 2,
+          inventory_water: 0,
+          progress: 0,
+        });
+
+        await SecureStore.setItemAsync(key, JSON.stringify(plant));
+
+        // updates progress bar, display number
+        // this.increase("progress", 100);
+        this.setState({
+          countdownSet: false,
+          countdownFullySet: false,
+          inventory_set: false,
+        });
+      }
     }
     //
     //
@@ -664,21 +708,18 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
-    if (this.state.seed_decision == true) {
-      console.log("\n\n\n\n\n\nhewwo");
-      await su.plantSeed(
-        this.state.plant_position,
-        this.state.seed_event,
-        this.state.seed_rarity
-      );
-    } else {
-      await su.plantSeed(
-        this.state.plant_position,
-        this.state.seed_event,
-        this.state.seed_rarity
-      );
-      console.log("\n\n\n\n\n\ngoodbye");
-    }
+    console.log("notice meee\n\n\n");
+    await su.plantSeed(
+      this.state.plant_position,
+      this.state.seed_event,
+      this.state.seed_rarity
+    );
+
+    let pl = await SecureStore.getItemAsync(
+      this.state.plant_position + "_plant"
+    );
+    console.log("\n\n\nHI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(JSON.stringify(pl));
     this.setState({ inventory_set: false });
     await this.getInventoryCounts();
   };
@@ -961,7 +1002,101 @@ export default class GardenTesting extends Component {
         </View>
       );
     } else if (this.state.plant_status == 1) {
-      return <View></View>; // BTS
+      return (
+        <View
+          style={{
+            flex: 2,
+            backgroundColor: "#111",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          // right side for progress bar and buttons
+        >
+          <View
+            style={{
+              flex: 0.5,
+              // backgroundColor: "#eac",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            // top margin
+          ></View>
+          <View
+            style={{
+              flex: Platform.OS == "android" ? 0.9 : 0.3,
+            }}
+          >
+            <View>
+              <Text></Text>
+              {3 - this.state.growth_streak_length == 1 ? (
+                <View style={{ alignItems: "center" }}>
+                  <Text style={styles.whiteText}>
+                    {3 - this.state.growth_streak_length} more day of sprinting
+                  </Text>
+                  <Text style={styles.whiteText}>until fully grown</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.whiteText}>
+                    {3 - this.state.growth_streak_length} more days of sprinting
+                    until grown
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.3,
+              // backgroundColor: "#eac",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            // top margin
+          ></View>
+          {/* <View style={{ flex: 0.2 }}></View> */}
+          <View
+            style={{
+              flex: 0.5,
+              // backgroundColor: "#ace",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            // middle third - progress bar
+          >
+            <ProgressBarAnimated
+              {...progressCustomStyles}
+              width={screen.width / 2}
+              value={this.state.progress}
+              backgroundColorOnComplete="#ff427b"
+              // progress bar
+            />
+            <Text></Text>
+            <Text style={styles.smallWhiteText}>0/3 DAYS OF SPRINTING</Text>
+            <Text></Text>
+          </View>
+          <View style={{ flex: 0.1 }}></View>
+          <View style={{ flex: 0.8 }}>
+            <TouchableOpacity onPress={this.useFertilizer.bind(this)}>
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 10,
+                  borderColor: "#525252",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={[styles.rectangularText, { fontSize: 18 }]}>
+                  FERTILIZE
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ); // BTS // BTS
     } else if (this.state.plant_status == 2) {
       return (
         <View
@@ -1462,6 +1597,7 @@ export default class GardenTesting extends Component {
   render() {
     // console.log(this.state.inventory_elixir + "elixir");
     // btwn 1.5 and 2
+    const { navigate } = this.props.navigation;
     console.log(this.state.totalDuration);
     console.log("POSITIONNN IS " + this.state.plant_position);
     const barWidth = screen.width / 1.7;
@@ -1640,7 +1776,7 @@ export default class GardenTesting extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Garden2")}
+            onPress={() => navigate("Garden2")}
             activeOpacity={0.5}
           >
             <View style={styles.red}>

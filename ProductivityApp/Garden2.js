@@ -15,7 +15,7 @@ import {
   Dimensions,
   TextInput,
   Alert,
-  Modal
+  Modal,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import SeedUtils2 from "./SeedUtils2";
@@ -37,13 +37,23 @@ let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
   "color ": require("./assets/largebee.png"),
-  "notif ": require("./assets/dostuff.png")
+  "notif ": require("./assets/dostuff.png"),
+};
+
+let images = {
+  invis: require("./assets/invis.png"),
+  growing: require("./assets/growinglarge.png"),
+  plantpot: require("./assets/plantpotlarge.png"),
+  ferns: require("./assets/fernsbig.png"),
+  tulips: require("./assets/tulipsbig.png"),
 };
 
 export default class Garden extends Component {
   constructor(props) {
     super(props);
     this.initializeGarden();
+    console.log("Constructed");
+    this.assureRefresh();
     this.state = {
       showCancel: false,
       showBees: false,
@@ -67,6 +77,17 @@ export default class Garden extends Component {
       bee7: "invis ",
       bee8: "invis ",
       bee9: "invis ",
+
+      plant_image_1: "",
+      plant_image_2: "",
+      plant_image_3: "",
+      plant_image_4: "",
+      plant_image_5: "",
+      plant_image_6: "",
+      plant_image_7: "",
+      plant_image_8: "",
+      plant_image_9: "",
+
       firstParent: 0,
       secondParent: 0,
       selectedParents: 0,
@@ -76,9 +97,17 @@ export default class Garden extends Component {
       modalVisible: false,
       acquiredSeed: "",
 
-      plantsInitialized: false
+      plantsInitialized: false,
     };
   }
+
+  assureRefresh = () => {
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+  };
 
   initializeGarden = async () => {
     console.log("initializing garden");
@@ -112,33 +141,33 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 4,
+      status: 1,
       position: 1,
       permanent: {
         event: "none",
         rarity: "C",
         species: "snowcrested fern",
-        date_planted: ""
+        date_planted: "",
       },
       zero: { zero_image: "plantpot" },
       one: {
         one_image: "growing",
         grow_start: "",
         grow_offset: 0,
-        grow_streak_length: 0
+        grow_streak_length: 2,
       },
       two: {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-18T17:52:25.437-07:00"
+        water_end: "2020-07-28T17:52:25.437-07:00",
       },
       three: {
-        three_image: "",
+        three_image: "ferns",
         wilt_start: "",
-        wilt_end: "2020-07-18T17:52:25.437-07:00"
+        wilt_end: "2020-07-28T17:52:25.437-07:00",
       },
-      four: { four_image: "" }
+      four: { four_image: "ferns" },
     };
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
@@ -146,8 +175,12 @@ export default class Garden extends Component {
 
     console.log("we're here");
   };
+  componentDidMount() {
+    console.log("hello");
+    this.assureRefresh();
+  }
 
-  updateStuff = async plant => {
+  updateStuff = async (plant) => {
     const localTime = DateTime.local();
 
     const gardenLastUpdated = DateTime.fromISO(
@@ -174,8 +207,10 @@ export default class Garden extends Component {
       for (i = 1; i <= 9; i++) {
         let plantStr = await SecureStore("" + i + "_plant");
         let plant = JSON.parse(plantStr);
-        seedUtils.updateWilting(plant);
-        seedUtils.updateGrowthStreak(plant);
+        seedUtils2.updateWilting(plant);
+        seedUtils2.updateGrowthStreak(plant);
+        plantStr = JSON.stringify(plant);
+        await SecureStore("" + i + "_plant");
       }
     }
   };
@@ -192,7 +227,7 @@ export default class Garden extends Component {
         secondParent: 0,
         selectedParents: 0,
         modalVisible: true,
-        acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed."
+        acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed.",
       });
       this.hideBees();
       return;
@@ -214,7 +249,7 @@ export default class Garden extends Component {
       secondParent: 0,
       selectedParents: 0,
       modalVisible: true,
-      acquiredSeed: resString
+      acquiredSeed: resString,
     });
     await this.syncInventory();
     this.hideBees();
@@ -231,6 +266,7 @@ export default class Garden extends Component {
     //   return;
     // }
     if (this.state[plant]["status"] != 2) {
+      console.log("can't take big dick but i suck on it");
       return;
     }
     if (
@@ -307,7 +343,7 @@ export default class Garden extends Component {
       // bee9: "invis ",
       firstParent: 0,
       secondParent: 0,
-      selectedParents: 0
+      selectedParents: 0,
     });
 
     this.showNotifs();
@@ -354,8 +390,9 @@ export default class Garden extends Component {
         plant6: plant6,
         plant7: plant7,
         plant8: plant8,
-        plant9: plant9
+        plant9: plant9,
       });
+
       this.initializePlant(plant1);
       this.initializePlant(plant2);
       this.initializePlant(plant3);
@@ -365,6 +402,18 @@ export default class Garden extends Component {
       this.initializePlant(plant7);
       this.initializePlant(plant8);
       this.initializePlant(plant9);
+
+      this.setState({
+        plant_image_1: this.determineImage(plant1),
+        plant_image_2: this.determineImage(plant2),
+        plant_image_3: this.determineImage(plant3),
+        plant_image_4: this.determineImage(plant4),
+        plant_image_5: this.determineImage(plant5),
+        plant_image_6: this.determineImage(plant6),
+        plant_image_7: this.determineImage(plant7),
+        plant_image_8: this.determineImage(plant8),
+        plant_image_9: this.determineImage(plant9),
+      });
 
       this.state.plant1["status"] = 2;
       this.state.plant3["status"] = 2;
@@ -376,8 +425,6 @@ export default class Garden extends Component {
       this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
-
-      // SecureStore.getItemAsync("1_plant")
     }
   };
 
@@ -446,12 +493,33 @@ export default class Garden extends Component {
     else this.setState({ bee9: "invis " });
   };
 
-  initializePlant = plant => {};
+  determineImage = (plant) => {
+    if (plant["status"] == 4) {
+      return plant["four"]["four_image"];
+    } else if (plant["status"] == 3) {
+      return plant["three"]["three_image"];
+    } else if (plant["status"] == 2) {
+      return plant["two"]["two_image"];
+    } else if (plant["status"] == 1) {
+      return plant["one"]["one_image"];
+    } else {
+      return plant["zero"]["zero_image"];
+    }
+  };
+
+  initializePlant = (plant) => {};
+
+  refreshPlants = () => {
+    this.setState({ plantsInitialized: false });
+  };
 
   render() {
     // this.updateStuff();
+    console.log("HIIIIIIIIIIIIIIIIIIII");
+    console.log(this.state.plantsInitialized);
     // const isModalVisible = true;
     // const setModalVisible = true;
+    this.assureRefresh();
     this.syncInventory();
     if (this.state.plantSynced == false) this.initializePlants();
 
@@ -461,7 +529,7 @@ export default class Garden extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
         <View
@@ -470,7 +538,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // first row of plants
           >
@@ -481,13 +549,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 1,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_1]}
                 />
               </TouchableOpacity>
             </View>
@@ -497,13 +565,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 2,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_2]}
                 />
               </TouchableOpacity>
             </View>
@@ -513,13 +581,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 3,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_3]}
                 />
               </TouchableOpacity>
             </View>
@@ -532,7 +600,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
           // first row of bees
         >
@@ -604,7 +672,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // second row of plants
           >
@@ -615,13 +683,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 4,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_4]}
                 />
               </TouchableOpacity>
             </View>
@@ -631,13 +699,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 5,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_5]}
                 />
               </TouchableOpacity>
             </View>
@@ -647,13 +715,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 6,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_6]}
                 />
               </TouchableOpacity>
             </View>
@@ -693,7 +761,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }} // second row of bees
         >
           <View style={{ flex: 0.2 }}></View>
@@ -750,7 +818,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // third row of plants
           >
@@ -761,13 +829,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 7,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_7]}
                 />
               </TouchableOpacity>
             </View>
@@ -777,13 +845,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 8,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/tulipsbig.png")}
+                  source={images[this.state.plant_image_8]}
                 />
               </TouchableOpacity>
             </View>
@@ -793,13 +861,13 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 9,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
                 <Image
                   style={styles.plants}
-                  source={require("./assets/fernsbig.png")}
+                  source={images[this.state.plant_image_9]}
                 />
               </TouchableOpacity>
             </View>
@@ -812,7 +880,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }} // third row of bees
         >
           <View style={{ flex: 0.2 }}></View>
@@ -868,7 +936,7 @@ export default class Garden extends Component {
             flex: 2,
             backgroundColor: "#57423e",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
           }} // breed / cancel buttons
         >
           {this.state.selectedParents == 2 ? (
@@ -908,7 +976,7 @@ export default class Garden extends Component {
               flexDirection: "row",
               justifyContent: "center",
               //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
-              marginTop: (screen.height * 3) / 22 - screen.width / 4
+              marginTop: (screen.height * 3) / 22 - screen.width / 4,
               //   marginLeft: screen.width / 14,
             }} // navigation icons
           >
@@ -952,7 +1020,7 @@ export default class Garden extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("GardenTesting")}
+                onPress={this.refreshPlants}
                 activeOpacity={0.5}
               >
                 <Image
@@ -972,15 +1040,15 @@ export default class Garden extends Component {
 const styles = StyleSheet.create({
   plants: {
     width: screen.width / 3.5,
-    height: screen.width / 3.5
+    height: screen.width / 3.5,
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
   },
   menuIcons2: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
     // marginLeft: screen.width / 10,
   },
   pinkButton: {
@@ -990,24 +1058,24 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
   },
   notif: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
     // marginBottom: 25
   },
   hidden: {
     width: 0,
-    height: 0
+    height: 0,
   },
   whiteText: {
     color: "#000",
-    fontSize: 26
+    fontSize: 26,
   },
   pinkButton2: {
     borderWidth: 2,
@@ -1019,12 +1087,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fca",
     // color: "#fff",
     // fontSize: 30,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   tinyWhiteText: {
     // color: "#ff547c",
@@ -1035,7 +1103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -1046,25 +1114,25 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
