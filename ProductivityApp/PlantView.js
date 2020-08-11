@@ -83,7 +83,7 @@ export default class GardenTesting extends Component {
       growth_streak_length: 0,
     };
 
-    console.log(this.props);
+    // console.log(this.props);
   }
 
   componentWillReceiveProps() {
@@ -99,7 +99,6 @@ export default class GardenTesting extends Component {
     console.log("checking if initialized!");
 
     if (this.props.route.params.event != "" && this.state.seed_event == "") {
-      console.log("clown");
       this.setState({
         plant_position: this.props.route.params.position,
 
@@ -111,6 +110,7 @@ export default class GardenTesting extends Component {
       this.showInventoryThird();
       this.showRightSide();
     }
+
     // console.log(this.state);
     // const initialized = await SecureStore.getItemAsync("garden_initialized");
     // if (initialized === null) {
@@ -134,19 +134,6 @@ export default class GardenTesting extends Component {
     } else {
       this.setState({ showCancel: true });
     }
-  };
-
-  show12 = async () => {
-    console.log("\nshow12 called");
-
-    let species = await SecureStore.getItemAsync("1_species");
-    console.log("\n\nATTENTION!!!!!!! species for show12 = " + species);
-    // await species;
-    // return species + " ";
-    let name = await su.getImageName(1);
-
-    console.log("\nname12 is " + name + "\n\n");
-    return name;
   };
 
   increase = (key, value) => {
@@ -246,7 +233,7 @@ export default class GardenTesting extends Component {
 
   useElixir = async () => {
     if (this.state.plant_status != 3) {
-      console.log("cannot use elixir on a plant that isn't wilted");
+      console.log("error: cannot use elixir on a plant that isn't wilted");
       return -1;
     }
 
@@ -256,7 +243,7 @@ export default class GardenTesting extends Component {
     );
 
     if (inventory_elixir < 1) {
-      console.log("not enough elixir to use");
+      console.log("error: not enough elixir to use");
       alert(
         "You don't have enough elixir! " + "Elixir can be bought from the shop."
       );
@@ -321,7 +308,7 @@ export default class GardenTesting extends Component {
 
   useFertilizer = async () => {
     if (this.state.plant_status != 1) {
-      console.log("cannot use fertilizer on a plant that isn't growing");
+      console.log("error: cannot use fertilizer on a plant that isn't growing");
       return -1;
     }
 
@@ -331,7 +318,7 @@ export default class GardenTesting extends Component {
     );
 
     if (inventory_fertilizer < 1) {
-      console.log("not enough fertilizer to use");
+      console.log("error: not enough fertilizer to use");
       alert(
         "You don't have enough fertilizer! " +
           "Fertilizer can be bought from the shop. " +
@@ -398,7 +385,7 @@ export default class GardenTesting extends Component {
 
   useShovel = async () => {
     if (this.state.plant_status != 4) {
-      console.log("cannot use shovel on a plant that isn't dead");
+      console.log("error: cannot use shovel on a plant that isn't dead");
       return -1;
     }
 
@@ -480,22 +467,11 @@ export default class GardenTesting extends Component {
     this.setState({ alert_title: title, alert_info: info });
   };
 
-  show13 = async () => {
-    console.log("show13 called");
-    let ret = await this.show12();
-    console.log("awaaited");
-    if (this.state.image1 !== ret) {
-      this.setState({ image1: ret });
-    }
-
-    return ret;
-  };
-
   /* Master setup function */
   getInventoryCounts = async () => {
-    console.log("getInventoryCounts called");
+    // console.log("getInventoryCounts called");
     if (this.state.inventory_set == false) {
-      console.log("getInventoryCounts is happening");
+      //   console.log("(resetting inventory)");
 
       this.setState({ inventory_set: true });
       let water = Number.parseInt(
@@ -627,7 +603,7 @@ export default class GardenTesting extends Component {
 
     let needed = 15 - pos_waters;
 
-    console.log("pos_waters from CHECKWATERING OPTIONS = " + pos_waters);
+    // console.log("pos_waters from CHECKWATERING OPTIONS = " + pos_waters);
     if (needed >= 5) {
       one = true;
       five = true;
@@ -662,19 +638,19 @@ export default class GardenTesting extends Component {
 
     this.setState({ button_x1: one, button_x5: five, button_max: max });
 
-    console.log("DONE W/ CHECKING WATERING OPTIONS");
+    // console.log("DONE W/ CHECKING WATERING OPTIONS");
   };
 
   checkIfWilted = async () => {
     if (this.state.countdownFullySet == true) {
       const res = await su.updateWilting(this.state.plant_position);
-      console.log("res is " + res);
+      console.log("checkIfWilted: result from updateWilting is " + res);
       if (res == 3) {
-        alert("your plant wilted :(");
+        alert("Your plant wilted! Use elixir to revive it.");
       } else if (res == 4) {
-        alert("bruh");
+        alert("Your plant died!");
       } else {
-        alert("new streak started");
+        alert("Your plant is thriving! New streak started.");
         this.setState({
           countdownSet: false,
           countdownFullySet: false,
@@ -721,18 +697,19 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
-    console.log("notice meee\n\n\n");
     await su.plantSeed(
       this.state.plant_position,
       this.state.seed_event,
       this.state.seed_rarity
     );
 
-    let pl = await SecureStore.getItemAsync(
-      this.state.plant_position + "_plant"
-    );
-    console.log("\n\n\nHI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    console.log(JSON.stringify(pl));
+    // checking if the planted seed was correctly stored:
+
+    // let pl = await SecureStore.getItemAsync(
+    //   this.state.plant_position + "_plant"
+    // );
+    // console.log(JSON.stringify(pl));
+
     this.setState({ inventory_set: false });
     await this.getInventoryCounts();
   };
@@ -1477,7 +1454,7 @@ export default class GardenTesting extends Component {
   };
 
   getCountdownLength = async () => {
-    console.log("getCountdownLength called");
+    // console.log("getCountdownLength called");
 
     if (this.state.countdownSet != false) {
       return;
@@ -1485,7 +1462,7 @@ export default class GardenTesting extends Component {
     const pos = this.state.plant_position;
     const posString = pos + "";
     if (pos < 1 || pos >= 9) {
-      console.log("position not set correctly in PlantView");
+      console.log("error: position not set correctly in PlantView");
       return;
     }
 
@@ -1496,20 +1473,20 @@ export default class GardenTesting extends Component {
       let plant = JSON.parse(await SecureStore.getItemAsync(plantKey));
 
       const end = DateTime.fromISO(plant["two"]["water_end"]);
-      console.log(end.toISO() + "end234321 ");
+      //   console.log(end.toISO() + "end234321 ");
 
       const currDate = DateTime.local();
 
-      console.log("current time is " + currDate.toISO());
+      //   console.log("current time is " + currDate.toISO());
       const diff = end.diff(currDate).as("seconds");
-      console.log("\n\n\ndiff = " + diff);
+      //   console.log("\n\n\ndiff = " + diff);
 
       this.setState({ totalDuration: diff, countdownFullySet: true });
     }
   };
 
   getGrownCountdownLength = async (plant) => {
-    console.log("getGrownCountdownLength called");
+    // console.log("getGrownCountdownLength called");
 
     if (this.state.countdownSet != false) {
       return;
@@ -1517,7 +1494,7 @@ export default class GardenTesting extends Component {
     const pos = this.state.plant_position;
     const posString = pos + "";
     if (pos < 1 || pos >= 9) {
-      console.log("position not set correctly in PlantView");
+      console.log("error: position not set correctly in PlantView");
       return;
     }
 
@@ -1525,20 +1502,20 @@ export default class GardenTesting extends Component {
       this.setState({ countdownSet: true });
 
       const end = DateTime.fromISO(plant["two"]["water_end"]);
-      console.log(end.toISO() + "end1131grown");
+      //   console.log(end.toISO() + "end1131grown");
 
       const currDate = DateTime.local();
 
-      console.log("current time is " + currDate.toISO());
+      //   console.log("current time is " + currDate.toISO());
       const diff = end.diff(currDate).as("seconds");
-      console.log("\n\n\ndiff = " + diff);
+      //   console.log("\n\n\ndiff = " + diff);
 
       this.setState({ totalDuration: diff, countdownFullySet: true });
     }
   };
 
   getWiltedCountdownLength = async (plant) => {
-    console.log("getWiltedCountdownLength called");
+    // console.log("getWiltedCountdownLength called");
 
     if (this.state.countdownSet != false) {
       return;
@@ -1546,7 +1523,7 @@ export default class GardenTesting extends Component {
     const pos = this.state.plant_position;
     const posString = pos + "";
     if (pos < 1 || pos >= 9) {
-      console.log("position not set correctly in PlantView");
+      console.log("error: position not set correctly in PlantView");
       return;
     }
 
@@ -1554,20 +1531,23 @@ export default class GardenTesting extends Component {
       this.setState({ countdownSet: true });
 
       const end = DateTime.fromISO(plant["three"]["wilt_end"]);
-      console.log(end.toISO() + "end11111wilted");
+      //   console.log(end.toISO() + "end11111wilted");
 
       const currDate = DateTime.local();
 
-      console.log("current time is " + currDate.toISO());
+      //   console.log("current time is " + currDate.toISO());
       const diff = end.diff(currDate).as("seconds");
-      console.log("\n\n\ndiff = " + diff);
+      //   console.log("\n\n\ndiff = " + diff);
 
       this.setState({ totalDuration: diff, countdownFullySet: true });
     }
   };
 
+  /*
+   * Just testing conditional rendering! Ignore this.
+   */
   displayJsxMessage = () => {
-    console.log("displayJsxMessage called");
+    // console.log("displayJsxMessage called");
     if (this.state.showCancel) {
       return <Text style={styles.smallWhiteText}> Hello, JSX! </Text>;
     } else {
@@ -1580,15 +1560,6 @@ export default class GardenTesting extends Component {
   };
 
   showInfo = () => {
-    // let title =
-    // let info = "Fully Grown\n\n"
-    // console.log("hi");
-    // const pos = this.state.plant_position;
-    // console.log(pos);
-    // console.log(this.state.image1);
-    // let info = this.state.image1;
-    // console.log(info + " ");
-
     const info = this.state.alert_info;
     const title = this.state.alert_title;
 
@@ -1604,17 +1575,18 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
-    console.log(this.state.temp + " = temp");
+    // console.log(this.state.temp + " = temp");
   };
 
   render() {
-    // console.log(this.state.inventory_elixir + "elixir");
-    // btwn 1.5 and 2
-    console.log("props are...");
-    console.log(this.props);
+    // console.log("props are...");
+    // console.log(this.props);
+
     const { navigate } = this.props.navigation;
-    console.log(this.state.totalDuration);
-    console.log("POSITIONNN IS " + this.state.plant_position);
+
+    // console.log(this.state.totalDuration);
+    // console.log("POSITIONNN IS " + this.state.plant_position);
+
     const barWidth = screen.width / 1.7;
     const progressCustomStyles = {
       backgroundColor: "#91faff",
@@ -1633,11 +1605,6 @@ export default class GardenTesting extends Component {
     this.checkSeeds();
     // this.getCountdownLength();
 
-    // console.log("69");
-    // const b = su.getImageName("ferns");
-    // const vv = this.show13();
-    // console.log("96");
-    // console.log("\n\n vv = " + vv);
     return (
       <View
         style={{

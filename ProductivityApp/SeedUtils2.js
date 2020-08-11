@@ -32,14 +32,7 @@ export default class SeedUtils extends Component {
    *   ex. event: "none"
    */
   plantSeed = async (position, rarity, event) => {
-    console.log("plantSeed called");
-
-    // if (plant["status"] != 0) {
-    //   console.log("error: trying to plant seed where it can't be planted");
-    //   return -1;
-    // }
-
-    // const pos = plant["position"];
+    // console.log("plantSeed called");
 
     let newPlant = {
       status: 1,
@@ -78,13 +71,13 @@ export default class SeedUtils extends Component {
       position + "_plant",
       JSON.stringify(newPlant)
     );
-    console.log(position + "_plant");
+    // console.log(position + "_plant");
     var testtest = JSON.parse(
       await SecureStore.getItemAsync(position + "_plant")
     );
-    console.log(testtest.toString());
+    // console.log(testtest.toString());
 
-    console.log("plantSeed finished\n\n\n");
+    // console.log("plantSeed finished\n\n\n");
     return newPlant;
   };
 
@@ -93,15 +86,15 @@ export default class SeedUtils extends Component {
    * Calls helper functions for each event type; default is "none".
    */
   determineSpecies = (rarity, event) => {
-    console.log(rarity);
+    // console.log(rarity);
     if (event === "christmas") {
-      console.log("it was christmas");
+      //   console.log("it was christmas");
       return this.determineSpecies_christmas(rarity);
     } else if (event === "valentines") {
-      console.log("it was valentines");
+      //   console.log("it was valentines");
       return this.determineSpecies_valentines(rarity);
     } else {
-      console.log("it was not an event");
+      //   console.log("it was not an event");
       return this.determineSpecies_none(rarity);
     }
   };
@@ -209,8 +202,7 @@ export default class SeedUtils extends Component {
       await SecureStore.getItemAsync("inventory_fertilizer")
     );
     if (fertilizerAmount == NaN) {
-      console.log("BAD ERROR: this should never happen");
-      console.log("fertilizer never initialized");
+      console.log("ERROR! fertilizer never initialized");
       return -1;
     }
     if (fertilizerAmount < 1) {
@@ -436,11 +428,9 @@ export default class SeedUtils extends Component {
       valentines: { C: 0, U: 0, R: 0 },
     };
 
-    console.log(seeds);
+    // console.log(seeds);
 
     let seedsString = JSON.stringify(seeds);
-
-    console.log(seedsString);
 
     await SecureStore.setItemAsync("inventory_seeds", seedsString);
   };
@@ -448,11 +438,9 @@ export default class SeedUtils extends Component {
   getAllSeeds = async () => {
     let seedsString = await SecureStore.getItemAsync("inventory_seeds");
 
-    console.log(seedsString);
+    // console.log(seedsString);
 
     let seeds = JSON.parse(seedsString);
-
-    console.log(seeds);
 
     return seeds;
   };
