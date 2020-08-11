@@ -86,6 +86,15 @@ export default class GardenTesting extends Component {
     console.log(this.props);
   }
 
+  componentWillReceiveProps() {
+    this.setState({
+      plant_position: this.props.route.params.position,
+
+      seed_event: this.props.route.params.event,
+      seed_rarity: this.props.route.params.rarity,
+    });
+  }
+
   checkInitialized = async () => {
     console.log("checking if initialized!");
 
@@ -410,6 +419,10 @@ export default class GardenTesting extends Component {
       countdownFullySet: false,
       inventory_set: false,
     });
+  };
+
+  refreshAll = () => {
+    this.setState({ inventory_set: false });
   };
 
   determineImage = (plant) => {
@@ -823,7 +836,7 @@ export default class GardenTesting extends Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("Seeds", {
-                position: this.plant_position,
+                position: this.state.plant_position,
               })
             }
             activeOpacity={0.5}
@@ -888,7 +901,7 @@ export default class GardenTesting extends Component {
             <TouchableOpacity
               onPress={() =>
                 navigate("Seeds", {
-                  position: this.plant_position,
+                  position: this.state.plant_position,
                 })
               }
             >
@@ -1597,6 +1610,8 @@ export default class GardenTesting extends Component {
   render() {
     // console.log(this.state.inventory_elixir + "elixir");
     // btwn 1.5 and 2
+    console.log("props are...");
+    console.log(this.props);
     const { navigate } = this.props.navigation;
     console.log(this.state.totalDuration);
     console.log("POSITIONNN IS " + this.state.plant_position);
@@ -1776,11 +1791,22 @@ export default class GardenTesting extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigate("Garden2")}
+            onPress={() =>
+              navigate("Garden2", {
+                position: 1,
+                event: "",
+                rarity: "",
+              })
+            }
             activeOpacity={0.5}
           >
             <View style={styles.red}>
               <Text style={styles.redText}> Return to Garden </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.refreshAll} activeOpacity={0.5}>
+            <View style={styles.red}>
+              <Text style={styles.redText}> Refresh </Text>
             </View>
           </TouchableOpacity>
         </View>

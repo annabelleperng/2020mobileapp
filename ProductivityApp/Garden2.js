@@ -115,7 +115,7 @@ export default class Garden extends Component {
     await SecureStore.setItemAsync("inventory_bees", "5");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_fertilizer", "100");
     await SecureStore.setItemAsync("inventory_elixir", "10");
     await SecureStore.setItemAsync(
       "1_period_start",
@@ -172,12 +172,18 @@ export default class Garden extends Component {
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
     await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
 
     console.log("we're here");
   };
   componentDidMount() {
     console.log("hello");
     this.assureRefresh();
+  }
+
+  componentWillReceiveProps() {
+    console.log("\n\n!!!!!!!!!!!!!!!!componentWillReceiveProps\n\n\n");
+    this.refreshPlants();
   }
 
   updateStuff = async (plant) => {
@@ -415,14 +421,14 @@ export default class Garden extends Component {
         plant_image_9: this.determineImage(plant9),
       });
 
-      this.state.plant1["status"] = 2;
-      this.state.plant3["status"] = 2;
-      this.state.plant4["status"] = 2;
-      this.state.plant5["status"] = 2;
-      this.state.plant8["status"] = 2;
+      //   this.state.plant1["status"] = 2;
+      //   this.state.plant3["status"] = 2;
+      //   this.state.plant4["status"] = 2;
+      //   this.state.plant5["status"] = 2;
+      //   this.state.plant8["status"] = 2;
 
-      this.state.plant1["two"]["current_waters"] = 74;
-      this.state.plant5["two"]["current_waters"] = 32;
+      //   this.state.plant1["two"]["current_waters"] = 74;
+      //   this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
     }

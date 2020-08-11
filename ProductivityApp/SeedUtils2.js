@@ -78,6 +78,11 @@ export default class SeedUtils extends Component {
       position + "_plant",
       JSON.stringify(newPlant)
     );
+    console.log(position + "_plant");
+    var testtest = JSON.parse(
+      await SecureStore.getItemAsync(position + "_plant")
+    );
+    console.log(testtest.toString());
 
     console.log("plantSeed finished\n\n\n");
     return newPlant;
