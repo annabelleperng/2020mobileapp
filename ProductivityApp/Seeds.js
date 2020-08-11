@@ -14,6 +14,7 @@ import {
   TextInput,
   SafeAreaView,
   ScrollView,
+  Alert
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
@@ -26,7 +27,12 @@ import Garden from "./Garden";
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
 const rewardUtils = new RewardUtils();
-const seeds = seedUtils.getAllSeeds();
+// const seeds = seedUtils.getAllSeeds();
+let seeds = {
+  none: { C: 2, U: 0, R: 0 },
+  christmas: { C: 0, U: 127, R: 0 },
+  valentines: { C: 0, U: 0, R: 0 }
+};
 
 export default class Shop extends Component {
   constructor(props) {
@@ -40,7 +46,7 @@ export default class Shop extends Component {
       eventName: "",
       eventCountdown: -1,
 
-      itemPrices: ["3", "0", "10", "1", "4", "2", "30", "0"],
+      itemPrices: ["3", "0", "10", "1", "4", "2", "30", "0", "7", "127"],
       price8: "???",
       price9: "???",
       price10: "???",
@@ -49,7 +55,7 @@ export default class Shop extends Component {
       selectedParents: 2,
 
       selected_event: "",
-      selected_rarity: "",
+      selected_rarity: ""
     };
   }
 
@@ -77,6 +83,27 @@ export default class Shop extends Component {
     // this.props.navigation.navigate("Seeds", { event: e, rarity: r });
   };
 
+  selectSeed = (e, r) => {
+    Alert.alert(
+      "Selected seed",
+      "Are you sure you wish to select this seed?",
+      [
+        {
+          text: "yes",
+          onPress: () =>
+            this.props.navigation.navigate("PlantView", {
+              position: this.state.plant_position,
+              event: e,
+              rarity: r
+            })
+        },
+        { text: "cancel" }
+      ],
+      { cancelable: false }
+    );
+    seeds[e][r] = seeds[e][r] - 1;
+  };
+
   render() {
     const { navigate } = this.props.navigation;
     // this.updateStuff();
@@ -90,7 +117,7 @@ export default class Shop extends Component {
     return (
       <View
         style={{
-          flex: 1,
+          flex: 1
         }}
       >
         <SafeAreaView style={([styles.container], { flex: 1 })}>
@@ -99,21 +126,21 @@ export default class Shop extends Component {
               style={{
                 flex: 1,
                 backgroundColor: "#57423e",
-                justifyContent: "center",
+                justifyContent: "center"
               }}
             >
               <View
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    alignItems: "center",
+                    alignItems: "center"
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -121,7 +148,7 @@ export default class Shop extends Component {
                     style={{
                       flex: 1,
                       alignItems: "center",
-                      backgroundColor: "#000000",
+                      backgroundColor: "#000000"
                     }}
                   >
                     <Text style={styles.itemName1}>Regular</Text>
@@ -132,7 +159,7 @@ export default class Shop extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginTop: 0,
+                    marginTop: 0
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -146,11 +173,12 @@ export default class Shop extends Component {
                     ) : (
                       <TouchableOpacity
                         onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "C",
-                          })
+                          // navigate("PlantView", {
+                          //   position: this.state.plant_position,
+                          //   event: "none",
+                          //   rarity: "C"
+                          // })
+                          this.selectSeed("none", "C")
                         }
                       >
                         <Image
@@ -168,13 +196,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "U",
-                          })
-                        }
+                        onPress={() => this.selectSeed("none", "U")}
                       >
                         <Image
                           style={styles.items}
@@ -191,13 +213,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "R",
-                          })
-                        }
+                        onPress={() => this.selectSeed("none", "R")}
                       >
                         <Image
                           style={styles.items}
@@ -216,16 +232,18 @@ export default class Shop extends Component {
                   backgroundColor: "#472b25",
                   alignItems: "center",
                   flexDirection: "row",
-                  justifyContent: "center",
+                  justifyContent: "center"
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      <Text style={styles.prices}>
-                        {this.state.itemPrices[0]}
-                      </Text>
+                      {seeds.none["C"] == 0 ? (
+                        <Text style={styles.none}>{seeds.none["C"]}</Text>
+                      ) : (
+                        <Text style={styles.bought}>{seeds.none["C"]}</Text>
+                      )}
                     </View>
 
                     {/* {gold < Number.parseInt(this.state.itemPrices[0]) ? (
@@ -241,48 +259,24 @@ export default class Shop extends Component {
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought1 == 1 ? (
-                      <View>
-                        <Text style={styles.bought}>
-                          {this.state.itemPrices[1]}
-                        </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[1]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[1]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[1]}
-                        </Text>
-                      </View>
-                    )}
+                    <View>
+                      {seeds.none["U"] == 0 ? (
+                        <Text style={styles.none}>{seeds.none["U"]}</Text>
+                      ) : (
+                        <Text style={styles.bought}>{seeds.none["U"]}</Text>
+                      )}
+                    </View>
                   </View>
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought2 == 1 ? (
-                      <View>
-                        <Text style={styles.bought}>
-                          {this.state.itemPrices[2]}
-                        </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[2]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[2]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[2]}
-                        </Text>
-                      </View>
-                    )}
+                    <View>
+                      {seeds.none["R"] == 0 ? (
+                        <Text style={styles.none}>{seeds.none["R"]}</Text>
+                      ) : (
+                        <Text style={styles.bought}>{seeds.none["R"]}</Text>
+                      )}
+                    </View>
                   </View>
                 </View>
 
@@ -293,14 +287,14 @@ export default class Shop extends Component {
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    alignItems: "center",
+                    alignItems: "center"
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -308,10 +302,10 @@ export default class Shop extends Component {
                     style={{
                       flex: 1,
                       alignItems: "center",
-                      backgroundColor: "#000000",
+                      backgroundColor: "#000000"
                     }}
                   >
-                    <Text style={styles.itemName1}>Launch Event</Text>
+                    <Text style={styles.itemName1}>Christmas</Text>
                     <Text style={styles.itemName2}>Seeds</Text>
                   </View>
                 </View>
@@ -319,7 +313,7 @@ export default class Shop extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginTop: 0,
+                    marginTop: 0
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -332,13 +326,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "C",
-                          })
-                        }
+                        onPress={() => this.selectSeed("christmas", "C")}
                       >
                         <Image
                           style={styles.items}
@@ -355,13 +343,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "U",
-                          })
-                        }
+                        onPress={() => this.selectSeed("christmas", "U")}
                       >
                         <Image
                           style={styles.items}
@@ -378,13 +360,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "R",
-                          })
-                        }
+                        onPress={() => this.selectSeed("christmas", "R")}
                       >
                         <Image
                           style={styles.items}
@@ -404,77 +380,47 @@ export default class Shop extends Component {
                   backgroundColor: "#472b25",
                   alignItems: "center",
                   flexDirection: "row",
-                  justifyContent: "center",
+                  justifyContent: "center"
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought4 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.christmas["C"] == 0 ? (
+                        <Text style={styles.none}>{seeds.christmas["C"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[4]}
+                          {seeds.christmas["C"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[4]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[4]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[4]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought5 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.christmas["U"] == 0 ? (
+                        <Text style={styles.none}>{seeds.christmas["U"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[5]}
+                          {seeds.christmas["U"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[5]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[5]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[5]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought6 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.christmas["R"] == 0 ? (
+                        <Text style={styles.none}>{seeds.christmas["R"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[6]}
+                          {seeds.christmas["R"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[6]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[6]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[6]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
                 </View>
 
@@ -485,14 +431,14 @@ export default class Shop extends Component {
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    alignItems: "center",
+                    alignItems: "center"
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -500,10 +446,10 @@ export default class Shop extends Component {
                     style={{
                       flex: 1,
                       alignItems: "center",
-                      backgroundColor: "#000000",
+                      backgroundColor: "#000000"
                     }}
                   >
-                    <Text style={styles.itemName1}>Rare</Text>
+                    <Text style={styles.itemName1}>Valentine's</Text>
                     <Text style={styles.itemName2}>Seed</Text>
                   </View>
                 </View>
@@ -511,7 +457,7 @@ export default class Shop extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginTop: 0,
+                    marginTop: 0
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -524,13 +470,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "C",
-                          })
-                        }
+                        onPress={() => this.selectSeed("valentines", "C")}
                       >
                         <Image
                           style={styles.items}
@@ -547,13 +487,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "U",
-                          })
-                        }
+                        onPress={() => this.selectSeed("valentines", "U")}
                       >
                         <Image
                           style={styles.items}
@@ -570,13 +504,7 @@ export default class Shop extends Component {
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() =>
-                          navigate("PlantView", {
-                            position: this.state.plant_position,
-                            event: "none",
-                            rarity: "R",
-                          })
-                        }
+                        onPress={() => this.selectSeed("valentines", "R")}
                       >
                         <Image
                           style={styles.items}
@@ -595,31 +523,21 @@ export default class Shop extends Component {
                   backgroundColor: "#472b25",
                   alignItems: "center",
                   flexDirection: "row",
-                  justifyContent: "center",
+                  justifyContent: "center"
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought0 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.valentines["C"] == 0 ? (
+                        <Text style={styles.none}>{seeds.valentines["C"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[0]}
+                          {seeds.valentines["C"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[0]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[0]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[0]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
 
                     {/* {gold < Number.parseInt(this.state.itemPrices[0]) ? (
                 <View>
@@ -634,48 +552,28 @@ export default class Shop extends Component {
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought1 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.valentines["U"] == 0 ? (
+                        <Text style={styles.none}>{seeds.valentines["U"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[1]}
+                          {seeds.valentines["U"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[1]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[1]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[1]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {this.state.bought2 == 1 ? (
-                      <View>
+                    <View>
+                      {seeds.valentines["R"] == 0 ? (
+                        <Text style={styles.none}>{seeds.valentines["R"]}</Text>
+                      ) : (
                         <Text style={styles.bought}>
-                          {this.state.itemPrices[2]}
+                          {seeds.valentines["R"]}
                         </Text>
-                      </View>
-                    ) : gold < Number.parseInt(this.state.itemPrices[2]) ? (
-                      <View>
-                        <Text style={styles.poor}>
-                          {this.state.itemPrices[2]}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View>
-                        <Text style={styles.prices}>
-                          {this.state.itemPrices[2]}
-                        </Text>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
                 </View>
 
@@ -686,7 +584,7 @@ export default class Shop extends Component {
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 {this.state.eventName != "" && this.state.eventName != null ? (
@@ -694,7 +592,7 @@ export default class Shop extends Component {
                     style={{
                       flexDirection: "row",
                       flex: 1,
-                      alignItems: "center",
+                      alignItems: "center"
                       //   marginLeft: screen.width / 14,
                     }}
                   >
@@ -721,7 +619,7 @@ export default class Shop extends Component {
                   <View
                     style={{
                       flexDirection: "row",
-                      marginTop: 0,
+                      marginTop: 0
                       //   marginLeft: screen.width / 14,
                     }}
                   >
@@ -831,7 +729,7 @@ export default class Shop extends Component {
                   alignItems: "center",
                   flexDirection: "row",
                   justifyContent: "center",
-                  marginBottom: 10,
+                  marginBottom: 10
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
@@ -894,7 +792,7 @@ export default class Shop extends Component {
                 style={{
                   flexDirection: "row",
                   flex: 1,
-                  alignItems: "center",
+                  alignItems: "center"
                   //   marginLeft: screen.width / 14,
                 }}
               >
@@ -902,7 +800,7 @@ export default class Shop extends Component {
                   style={{
                     flex: 1,
                     alignItems: "center",
-                    backgroundColor: "#000000",
+                    backgroundColor: "#000000"
                   }}
                 >
                   <Text style={styles.itemName1}>Launch Event</Text>
@@ -918,7 +816,7 @@ export default class Shop extends Component {
                   flex: 1,
                   backgroundColor: "#57423e",
                   flexDirection: "row",
-                  alignItems: "center",
+                  alignItems: "center"
                 }} // breed / cancel buttons
               >
                 {this.state.selectedParents == 2 ? (
@@ -969,17 +867,17 @@ const styles = StyleSheet.create({
     marginTop: screen.height / 80,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
-    height: screen.width / 7,
+    height: screen.width / 7
   },
   menuIcons: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginBottom: 10,
+    marginBottom: 10
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    marginLeft: screen.width / 10
   },
   pinkButton: {
     borderWidth: 2,
@@ -988,47 +886,51 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28,
+    height: screen.height / 28
   },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 20,
+    marginTop: screen.height / 20
   },
   prices: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 16
   },
   poor: {
     color: "#F5493D",
-    fontSize: 16,
+    fontSize: 16
   },
   bought: {
     color: "#B9C4C4",
-    fontSize: 16,
+    fontSize: 16
+  },
+  none: {
+    color: "#ff0000",
+    fontSize: 16
   },
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
     marginTop: screen.height / 50,
-    textAlign: "center",
+    textAlign: "center"
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
     marginBottom: screen.height / 70,
-    textAlign: "center",
+    textAlign: "center"
   },
   container: {
-    flex: 1,
+    flex: 1
     // marginTop: Constants.statusBarHeight
   },
   scrollView: {
-    backgroundColor: "pink",
+    backgroundColor: "pink"
     // marginHorizontal: 20
   },
   pinkButton2: {
@@ -1041,15 +943,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fca",
     // color: "#fff",
     // fontSize: 30,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5,
+    marginTop: 5
   },
   whiteText: {
     color: "#000",
-    fontSize: 23,
-  },
+    fontSize: 23
+  }
 });
