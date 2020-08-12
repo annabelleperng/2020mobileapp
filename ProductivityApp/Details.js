@@ -109,6 +109,11 @@ export default class Details extends Component {
     });
   };
 
+  componentWillReceiveProps() {
+    console.log("componentWillReceiveProps called in Details");
+    this.setState({ ltStats: false });
+  }
+
   refreshStats = () => {
     this.setState({ ltStats: false });
   };
@@ -196,6 +201,12 @@ export default class Details extends Component {
             <View style={{ flex: 1, backgroundColor: "#64A0B1" }}>
               <View style={{ flex: 0.6 }}></View>
               <View style={{ flex: 1 }}>
+                <Text style={[styles.smallText, { fontSize: 23 }]}>
+                  QUICK STATS
+                </Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}></Text>
+
                 <Text style={styles.smallText}>You've sprinted for</Text>
                 <Text style={styles.smallText}>
                   {this.state.totalTime} minutes total.
@@ -217,9 +228,9 @@ export default class Details extends Component {
                 </Text>
                 <Text style={styles.smallText}></Text>
 
-                <TouchableOpacity onPress={this.refreshStats}>
+                {/* <TouchableOpacity onPress={this.refreshStats}>
                   <Text style={styles.smallLinkText}>[Refresh]</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <Text style={styles.smallText}></Text>
 
