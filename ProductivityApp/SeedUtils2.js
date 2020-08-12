@@ -7,13 +7,13 @@ import * as SecureStore from "expo-secure-store";
 let none = [
   ["daisy", "aster", "sunflower", "tulip", "lily", "marigold"],
   ["dahlia", "lilac", "daffodil", "amaryllis", "orchid", "snapdragon"],
-  ["chrysanthemum", "morning glory", "hibiscus", "hydrangea", "hyacinth"],
+  ["chrysanthemum", "morning glory", "hibiscus", "hydrangea", "hyacinth"]
 ];
 
 let fernsTulips = [
   ["tulips", "tulips", "tulips"],
   ["tulips"],
-  ["tulips", "ferns"],
+  ["tulips", "ferns"]
 ];
 
 let noneLength = 17;
@@ -48,18 +48,18 @@ export default class SeedUtils extends Component {
         event: event,
         rarity: rarity,
         species: "",
-        date_planted: "",
+        date_planted: ""
       },
       zero: { zero_image: "plantpot" },
       one: {
         one_image: "growing",
         grow_start: "",
         grow_offset: 0,
-        grow_streak_length: 0,
+        grow_streak_length: 0
       },
       two: { two_image: "", current_waters: 0, water_start: "", water_end: "" },
       three: { three_image: "", wilt_start: "", wilt_end: "" },
-      four: { four_image: "" },
+      four: { four_image: "" }
     };
 
     const species = this.determineSpecies(rarity, event);
@@ -101,7 +101,7 @@ export default class SeedUtils extends Component {
     }
   };
 
-  determineSpecies_none = (rarity) => {
+  determineSpecies_none = rarity => {
     if (rarity == "1") {
       const rand = Math.floor(Math.random() * fernsTulips[0].length);
       return fernsTulips[0][rand];
@@ -114,12 +114,12 @@ export default class SeedUtils extends Component {
     return none[2][rand];
   };
 
-  determineSpecies_christmas = (rarity) => {
+  determineSpecies_christmas = rarity => {
     return "ferns";
     // return "pointsettia"; //placeholder
   };
 
-  determineSpecies_valentines = (rarity) => {
+  determineSpecies_valentines = rarity => {
     return "rose"; //placeholder
   };
 
@@ -129,7 +129,7 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  growSeed = async (plant) => {
+  growSeed = async plant => {
     if (plant["status"] != 1) {
       console.log("error: you shouldn't be able to grow this plant.");
       return -1;
@@ -146,7 +146,7 @@ export default class SeedUtils extends Component {
       hour: 0,
       minute: 0,
       second: 0,
-      zone: localZone,
+      zone: localZone
     }); // the midnight that just passed
     const periodEndMidnight = periodStartMidnight.plus({ day: 4 });
 
@@ -163,7 +163,7 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  wiltPlant = async (plant) => {
+  wiltPlant = async plant => {
     if (plant["status"] != 2) {
       console.log("error: you shouldn't be able to wilt this plant.");
       return -1;
@@ -182,7 +182,7 @@ export default class SeedUtils extends Component {
    * this function would probably not be called on its own.
    * Returns -1 if unsuccessful, 1 if successful.
    */
-  killPlant = async (plant) => {
+  killPlant = async plant => {
     if (plant["status"] != 3) {
       console.log("error: you shouldn't be able to kill this plant.");
       return -1;
@@ -199,7 +199,7 @@ export default class SeedUtils extends Component {
    * 0 if not enough fertilizers to fertilize plant;
    * 1 if successful
    */
-  fertilizePlant = async (plant) => {
+  fertilizePlant = async plant => {
     let fertilizerAmount = Number.parseInt(
       await SecureStore.getItemAsync("inventory_fertilizer")
     );
@@ -230,7 +230,7 @@ export default class SeedUtils extends Component {
     return 1;
   };
 
-  updateGrowthStreak = async (plant) => {
+  updateGrowthStreak = async plant => {
     if (plant["status"] != 1) {
       console.log("error: only growing plants have growing streaks");
       return -1;
@@ -253,7 +253,7 @@ export default class SeedUtils extends Component {
     }
   };
 
-  updateWilting = async (plant) => {
+  updateWilting = async plant => {
     if (plant["status"] != 2) {
       console.log("error: only grown plants can wilt");
       return -1;
@@ -303,7 +303,7 @@ export default class SeedUtils extends Component {
   /* Takes in wilted plant parsed using JSON.parse from SecureStore.
    * Uses up 1 elixir and restores status to grown.
    */
-  elixirPlant = async (plant) => {
+  elixirPlant = async plant => {
     if (plant["status"] != 3) {
       console.log("error: only wilted plants use elixir");
       return -1;
@@ -320,7 +320,7 @@ export default class SeedUtils extends Component {
     plant["status"] = 2;
   };
 
-  useBees = async (count) => {
+  useBees = async count => {
     const prevCount = await SecureStore.getItemAsync("inventory_bees");
     if (count > prevCount) {
       console.log("error: not enough bees");
@@ -427,8 +427,8 @@ export default class SeedUtils extends Component {
   initializeAllSeeds = async () => {
     let seeds = {
       none: { C: 2, U: 0, R: 0 },
-      christmas: { C: 0, U: 0, R: 0 },
-      valentines: { C: 0, U: 0, R: 0 },
+      christmas: { C: 0, U: 127, R: 0 },
+      valentines: { C: 0, U: 0, R: 7 }
     };
 
     console.log(seeds);
@@ -475,7 +475,7 @@ export default class SeedUtils extends Component {
     return seeds;
   };
 
-  createPlant = async (position) => {
+  createPlant = async position => {
     let plant = {
       status: 0,
       position: position,
@@ -485,11 +485,11 @@ export default class SeedUtils extends Component {
         one_image: "growing",
         grow_start: "",
         grow_offset: 0,
-        grow_streak_length: 0,
+        grow_streak_length: 0
       },
       two: { two_image: "", current_waters: 0, water_start: "", water_end: "" },
       three: { three_image: "", wilt_start: "", wilt_end: "" },
-      four: { four_image: "" },
+      four: { four_image: "" }
     };
 
     let strPlant = JSON.stringify(plant);

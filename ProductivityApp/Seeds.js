@@ -16,7 +16,7 @@ import {
   ScrollView,
   Alert
 } from "react-native";
-import SeedUtils from "./SeedUtils";
+import SeedUtils2 from "./SeedUtils2";
 import RewardUtils from "./RewardUtils";
 import Constants from "expo-constants";
 
@@ -25,14 +25,14 @@ import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 import Garden from "./Garden";
 
 const screen = Dimensions.get("window");
-const seedUtils = new SeedUtils();
+const seedUtils = new SeedUtils2();
 const rewardUtils = new RewardUtils();
 // const seeds = seedUtils.getAllSeeds();
-let seeds = {
-  none: { C: 2, U: 0, R: 0 },
-  christmas: { C: 0, U: 127, R: 0 },
-  valentines: { C: 0, U: 0, R: 0 }
-};
+// let seeds = {
+//   none: { C: 2, U: 0, R: 0 },
+//   christmas: { C: 0, U: 127, R: 0 },
+//   valentines: { C: 0, U: 0, R: 0 }
+// };
 
 export default class Shop extends Component {
   constructor(props) {
@@ -55,7 +55,13 @@ export default class Shop extends Component {
       selectedParents: 2,
 
       selected_event: "",
-      selected_rarity: ""
+      selected_rarity: "",
+
+      seeds: {
+        none: { C: 0, U: 0, R: 0 },
+        christmas: { C: 0, U: 0, R: 0 },
+        valentines: { C: 0, U: 0, R: 0 }
+      }
     };
   }
 
@@ -63,6 +69,9 @@ export default class Shop extends Component {
     console.log("initializing shop");
     await SecureStore.setItemAsync("inventory_gold", "1500");
     this.setState({ gold: 1500 });
+
+    let seedStorage = await seedUtils.getAllSeeds();
+    this.setState({ seeds: seedStorage });
   };
 
   countSeeds = async () => {
@@ -101,7 +110,7 @@ export default class Shop extends Component {
       ],
       { cancelable: false }
     );
-    seeds[e][r] = seeds[e][r] - 1;
+    this.state.seeds[e][r] = this.state.seeds[e][r] - 1;
   };
 
   render() {
@@ -165,7 +174,7 @@ export default class Shop extends Component {
                 >
                   <View style={{ flex: 0.2 }}></View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought0 == 1 ? (
+                    {this.state.seeds["none"]["C"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed_bought.png")}
@@ -189,7 +198,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought1 == 1 ? (
+                    {this.state.seeds.none["U"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed_bought.png")}
@@ -206,7 +215,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought2 == 1 ? (
+                    {this.state.seeds.none["R"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/common_seed_bought.png")}
@@ -239,10 +248,14 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.none["C"] == 0 ? (
-                        <Text style={styles.none}>{seeds.none["C"]}</Text>
+                      {this.state.seeds.none["C"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.none["C"]}
+                        </Text>
                       ) : (
-                        <Text style={styles.bought}>{seeds.none["C"]}</Text>
+                        <Text style={styles.bought}>
+                          {this.state.seeds.none["C"]}
+                        </Text>
                       )}
                     </View>
 
@@ -260,10 +273,14 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.none["U"] == 0 ? (
-                        <Text style={styles.none}>{seeds.none["U"]}</Text>
+                      {this.state.seeds.none["U"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.none["U"]}
+                        </Text>
                       ) : (
-                        <Text style={styles.bought}>{seeds.none["U"]}</Text>
+                        <Text style={styles.bought}>
+                          {this.state.seeds.none["U"]}
+                        </Text>
                       )}
                     </View>
                   </View>
@@ -271,10 +288,14 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.none["R"] == 0 ? (
-                        <Text style={styles.none}>{seeds.none["R"]}</Text>
+                      {this.state.seeds.none["R"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.none["R"]}
+                        </Text>
                       ) : (
-                        <Text style={styles.bought}>{seeds.none["R"]}</Text>
+                        <Text style={styles.bought}>
+                          {this.state.seeds.none["R"]}
+                        </Text>
                       )}
                     </View>
                   </View>
@@ -319,7 +340,7 @@ export default class Shop extends Component {
                 >
                   <View style={{ flex: 0.2 }}></View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought4 == 1 ? (
+                    {this.state.seeds.christmas["C"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
@@ -336,7 +357,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought5 == 1 ? (
+                    {this.state.seeds.christmas["U"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
@@ -353,7 +374,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought5 == 1 ? (
+                    {this.state.seeds.christmas["R"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
@@ -387,11 +408,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.christmas["C"] == 0 ? (
-                        <Text style={styles.none}>{seeds.christmas["C"]}</Text>
+                      {this.state.seeds.christmas["C"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.christmas["C"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.christmas["C"]}
+                          {this.state.seeds.christmas["C"]}
                         </Text>
                       )}
                     </View>
@@ -400,11 +423,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.christmas["U"] == 0 ? (
-                        <Text style={styles.none}>{seeds.christmas["U"]}</Text>
+                      {this.state.seeds.christmas["U"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.christmas["U"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.christmas["U"]}
+                          {this.state.seeds.christmas["U"]}
                         </Text>
                       )}
                     </View>
@@ -413,11 +438,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.christmas["R"] == 0 ? (
-                        <Text style={styles.none}>{seeds.christmas["R"]}</Text>
+                      {this.state.seeds.christmas["R"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.christmas["R"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.christmas["R"]}
+                          {this.state.seeds.christmas["R"]}
                         </Text>
                       )}
                     </View>
@@ -463,7 +490,7 @@ export default class Shop extends Component {
                 >
                   <View style={{ flex: 0.2 }}></View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought6 == 1 ? (
+                    {this.state.seeds.valentines["C"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed_bought.png")}
@@ -480,7 +507,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought6 == 1 ? (
+                    {this.state.seeds.valentines["U"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed_bought.png")}
@@ -497,7 +524,7 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.bought6 == 1 ? (
+                    {this.state.seeds.valentines["R"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/rare_seed_bought.png")}
@@ -530,11 +557,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.valentines["C"] == 0 ? (
-                        <Text style={styles.none}>{seeds.valentines["C"]}</Text>
+                      {this.state.seeds.valentines["C"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.valentines["C"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.valentines["C"]}
+                          {this.state.seeds.valentines["C"]}
                         </Text>
                       )}
                     </View>
@@ -553,11 +582,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.valentines["U"] == 0 ? (
-                        <Text style={styles.none}>{seeds.valentines["U"]}</Text>
+                      {this.state.seeds.valentines["U"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.valentines["U"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.valentines["U"]}
+                          {this.state.seeds.valentines["U"]}
                         </Text>
                       )}
                     </View>
@@ -566,11 +597,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {seeds.valentines["R"] == 0 ? (
-                        <Text style={styles.none}>{seeds.valentines["R"]}</Text>
+                      {this.state.seeds.valentines["R"] == 0 ? (
+                        <Text style={styles.none}>
+                          {this.state.seeds.valentines["R"]}
+                        </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {seeds.valentines["R"]}
+                          {this.state.seeds.valentines["R"]}
                         </Text>
                       )}
                     </View>
