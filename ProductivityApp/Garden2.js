@@ -52,7 +52,6 @@ export default class Garden extends Component {
   constructor(props) {
     super(props);
     this.initializeGarden();
-    console.log("Constructed");
     this.assureRefresh();
     this.state = {
       showCancel: false,
@@ -102,20 +101,16 @@ export default class Garden extends Component {
   }
 
   assureRefresh = () => {
-    console.log("hi");
-    console.log("hi");
-    console.log("hi");
-    console.log("hi");
-    console.log("hi");
+    //empty
   };
 
   initializeGarden = async () => {
-    console.log("initializing garden");
+    console.log("initializing garden...");
     await SecureStore.setItemAsync("inventory_water", "1000");
     await SecureStore.setItemAsync("inventory_bees", "5");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_fertilizer", "100");
     await SecureStore.setItemAsync("inventory_elixir", "10");
     await SecureStore.setItemAsync(
       "1_period_start",
@@ -172,12 +167,17 @@ export default class Garden extends Component {
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
     await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
 
-    console.log("we're here");
+    console.log("done initializing garden");
   };
-  componentDidMount() {
-    console.log("hello");
-    this.assureRefresh();
+
+  //   componentDidMount() {
+  //     this.assureRefresh();
+  //   }
+
+  componentWillReceiveProps() {
+    this.refreshPlants();
   }
 
   updateStuff = async (plant) => {
@@ -186,7 +186,7 @@ export default class Garden extends Component {
     const gardenLastUpdated = DateTime.fromISO(
       await SecureStore.getItemAsync("garden_last_updated")
     );
-    console.log("garden last updated: " + gardenLastUpdated);
+    // console.log("garden last updated: " + gardenLastUpdated);
 
     // let start;
     // if (plant["status"] == 2) {
@@ -197,10 +197,10 @@ export default class Garden extends Component {
     //   start = DateTime.fromISO(plant["three"]["wilt_start"]);
     // }
 
-    console.log("localTime is " + localTime.toISO());
-    console.log("periodStart is " + periodStart.toISO());
+    // console.log("localTime is " + localTime.toISO());
+    // console.log("periodStart is " + periodStart.toISO());
     const diff = localTime.diff(gardenLastUpdated);
-    console.log("difference is" + diff);
+    // console.log("difference is" + diff);
     if (diff.hours() >= 24) {
       rewardUtils.updateStreak();
       var i;
@@ -256,31 +256,27 @@ export default class Garden extends Component {
   };
 
   selectBreeding = (key, position) => {
-    console.log("selectBreeding called with (" + key + ", " + position + ")");
+    // console.log("selectBreeding called with (" + key + ", " + position + ")");
     if (this.state.showBees == false) {
       return;
     }
-    // const status = "status" + position;
+
     const plant = "plant" + position;
-    // if (this.state[status] != 2) {
-    //   return;
-    // }
     if (this.state[plant]["status"] != 2) {
-      console.log("can't take big dick but i suck on it");
       return;
     }
     if (
       this.state.selectedParents == 0 ||
       (this.state.selectedParents == 1 && this.state.firstParent == position)
     ) {
-      console.log("first case");
+      //   console.log("1st case");
       this.setState({ selectedParents: 1, firstParent: position });
     } else if (this.state.selectedParents == 1) {
-      console.log("2nd case");
+      //   console.log("2nd case");
       this.setState({ selectedParents: 2, secondParent: position });
     } else {
-      console.log("3rd case");
-      console.log(this.state);
+      //   console.log("3rd case");
+      //   console.log(this.state);
       return;
     }
     this.setState({ [key]: "color " });
@@ -363,7 +359,7 @@ export default class Garden extends Component {
         await SecureStore.getItemAsync("inventory_bees")
       );
       this.setState({ inventorySynced: true, inventory_bees: bees });
-      console.log("bees = " + bees);
+      //   console.log("bees = " + bees);
     }
   };
 
@@ -415,14 +411,14 @@ export default class Garden extends Component {
         plant_image_9: this.determineImage(plant9),
       });
 
-      this.state.plant1["status"] = 2;
-      this.state.plant3["status"] = 2;
-      this.state.plant4["status"] = 2;
-      this.state.plant5["status"] = 2;
-      this.state.plant8["status"] = 2;
+      //   this.state.plant1["status"] = 2;
+      //   this.state.plant3["status"] = 2;
+      //   this.state.plant4["status"] = 2;
+      //   this.state.plant5["status"] = 2;
+      //   this.state.plant8["status"] = 2;
 
-      this.state.plant1["two"]["current_waters"] = 74;
-      this.state.plant5["two"]["current_waters"] = 32;
+      //   this.state.plant1["two"]["current_waters"] = 74;
+      //   this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
     }
@@ -515,8 +511,9 @@ export default class Garden extends Component {
 
   render() {
     // this.updateStuff();
-    console.log("HIIIIIIIIIIIIIIIIIIII");
-    console.log(this.state.plantsInitialized);
+
+    // console.log(this.state.plantsInitialized);
+
     // const isModalVisible = true;
     // const setModalVisible = true;
     this.assureRefresh();
