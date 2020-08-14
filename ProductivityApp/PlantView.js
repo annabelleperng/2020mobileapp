@@ -919,7 +919,7 @@ export default class GardenTesting extends Component {
             <View style={{ flex: 0.1 }}></View>
             {/* <Text></Text> */}
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.props.navigation.navigate("Home")}
             >
               <View
                 style={{

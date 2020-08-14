@@ -242,7 +242,11 @@ export default class Rewards extends React.Component {
 
         <TouchableOpacity style={{ marginTop: screen.width / 4 }}>
           <Button
-            onPress={() => this.props.navigation.navigate("Details")}
+            onPress={() =>
+              this.props.navigation.navigate("Home", {
+                refresh: true,
+              })
+            }
             title="Go back home"
             color="#35F2E9" //button bg for android, text for ios
           />

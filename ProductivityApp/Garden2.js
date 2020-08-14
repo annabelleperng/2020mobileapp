@@ -176,8 +176,9 @@ export default class Garden extends Component {
   //     this.assureRefresh();
   //   }
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     this.refreshPlants();
+    this.showNotifs();
   }
 
   updateStuff = async (plant) => {
@@ -425,65 +426,66 @@ export default class Garden extends Component {
   };
 
   showNotifs = () => {
+    console.log(this.state);
     if (
       (this.state.plant1["status"] == 2 || this.state.plant1["status"] == 3) &&
-      this.state.plant1["two"]["current_waters"] <= 15
+      this.state.plant1["two"]["current_waters"] < 15
     )
       this.setState({ bee1: "notif " });
     else this.setState({ bee1: "invis " });
 
     if (
       (this.state.plant2["status"] == 2 || this.state.plant2["status"] == 3) &&
-      this.state.plant2["two"]["current_waters"] <= 15
+      this.state.plant2["two"]["current_waters"] < 15
     )
       this.setState({ bee2: "notif " });
     else this.setState({ bee2: "invis " });
 
     if (
       (this.state.plant3["status"] == 2 || this.state.plant3["status"] == 3) &&
-      this.state.plant3["two"]["current_waters"] <= 15
+      this.state.plant3["two"]["current_waters"] < 15
     )
       this.setState({ bee3: "notif " });
     else this.setState({ bee3: "invis " });
 
     if (
       (this.state.plant4["status"] == 2 || this.state.plant4["status"] == 3) &&
-      this.state.plant4["two"]["current_waters"] <= 15
+      this.state.plant4["two"]["current_waters"] < 15
     )
       this.setState({ bee4: "notif " });
     else this.setState({ bee4: "invis " });
 
     if (
       (this.state.plant5["status"] == 2 || this.state.plant5["status"] == 3) &&
-      this.state.plant5["two"]["current_waters"] <= 15
+      this.state.plant5["two"]["current_waters"] < 15
     )
       this.setState({ bee5: "notif " });
     else this.setState({ bee5: "invis " });
 
     if (
       (this.state.plant6["status"] == 2 || this.state.plant6["status"] == 3) &&
-      this.state.plant6["two"]["current_waters"] <= 15
+      this.state.plant6["two"]["current_waters"] < 15
     )
       this.setState({ bee6: "notif " });
     else this.setState({ bee6: "invis " });
 
     if (
       (this.state.plant7["status"] == 2 || this.state.plant7["status"] == 3) &&
-      this.state.plant7["two"]["current_waters"] <= 15
+      this.state.plant7["two"]["current_waters"] < 15
     )
       this.setState({ bee7: "notif " });
     else this.setState({ bee7: "invis " });
 
     if (
       (this.state.plant8["status"] == 2 || this.state.plant8["status"] == 3) &&
-      this.state.plant8["two"]["current_waters"] <= 15
+      this.state.plant8["two"]["current_waters"] < 15
     )
       this.setState({ bee8: "notif " });
     else this.setState({ bee8: "invis " });
 
     if (
       (this.state.plant9["status"] == 2 || this.state.plant9["status"] == 3) &&
-      this.state.plant9["two"]["current_waters"] <= 15
+      this.state.plant9["two"]["current_waters"] < 15
     )
       this.setState({ bee9: "notif " });
     else this.setState({ bee9: "invis " });
@@ -980,7 +982,7 @@ export default class Garden extends Component {
             <View style={{ flex: 0.4 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Details")}
+                onPress={() => this.props.navigation.navigate("Home")}
                 activeOpacity={0.5}
               >
                 <Image

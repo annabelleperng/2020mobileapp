@@ -121,6 +121,28 @@ export default class SeedUtils extends Component {
     return "rose"; //placeholder
   };
 
+  /* Sells a plant according to the price specified in its JSON
+   * form. (Note: doesn't ask for confirmation.)
+   */
+  sellPlant = async (plant) => {
+    if (plant["status"] != 2) {
+      console.log("error: you shouldn't be able to sell this plant");
+      return -1;
+    }
+
+    // adds to inventory gold
+    var gold = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_gold")
+    );
+    var plant_price = Number.parseInt(plant["permanent"]["price"]);
+    gold += plant_price;
+    await SecureStore.setItemAsync("inventory_gold", gold.toString());
+
+    // resets plant at position to be empty
+    await this.createPlant(plant["position"]);
+    return plant_price;
+  };
+
   /*
    * Helper function.
    * Grows seed fully (given that seed is not yet fully grown);
@@ -472,7 +494,13 @@ export default class SeedUtils extends Component {
     let plant = {
       status: 0,
       position: position,
-      permanent: { event: "", rarity: "", species: "", date_planted: "" },
+      permanent: {
+        event: "",
+        rarity: "",
+        species: "",
+        date_planted: "",
+        price: "550",
+      },
       zero: { zero_image: "plantpot" },
       one: {
         one_image: "growing",
