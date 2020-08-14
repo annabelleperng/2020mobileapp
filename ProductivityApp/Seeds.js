@@ -852,36 +852,42 @@ export default class Shop extends Component {
                   alignItems: "center"
                 }} // breed / cancel buttons
               >
-                {this.state.selectedParents == 2 ? (
-                  <View style={{ flex: 1, alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this.breedTwo()}>
-                      <View style={styles.pinkButton2}>
-                        <Text style={styles.whiteText}>Plant</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View style={{ flex: 1, alignItems: "center" }}>
-                    {/* <View style={styles.pinkButton2}>
+                {/* {this.state.selectedParents == 2 ? ( */}
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigate("PlantView", {
+                        position: this.state.plant_position
+                      })
+                    }
+                  >
+                    <View style={styles.pinkButton2}>
+                      <Text style={styles.whiteText}>Back</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                {/* ) : (
+                  <View style={{ flex: 1, alignItems: "center" }}> */}
+                {/* <View style={styles.pinkButton2}>
                 <Text style={styles.whiteText}>Cancel</Text>
               </View> */}
-                  </View>
+                {/* </View>
                 )}
-                {this.state.selectedParents == 2 ? (
-                  <View style={{ flex: 1, alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this.hideBees()}>
-                      <View style={styles.pinkButton2}>
-                        <Text style={styles.whiteText}>Cancel</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View style={{ flex: 1, alignItems: "center" }}>
-                    {/* <View style={styles.pinkButton2}>
+                {this.state.selectedParents == 2 ? ( */}
+                {/* <View style={{ flex: 1, alignItems: "center" }}>
+                  <TouchableOpacity onPress={() => this.hideBees()}>
+                    <View style={styles.pinkButton2}>
+                      <Text style={styles.whiteText}>Cancel</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View> */}
+                {/* ) : (
+                  <View style={{ flex: 1, alignItems: "center" }}> */}
+                {/* <View style={styles.pinkButton2}>
                 <Text style={styles.whiteText}>Cancel</Text>
               </View> */}
-                  </View>
-                )}
+                {/* </View>
+                )} */}
               </View>
               <View style={{ flex: 1, backgroundColor: "#57423e" }}>
                 <Text></Text>
