@@ -76,6 +76,7 @@ export default class GardenTesting extends Component {
       //
       plant_image: "",
       plant: "",
+      plant_price: 0,
       //
       alert_title: "",
       alert_info: "",
@@ -523,6 +524,8 @@ export default class GardenTesting extends Component {
     //
     //
     else if (plant["status"] == 2) {
+      this.setState({ plant_price: plant["permanent"]["price"] });
+
       let pos_waters = plant["two"]["current_waters"];
       pos_waters *= 6.67;
       if (pos_waters > 100) {
