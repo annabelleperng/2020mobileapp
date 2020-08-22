@@ -13,7 +13,7 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import Feedback from "./Feedback";
 import AppSaved from "./AppSaved";
@@ -32,6 +32,7 @@ import Rewards from "./Rewards";
 import PlantView from "./PlantView";
 import Settings from "./Settings";
 import Seeds from "./Seeds";
+import CumulativeStats from "./CumulativeStats";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -58,7 +59,7 @@ export default function App() {
           initialRouteName="Details"
           screenOptions={{
             headerBackTitleVisible: false,
-            headerBackImage: () => <Text></Text>
+            headerBackImage: () => <Text></Text>,
             // makes back button invisible
           }}
         >
@@ -80,6 +81,7 @@ export default function App() {
           <Stack.Screen name="PlantView" component={PlantView} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Seeds" component={Seeds} />
+          <Stack.Screen name="CumulativeStats" component={CumulativeStats} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   containerChopped: {
     flex: 1,
@@ -100,11 +102,11 @@ const styles = StyleSheet.create({
     marginRight: 20,
     // backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   red: {
     color: "#B9AAFF",
-    fontSize: 20
+    fontSize: 20,
   },
   button: {
     borderWidth: 5,
@@ -113,43 +115,43 @@ const styles = StyleSheet.create({
     height: screen.width / 2,
     borderRadius: screen.width / 2,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 20,
     color: "#595959",
     alignItems: "center",
     textAlign: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   timerText: {
     color: "#fff",
     fontSize: 90,
-    marginBottom: 20
+    marginBottom: 20,
   },
   fullTimeText: {
     color: "#fff",
     fontSize: 30,
     marginLeft: screen.width / 12,
     marginTop: screen.height / 200,
-    alignItems: "center"
+    alignItems: "center",
   },
   focused: {
     color: "#a8ffff",
     fontSize: 50,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   unfocused: {
     color: "#ffb6a8",
     fontSize: 30,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   tinyLogo: {
     width: 50,
     height: 50,
     marginLeft: screen.width / 7,
-    alignItems: "flex-end"
-  }
+    alignItems: "flex-end",
+  },
 });

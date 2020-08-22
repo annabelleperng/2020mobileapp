@@ -46,6 +46,13 @@ export default class App extends React.Component {
     }
     await SecureStore.setItemAsync("streak_length", "" + streakLength);
     console.log("\n\n\n\n\nUpdated streak to " + streakLength);
+    let longestStreak = Number.parseInt(
+      await SecureStore.getItemAsync("longest_streak")
+    );
+    if (longestStreak !== longestStreak || longestStreak < streakLength) {
+      longestStreak = streakLength;
+    }
+    await SecureStore.setItemAsync("longest_streak", "" + longestStreak);
     var i;
     for (i = 1; i <= 9; i++) {
       utils.updateGrowthStreak(i);

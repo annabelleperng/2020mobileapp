@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 const screen = Dimensions.get("window");
 
@@ -19,14 +20,71 @@ export default class Feedback extends Component {
     this.state = {
       states: [0, 0],
       timer_time: this.props.route.params.timer_time,
+      time_of_day_1: this.props.route.params.time_of_day_1,
+      time_of_day_2: this.props.route.params.time_of_day_2,
     };
   }
 
-  getVal(val) {
+  getValHappiness = async (val) => {
+    let totalHappiness = Number.parseInt(
+      await SecureStore.getItemAsync("total_happiness")
+    );
+    if (totalHappiness !== totalHappiness) {
+      totalHappiness = 0;
+    }
+    totalHappiness += val;
+    await SecureStore.setItemAsync("total_happiness", totalHappiness + "");
+    let key1 = this.state.time_of_day_1 + "_total_happiness";
+    let total1 = Number.parseInt(await SecureStore.getItemAsync(key1));
+    if (total1 !== total1) {
+      total1 = 0;
+      console.log("IN HEEEEEEEEERE, SETTING TOTAL1 TO 0");
+    }
+    console.log("OUT HEREEEEEEE " + key1 + ": " + total1);
+    total1 += val;
+    await SecureStore.setItemAsync(key1, total1 + "");
+    if (this.state.time_of_day_2 != "") {
+      let key2 = this.state.time_of_day_2 + "_total_happiness";
+      let total2 = Number.parseInt(await SecureStore.getItemAsync(key2));
+      if (total2 !== total2) {
+        total2 = 0;
+      }
+      total2 += val;
+      await SecureStore.setItemAsync(key2, total2 + "");
+    }
     return val;
-  }
+  };
 
-  onPressSubmit() {}
+  getValProductivity = async (val) => {
+    let totalProductivity = Number.parseInt(
+      await SecureStore.getItemAsync("total_productivity")
+    );
+    if (totalProductivity !== totalProductivity) {
+      totalProductivity = 0;
+    }
+    totalProductivity += val;
+    await SecureStore.setItemAsync(
+      "total_productivity",
+      totalProductivity + ""
+    );
+    let key1 = this.state.time_of_day_1 + "_total_productivity";
+    let total1 = Number.parseInt(await SecureStore.getItemAsync(key1));
+    if (total1 !== total1) {
+      total1 = 0;
+    }
+    total1 += val;
+    await SecureStore.setItemAsync(key1, total1 + "");
+    if (this.state.time_of_day_2 != "") {
+      let key2 = this.state.time_of_day_2 + "_total_productivity";
+      let total2 = Number.parseInt(await SecureStore.getItemAsync(key2));
+      if (total2 !== total2) {
+        total2 = 0;
+      }
+      total2 += val;
+      await SecureStore.setItemAsync(key2, total2 + "");
+    }
+    return val;
+  };
 
   render() {
     console.log(this.props);
@@ -53,7 +111,7 @@ export default class Feedback extends Component {
               onValueChange={(val) =>
                 this.setState({ states: [val, this.state.states[1]] })
               }
-              onSlidingComplete={(val) => this.getVal(val)}
+              onSlidingComplete={(val) => this.getValHappiness(val)}
             />
             <View
               style={{
@@ -92,7 +150,7 @@ export default class Feedback extends Component {
               onValueChange={(val) =>
                 this.setState({ states: [this.state.states[0], val] })
               }
-              onSlidingComplete={(val) => this.getVal(val)}
+              onSlidingComplete={(val) => this.getValProductivity(val)}
             />
             <View
               style={{

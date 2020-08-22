@@ -1025,14 +1025,14 @@ export default class GardenTesting extends Component {
             <View>
               <Text></Text>
               {3 - this.state.growth_streak_length == 1 ? (
-                <View>
+                <View style={{ alignItems: "center" }}>
                   <Text style={styles.whiteText}>
                     {3 - this.state.growth_streak_length} more day of sprinting
-                    until grown
                   </Text>
+                  <Text style={styles.whiteText}>until fully grown</Text>
                 </View>
               ) : (
-                <View>
+                <View style={{ alignItems: "center" }}>
                   <Text style={styles.whiteText}>
                     {3 - this.state.growth_streak_length} more days of sprinting
                     until grown
@@ -1068,7 +1068,18 @@ export default class GardenTesting extends Component {
               // progress bar
             />
             <Text></Text>
-            <Text style={styles.smallWhiteText}>0/3 DAYS OF SPRINTING</Text>
+            {this.state.growth_streak_length == 1 ? (
+              <View>
+                <Text style={styles.smallWhiteText}>1/3 DAYS OF SPRINTING</Text>
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.smallWhiteText}>
+                  {this.state.growth_streak_length}/3 DAYS OF SPRINTING
+                </Text>
+              </View>
+            )}
+
             <Text></Text>
           </View>
           <View style={{ flex: 0.1 }}></View>
@@ -1912,6 +1923,7 @@ const styles = StyleSheet.create({
   whiteText: {
     color: "#fff",
     fontSize: 19,
+    alignItems: "center",
   },
   smallWhiteText: {
     color: "#ff547c",

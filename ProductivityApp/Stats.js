@@ -17,6 +17,7 @@ import {
 
 import * as SecureStore from "expo-secure-store";
 import { RECORDING_OPTION_IOS_OUTPUT_FORMAT_APPLELOSSLESS } from "expo-av/build/Audio";
+import { TapGestureHandler } from "react-native-gesture-handler";
 const screen = Dimensions.get("window");
 
 // const data = [
@@ -37,8 +38,17 @@ export default class App extends React.Component {
       timer_time: this.props.route.params.timer_time,
       total_time: this.props.route.params.total_time,
       addedTotals: false,
+      message: "message before loaded",
+      message_boolean: false,
+      update_daily_boolean: false,
+      time_of_day_1: "",
+      time_of_day_2: "",
     };
   }
+
+  componentWillReceiveProps = () => {
+    this.endTime = new Date();
+  };
 
   timeOfDay(hours) {
     // "params": Object {
@@ -57,15 +67,58 @@ export default class App extends React.Component {
     }
   }
 
-  encourage(start, end) {
-    if (start === end) {
-      return "Grinding through the " + start + "!";
+  encourage = async (start, end) => {
+    if (this.state.message_boolean == true) {
+      return;
     } else {
-      return "Grinding from " + start + " 'til " + end + "!";
+      if (start === end) {
+        this.setState({ time_of_day_1: start });
+        let key = start + "_count";
+        let count = Number.parseInt(await SecureStore.getItemAsync(key));
+        if (count !== count) {
+          count = 0;
+        }
+        count += 1;
+        await SecureStore.setItemAsync(key, count + "");
+        this.setState({ message: "Grinding through the " + start + "!" });
+      } else {
+        this.setState({ time_of_day_1: start, time_of_day_2: end });
+        let key1 = start + "_count";
+        let count1 = Number.parseInt(await SecureStore.getItemAsync(key1));
+        if (count1 !== count1) {
+          count1 = 0;
+        }
+        count1 += 1;
+        await SecureStore.setItemAsync(key1, count1 + "");
+        let key2 = start + "_count";
+        let count2 = Number.parseInt(await SecureStore.getItemAsync(key2));
+        if (count2 !== count2) {
+          count2 = 0;
+        }
+        count2 += 1;
+        await SecureStore.setItemAsync(key2, count2 + "");
+        this.setState({
+          message: "Grinding from " + start + " 'til " + end + "!",
+        });
+      }
+      this.setState({ message_boolean: true });
     }
-  }
+  };
 
   updateDailyStats = async () => {
+    if (this.state.update_daily_boolean == true) {
+      return;
+    } else {
+      this.setState({ update_daily_boolean: true });
+    }
+    let sprintCount = Number.parseInt(
+      await SecureStore.getItemAsync("sprint_count")
+    );
+    if (sprintCount !== sprintCount) {
+      sprintCount = 0;
+    }
+    sprintCount += 1;
+    await SecureStore.setItemAsync("sprint_count", sprintCount + "");
     if (this.state.addedTotals == false) {
       let total = Number.parseInt(
         await SecureStore.getItemAsync("total_sprint_time")
@@ -76,13 +129,13 @@ export default class App extends React.Component {
       let unpaused = Number.parseInt(
         await SecureStore.getItemAsync("total_unpaused")
       );
-      if (total == NaN) {
+      if (total !== total) {
         total = 0;
       }
-      if (paused == NaN) {
+      if (paused !== paused) {
         paused = 0;
       }
-      if (unpaused == NaN) {
+      if (unpaused !== unpaused) {
         unpaused = 0;
       }
 
@@ -127,6 +180,7 @@ export default class App extends React.Component {
 
   render() {
     this.updateDailyStats();
+
     const startHours = endHours - Math.floor(this.state.total_time / 3600000);
     const startHours12h = startHours <= 12 ? startHours : startHours % 12;
     const startAMPM = startHours <= 12 ? " AM" : " PM";
@@ -143,6 +197,9 @@ export default class App extends React.Component {
     }
     const startTimeOfDay = this.timeOfDay(startHours);
     const endTimeOfDay = this.timeOfDay(endHours);
+
+    this.encourage(startTimeOfDay, endTimeOfDay);
+
     // if (12 <= startHours <= 4) {
     //   var firstTimeOfDay = "./assets/afternoon.png";
     // } else if (17 <= startHours <= 19) {
@@ -226,9 +283,7 @@ export default class App extends React.Component {
           )}
         </View>
 
-        <Text style={styles.encourage}>
-          {this.encourage(startTimeOfDay, endTimeOfDay)}
-        </Text>
+        <Text style={styles.encourage}>{this.state.message}</Text>
         <VictoryChart
           domainPadding={{
             x: [100, 100],
@@ -305,6 +360,8 @@ export default class App extends React.Component {
             onPress={() =>
               this.props.navigation.navigate("Feedback", {
                 timer_time: this.props.route.params.timer_time,
+                time_of_day_1: this.state.time_of_day_1,
+                time_of_day_2: this.state.time_of_day_2,
               })
             }
             title="Okay!"
