@@ -21,10 +21,12 @@ import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
 
-let advice = [
-  "You are a piece of shit",
-  "I am in love with you",
-  "Buy me boba pls",
+const advice = [
+  "TIP: You are a piece of shit",
+  "TIP: I am in love with you",
+  "TIP: Buy me boba pls",
+  "TIP: Stan OOHYO and KIRINJI",
+  "TIP: Are you out of your mind?",
 ];
 
 export default class Loading extends Component {
@@ -39,7 +41,11 @@ export default class Loading extends Component {
     };
   }
 
-  pickAdvice() {}
+  pickAdvice() {
+    let randNum = Math.floor(Math.random() * advice.length);
+    let adv = advice[randNum];
+    return <Text style={{ color: "#fca", fontSize: 20 }}>{adv}</Text>;
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -47,13 +53,15 @@ export default class Loading extends Component {
       <View style={{ flex: 1 }}>
         <View
           style={{
-            flex: 10,
+            flex: 18,
             backgroundColor: "#000",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Text style={{ color: "#fca", fontSize: 30 }}>Loading...</Text>
+          <Text style={{ color: "#fca", fontSize: 30 }}>
+            Loading Components...
+          </Text>
         </View>
         <View
           style={{
@@ -71,13 +79,13 @@ export default class Loading extends Component {
         </View>
         <View
           style={{
-            flex: 20,
+            flex: 15,
             backgroundColor: "#000",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Text style={{ color: "#fca", fontSize: 30 }}>Loading...</Text>
+          {this.pickAdvice()}
         </View>
       </View>
     );
