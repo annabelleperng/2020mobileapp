@@ -56,7 +56,7 @@ export default function App() {
     <View style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Details"
+          initialRouteName="Home"
           screenOptions={{
             headerBackTitleVisible: false,
             headerBackImage: () => <Text></Text>,
@@ -65,8 +65,8 @@ export default function App() {
         >
           {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
           <Stack.Screen name="Feedback" component={Feedback} />
-          <Stack.Screen name="Timer" component={Timer} />
-          <Stack.Screen name="Details" component={Details} />
+          {/* <Stack.Screen name="Timer" component={Timer} /> */}
+          <Stack.Screen name="Home" component={Details} />
           <Stack.Screen name="AppSaved" component={AppSaved} />
           <Stack.Screen name="TextInput" component={TextInput} />
           <Stack.Screen name="Timer5" component={Timer5} />

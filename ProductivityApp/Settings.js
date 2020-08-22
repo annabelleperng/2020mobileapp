@@ -21,7 +21,8 @@ export default class Settings extends React.Component {
       prevMotivation: "",
       motivationUpdated: "0",
       motivation:
-        "This is your personal motivational quote if you entered one. Or we'll just pick from ours.",
+        "This is your note to yourself! You'll see it every time you " +
+        "start a sprint. You can edit what it says in Settings.",
     };
   }
 

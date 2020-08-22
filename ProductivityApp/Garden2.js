@@ -52,6 +52,7 @@ export default class Garden extends Component {
   constructor(props) {
     super(props);
     this.initializeGarden();
+    this.assureRefresh();
     this.state = {
       showCancel: false,
       showBees: false,
@@ -99,13 +100,17 @@ export default class Garden extends Component {
     };
   }
 
+  assureRefresh = () => {
+    //empty
+  };
+
   initializeGarden = async () => {
-    console.log("initializing garden");
+    console.log("initializing garden...");
     await SecureStore.setItemAsync("inventory_water", "1000");
     await SecureStore.setItemAsync("inventory_bees", "5");
     await SecureStore.setItemAsync("inventory_seeds", "");
     await SecureStore.setItemAsync("inventory_gold", "1500");
-    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_fertilizer", "100");
     await SecureStore.setItemAsync("inventory_elixir", "10");
     await SecureStore.setItemAsync(
       "1_period_start",
@@ -150,21 +155,31 @@ export default class Garden extends Component {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-18T17:52:25.437-07:00",
+        water_end: "2020-07-28T17:52:25.437-07:00",
       },
       three: {
         three_image: "ferns",
         wilt_start: "",
-        wilt_end: "2020-07-18T17:52:25.437-07:00",
+        wilt_end: "2020-07-28T17:52:25.437-07:00",
       },
       four: { four_image: "ferns" },
     };
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
     await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
 
-    console.log("we're here");
+    console.log("done initializing garden");
   };
+
+  //   componentDidMount() {
+  //     this.assureRefresh();
+  //   }
+
+  UNSAFE_componentWillReceiveProps() {
+    this.refreshPlants();
+    this.showNotifs();
+  }
 
   updateStuff = async (plant) => {
     const localTime = DateTime.local();
@@ -172,7 +187,7 @@ export default class Garden extends Component {
     const gardenLastUpdated = DateTime.fromISO(
       await SecureStore.getItemAsync("garden_last_updated")
     );
-    console.log("garden last updated: " + gardenLastUpdated);
+    // console.log("garden last updated: " + gardenLastUpdated);
 
     // let start;
     // if (plant["status"] == 2) {
@@ -183,10 +198,10 @@ export default class Garden extends Component {
     //   start = DateTime.fromISO(plant["three"]["wilt_start"]);
     // }
 
-    console.log("localTime is " + localTime.toISO());
-    console.log("periodStart is " + periodStart.toISO());
+    // console.log("localTime is " + localTime.toISO());
+    // console.log("periodStart is " + periodStart.toISO());
     const diff = localTime.diff(gardenLastUpdated);
-    console.log("difference is" + diff);
+    // console.log("difference is" + diff);
     if (diff.hours() >= 24) {
       rewardUtils.updateStreak();
       var i;
@@ -242,31 +257,27 @@ export default class Garden extends Component {
   };
 
   selectBreeding = (key, position) => {
-    console.log("selectBreeding called with (" + key + ", " + position + ")");
+    // console.log("selectBreeding called with (" + key + ", " + position + ")");
     if (this.state.showBees == false) {
       return;
     }
-    // const status = "status" + position;
+
     const plant = "plant" + position;
-    // if (this.state[status] != 2) {
-    //   return;
-    // }
     if (this.state[plant]["status"] != 2) {
-      console.log("can't take big dick but i suck on it");
       return;
     }
     if (
       this.state.selectedParents == 0 ||
       (this.state.selectedParents == 1 && this.state.firstParent == position)
     ) {
-      console.log("first case");
+      //   console.log("1st case");
       this.setState({ selectedParents: 1, firstParent: position });
     } else if (this.state.selectedParents == 1) {
-      console.log("2nd case");
+      //   console.log("2nd case");
       this.setState({ selectedParents: 2, secondParent: position });
     } else {
-      console.log("3rd case");
-      console.log(this.state);
+      //   console.log("3rd case");
+      //   console.log(this.state);
       return;
     }
     this.setState({ [key]: "color " });
@@ -349,7 +360,7 @@ export default class Garden extends Component {
         await SecureStore.getItemAsync("inventory_bees")
       );
       this.setState({ inventorySynced: true, inventory_bees: bees });
-      console.log("bees = " + bees);
+      //   console.log("bees = " + bees);
     }
   };
 
@@ -401,79 +412,80 @@ export default class Garden extends Component {
         plant_image_9: this.determineImage(plant9),
       });
 
-      this.state.plant1["status"] = 2;
-      this.state.plant3["status"] = 2;
-      this.state.plant4["status"] = 2;
-      this.state.plant5["status"] = 2;
-      this.state.plant8["status"] = 2;
+      //   this.state.plant1["status"] = 2;
+      //   this.state.plant3["status"] = 2;
+      //   this.state.plant4["status"] = 2;
+      //   this.state.plant5["status"] = 2;
+      //   this.state.plant8["status"] = 2;
 
-      this.state.plant1["two"]["current_waters"] = 74;
-      this.state.plant5["two"]["current_waters"] = 32;
+      //   this.state.plant1["two"]["current_waters"] = 74;
+      //   this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
     }
   };
 
   showNotifs = () => {
+    console.log(this.state);
     if (
       (this.state.plant1["status"] == 2 || this.state.plant1["status"] == 3) &&
-      this.state.plant1["two"]["current_waters"] <= 15
+      this.state.plant1["two"]["current_waters"] < 15
     )
       this.setState({ bee1: "notif " });
     else this.setState({ bee1: "invis " });
 
     if (
       (this.state.plant2["status"] == 2 || this.state.plant2["status"] == 3) &&
-      this.state.plant2["two"]["current_waters"] <= 15
+      this.state.plant2["two"]["current_waters"] < 15
     )
       this.setState({ bee2: "notif " });
     else this.setState({ bee2: "invis " });
 
     if (
       (this.state.plant3["status"] == 2 || this.state.plant3["status"] == 3) &&
-      this.state.plant3["two"]["current_waters"] <= 15
+      this.state.plant3["two"]["current_waters"] < 15
     )
       this.setState({ bee3: "notif " });
     else this.setState({ bee3: "invis " });
 
     if (
       (this.state.plant4["status"] == 2 || this.state.plant4["status"] == 3) &&
-      this.state.plant4["two"]["current_waters"] <= 15
+      this.state.plant4["two"]["current_waters"] < 15
     )
       this.setState({ bee4: "notif " });
     else this.setState({ bee4: "invis " });
 
     if (
       (this.state.plant5["status"] == 2 || this.state.plant5["status"] == 3) &&
-      this.state.plant5["two"]["current_waters"] <= 15
+      this.state.plant5["two"]["current_waters"] < 15
     )
       this.setState({ bee5: "notif " });
     else this.setState({ bee5: "invis " });
 
     if (
       (this.state.plant6["status"] == 2 || this.state.plant6["status"] == 3) &&
-      this.state.plant6["two"]["current_waters"] <= 15
+      this.state.plant6["two"]["current_waters"] < 15
     )
       this.setState({ bee6: "notif " });
     else this.setState({ bee6: "invis " });
 
     if (
       (this.state.plant7["status"] == 2 || this.state.plant7["status"] == 3) &&
-      this.state.plant7["two"]["current_waters"] <= 15
+      this.state.plant7["two"]["current_waters"] < 15
     )
       this.setState({ bee7: "notif " });
     else this.setState({ bee7: "invis " });
 
     if (
       (this.state.plant8["status"] == 2 || this.state.plant8["status"] == 3) &&
-      this.state.plant8["two"]["current_waters"] <= 15
+      this.state.plant8["two"]["current_waters"] < 15
     )
       this.setState({ bee8: "notif " });
     else this.setState({ bee8: "invis " });
 
     if (
       (this.state.plant9["status"] == 2 || this.state.plant9["status"] == 3) &&
-      this.state.plant9["two"]["current_waters"] <= 15
+      this.state.plant9["two"]["current_waters"] < 15
     )
       this.setState({ bee9: "notif " });
     else this.setState({ bee9: "invis " });
@@ -495,10 +507,18 @@ export default class Garden extends Component {
 
   initializePlant = (plant) => {};
 
+  refreshPlants = () => {
+    this.setState({ plantsInitialized: false });
+  };
+
   render() {
     // this.updateStuff();
+
+    // console.log(this.state.plantsInitialized);
+
     // const isModalVisible = true;
     // const setModalVisible = true;
+    this.assureRefresh();
     this.syncInventory();
     if (this.state.plantSynced == false) this.initializePlants();
 
@@ -962,7 +982,7 @@ export default class Garden extends Component {
             <View style={{ flex: 0.4 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Details")}
+                onPress={() => this.props.navigation.navigate("Home")}
                 activeOpacity={0.5}
               >
                 <Image
@@ -999,7 +1019,7 @@ export default class Garden extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("GardenTesting")}
+                onPress={this.refreshPlants}
                 activeOpacity={0.5}
               >
                 <Image

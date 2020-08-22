@@ -738,4 +738,35 @@ export default class SeedUtils extends Component {
     seeds[eventName][rarity] -= decrement;
     return seeds;
   };
+
+  createPlant = async (position) => {
+    let plant = {
+      status: 0,
+      position: position,
+      permanent: { event: "", rarity: "", species: "" },
+      zero: { zero_image: "" },
+      one: { one_image: "", grow_start: 0, grow_end: 0, grow_streak_length: 0 },
+      two: { two_image: "", current_waters: 0, water_start: "", water_end: "" },
+      three: { three_image: "", wilt_start: "", wilt_end: "" },
+      four: { four_image: "" },
+    };
+
+    let strPlant = JSON.stringify(plant);
+
+    let key = position + "_plant";
+
+    await SecureStore.setItemAsync(key, strPlant);
+  };
+
+  createPlants = async () => {
+    await this.createPlant(1);
+    await this.createPlant(2);
+    await this.createPlant(3);
+    await this.createPlant(4);
+    await this.createPlant(5);
+    await this.createPlant(6);
+    await this.createPlant(7);
+    await this.createPlant(8);
+    await this.createPlant(9);
+  };
 }

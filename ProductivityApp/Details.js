@@ -99,6 +99,21 @@ export default class Details extends Component {
     }
   };
 
+  letsGo = () => {
+    if (this.state.minutes < 1) {
+      alert("Sprints must be at least 5 minutes long!");
+      return;
+    }
+    this.props.navigation.navigate("Timer5", {
+      JSON_ListView_Clicked_Item: Math.ceil(this.state.minutes),
+    });
+  };
+
+  componentWillReceiveProps() {
+    console.log("componentWillReceiveProps called in Details");
+    this.setState({ ltStats: false });
+  }
+
   refreshStats = () => {
     this.setState({ ltStats: false });
   };
@@ -116,7 +131,7 @@ export default class Details extends Component {
           <View
             style={{
               flex: 2.5,
-              backgroundColor: "#0ffcff",
+              backgroundColor: "#BADFE7",
               justifyContent: "center",
             }}
           >
@@ -156,7 +171,7 @@ export default class Details extends Component {
           <View
             style={{
               flex: 2,
-              backgroundColor: "#2edcf2",
+              backgroundColor: "#e7f2e5",
               alignItems: "center",
             }} // enter time to start a sprint
           >
@@ -173,49 +188,31 @@ export default class Details extends Component {
               />
             </View>
             <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigate("Timer5", {
-                    JSON_ListView_Clicked_Item: this.state.minutes,
-                  })
-                }
-              >
+              <TouchableOpacity onPress={this.letsGo}>
                 <View style={styles.openButton}>
                   <Text>Let's go!</Text>
                 </View>
-                {/* <Button
-                title="LET'S GO!"
-                onPress={() =>
-                  navigate("Timer5", {
-                    JSON_ListView_Clicked_Item: this.state.minutes,
-                  })
-                }
-              /> */}
               </TouchableOpacity>
             </View>
           </View>
-          {/* <View style={{ flex: 1.5 }}>
-          <Button title="Go to garden." onPress={() => navigate("Garden")} />
-          <Button
-            title="Go to GardenTesting"
-            onPress={() => navigate("GardenTesting")}
-          />
-          <Button
-            title="Go to PlantView"
-            onPress={() => navigate("PlantView")}
-          />
-        </View> */}
+
           <View
             style={{
               flex: 5,
               justifyContent: "center",
               flexDirection: "row",
-              backgroundColor: "#0ffcff",
+              backgroundColor: "#64A0B1",
             }}
           >
-            <View style={{ flex: 1, backgroundColor: "#b19999" }}>
+            <View style={{ flex: 1, backgroundColor: "#64A0B1" }}>
               <View style={{ flex: 0.6 }}></View>
               <View style={{ flex: 1 }}>
+                <Text style={[styles.smallText, { fontSize: 23 }]}>
+                  QUICK STATS
+                </Text>
+                <Text style={styles.smallText}></Text>
+                <Text style={styles.smallText}></Text>
+
                 <Text style={styles.smallText}>You've sprinted for</Text>
                 <Text style={styles.smallText}>
                   {this.state.totalTime} minutes total.
@@ -237,9 +234,9 @@ export default class Details extends Component {
                 </Text>
                 <Text style={styles.smallText}></Text>
 
-                <TouchableOpacity onPress={this.refreshStats}>
+                {/* <TouchableOpacity onPress={this.refreshStats}>
                   <Text style={styles.smallLinkText}>[Refresh]</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <Text style={styles.smallText}></Text>
 
@@ -248,23 +245,12 @@ export default class Details extends Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.5 }}></View>
-              {/* <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => this.props.navigation.navigate("Garden")}
-            >
-              <Image
-                source={require("./assets/hendery.png")}
-                style={{
-                  width: 150,
-                  height: 150,
-                }}
-              />
-            </TouchableOpacity> */}
             </View>
-            <View style={{ flex: 1, backgroundColor: "#9a7993" }}>
+            <View style={{ flex: 1, backgroundColor: "#3e7496" }}>
               <View style={{ flex: 0.5 }}></View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
-                <TouchableOpacity onPress={() => navigate("Seeds")}>
+                {/* Deleted seeds button: */}
+                {/* <TouchableOpacity onPress={() => navigate("Seeds")}>
                   <View
                     style={[
                       styles.pinkButton2,
@@ -277,6 +263,23 @@ export default class Details extends Component {
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>SEEDS</Text>
+                  </View>
+                </TouchableOpacity> */}
+              </View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity onPress={() => navigate("Garden2")}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>GARDEN</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -297,23 +300,7 @@ export default class Details extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 0.35, justifyContent: "center" }}>
-                <TouchableOpacity onPress={() => navigate("Garden")}>
-                  <View
-                    style={[
-                      styles.pinkButton2,
-                      {
-                        height:
-                          Platform.OS == "android"
-                            ? screen.width / 12
-                            : screen.width / 10,
-                      },
-                    ]}
-                  >
-                    <Text style={styles.smallWhiteText}>GARDEN</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+
               <View style={{ flex: 0.35, justifyContent: "center" }}>
                 <TouchableOpacity onPress={() => navigate("Settings")}>
                   <View
@@ -328,6 +315,23 @@ export default class Details extends Component {
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>SETTINGS</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.35, justifyContent: "center" }}>
+                <TouchableOpacity onPress={() => navigate("Stats")}>
+                  <View
+                    style={[
+                      styles.pinkButton2,
+                      {
+                        height:
+                          Platform.OS == "android"
+                            ? screen.width / 12
+                            : screen.width / 10,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.smallWhiteText}>STATS</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -390,14 +394,11 @@ const styles = StyleSheet.create({
     height: screen.width / 12,
     borderRadius: screen.width / 2,
     alignItems: "center",
-    // backgroundColor: "#fca",
-    // color: "#fff",
-    // fontSize: 30,
     justifyContent: "center",
     marginLeft: screen.width / 15,
   },
   smallWhiteText: {
-    color: "#632985",
+    color: "#f0ecc5",
     fontSize: 20,
     marginTop: 5,
   },
@@ -407,7 +408,7 @@ const styles = StyleSheet.create({
     marginLeft: screen.width / 15,
   },
   smallLinkText: {
-    color: "purple",
+    color: "#09495c",
     fontSize: 20,
     marginLeft: screen.width / 15,
   },

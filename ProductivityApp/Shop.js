@@ -377,6 +377,7 @@ export default class Shop extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Text style={styles.itemName1}>Fertilizer</Text>
+              <Text style={styles.itemName2}></Text>
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -589,6 +590,7 @@ export default class Shop extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Text style={styles.itemName1}>Elixir</Text>
+              <Text style={styles.itemName2}></Text>
             </View>
             <View style={{ flex: 0.2 }}></View>
           </View>
@@ -1010,7 +1012,7 @@ export default class Shop extends Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Details")}
+              onPress={() => this.props.navigation.navigate("Home")}
               activeOpacity={0.5}
             >
               <Image
