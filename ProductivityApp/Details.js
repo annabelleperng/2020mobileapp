@@ -177,6 +177,9 @@ export default class Details extends Component {
           >
             <View style={{ flex: 0.7 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity onPress={() => navigate("Loading")}>
+                <Text>Loading</Text>
+              </TouchableOpacity>
               <TextInput
                 onChangeText={(minutes) => this.setState({ minutes })}
                 placeholder={"# of minutes"}

@@ -139,42 +139,43 @@ export default class App extends React.Component {
         unpaused = 0;
       }
 
-      // console.log(this.state);
-      // console.log(this.state.timer_time);
-      // console.log(this.state.total_time);
-      // console.log(paused + " " + unpaused + " " + total);
+        // console.log(this.state);
+        // console.log(this.state.timer_time);
+        // console.log(this.state.total_time);
+        // console.log(paused + " " + unpaused + " " + total);
 
-      total += Number.parseInt(this.state.timer_time);
+        total += Number.parseInt(this.state.timer_time);
 
-      unpaused += Number.parseInt(this.state.timer_time);
+        unpaused += Number.parseInt(this.state.timer_time);
 
-      paused +=
-        Number.parseFloat(this.state.total_time / 60000) -
-        Number.parseInt(this.state.timer_time);
+        paused +=
+          Number.parseFloat(this.state.total_time / 60000) -
+          Number.parseInt(this.state.timer_time);
 
-      console.log(
-        total +
-          " was total; " +
-          unpaused +
-          " was unpaused; " +
-          paused +
-          " was paused"
-      );
+        console.log(
+          total +
+            " was total; " +
+            unpaused +
+            " was unpaused; " +
+            paused +
+            " was paused"
+        );
 
-      await SecureStore.setItemAsync("total_sprint_time", total + "");
-      await SecureStore.setItemAsync("total_unpaused", unpaused + "");
-      await SecureStore.setItemAsync("total_paused", paused + "");
+        await SecureStore.setItemAsync("total_sprint_time", total + "");
+        await SecureStore.setItemAsync("total_unpaused", unpaused + "");
+        await SecureStore.setItemAsync("total_paused", paused + "");
 
-      this.setState({ addedTotals: true });
-      //   await SecureStore this.state.timer_time
-      // securestore variables:
-      // today_time = (25 + 50 + 10 + 12) = 97
-      // today_productiviity = (100*25 + 85*50 + 86*10 + 95*12) = 8750
-      // today_happiness = similar to today_productivity ^^^
-      // when calculating avg productivity, divide productivity by time
-      // (don't store avgs in securestore)
-      // update time by adding time, update productivity and happiness
-      // by weights (not by averages)
+        this.setState({ addedTotals: true });
+        //   await SecureStore this.state.timer_time
+        // securestore variables:
+        // today_time = (25 + 50 + 10 + 12) = 97
+        // today_productiviity = (100*25 + 85*50 + 86*10 + 95*12) = 8750
+        // today_happiness = similar to today_productivity ^^^
+        // when calculating avg productivity, divide productivity by time
+        // (don't store avgs in securestore)
+        // update time by adding time, update productivity and happiness
+        // by weights (not by averages)
+      }
     }
   };
 

@@ -200,7 +200,7 @@ export default class StopWatch extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Details")}
+            onPress={() => this.props.navigation.navigate("Home")}
             activeOpacity={0.5}
             style={[
               styles.button,
