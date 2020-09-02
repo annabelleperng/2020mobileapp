@@ -33,6 +33,7 @@ import PlantView from "./PlantView";
 import Settings from "./Settings";
 import Seeds from "./Seeds";
 import CumulativeStats from "./CumulativeStats";
+import CumulStats2 from "./CumulStats2";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -82,6 +83,7 @@ export default function App() {
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Seeds" component={Seeds} />
           <Stack.Screen name="CumulativeStats" component={CumulativeStats} />
+          <Stack.Screen name="CumulStats2" component={CumulStats2} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
