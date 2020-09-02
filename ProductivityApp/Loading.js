@@ -48,7 +48,6 @@ export default class Loading extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1 }}>
         <View

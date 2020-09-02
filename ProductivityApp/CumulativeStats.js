@@ -129,6 +129,7 @@ export default class CumulativeStats extends React.Component {
         <VictoryPie
           startAngle={-90}
           endAngle={90}
+          labels={({ datum }) => (datum.y >= 0 ? `${datum.x}` : ``)}
           animate={{
             duration: 2000,
             onLoad: { duration: 1000 },
