@@ -1869,9 +1869,9 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: screen.width / 1.5, //1.6
     height: screen.width / 2.4, //2.4
-    borderColor: "#fff",
+    borderColor: "#472b25",
     borderRadius: screen.width / 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#472b25",
     alignItems: "center",
     justifyContent: "flex-end",
   },
