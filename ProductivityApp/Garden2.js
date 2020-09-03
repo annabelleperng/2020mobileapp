@@ -181,7 +181,8 @@ export default class Garden extends Component {
   //   }
 
   UNSAFE_componentWillReceiveProps() {
-    this.refreshPlants();
+    this.setState({ plantsInitialized2: false });
+    this.refreshPlants(); // sets plantsInitialized to false
     this.showNotifs();
   }
 

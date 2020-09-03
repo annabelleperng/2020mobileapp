@@ -1811,11 +1811,11 @@ export default class GardenTesting extends Component {
               <Text style={styles.redText}> Return to Garden </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.refreshAll} activeOpacity={0.5}>
+          {/* <TouchableOpacity onPress={this.refreshAll} activeOpacity={0.5}>
             <View style={styles.red}>
               <Text style={styles.redText}> Refresh </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* <View style={{ flexDirection: "row" }}></View> */}
         {/* {console.log("you are here" + vv)}
