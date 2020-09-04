@@ -86,7 +86,6 @@ export default class Rewards extends React.Component {
 
   setStreak = async () => {
     if (this.state.setStreakTemp == 0) {
-      await SecureStore.setItemAsync("streak_length", "3"); //DON'T FORGET TO UN-HARDCODE THIS
       this.setState({ setStreakTemp: 1 });
       console.log("setting temp");
     }

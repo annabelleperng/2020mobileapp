@@ -333,8 +333,8 @@ export default class App extends React.Component {
                 90,
             ],
           }}
-          width={360}
-          height={320}
+          width={screen.width / 1.1}
+          height={screen.height / 2}
         >
           <VictoryLabel
             text="Sprint versus Break Time"
