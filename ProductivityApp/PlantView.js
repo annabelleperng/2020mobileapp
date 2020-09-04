@@ -87,6 +87,8 @@ export default class GardenTesting extends Component {
 
       specifics_prepared: false,
       inventory_set_check: false,
+
+      checked_wilted: false,
     };
 
     // console.log(this.props);
@@ -475,9 +477,9 @@ export default class GardenTesting extends Component {
 
   /* Master setup function */
   getInventoryCounts = async () => {
-    // console.log("getInventoryCounts called");
+    console.log("getInventoryCounts called");
     if (this.state.inventory_set == false) {
-      //   console.log("(resetting inventory)");
+      console.log("(resetting inventory)");
 
       this.setState({ inventory_set: true });
       let water = Number.parseInt(
@@ -506,9 +508,11 @@ export default class GardenTesting extends Component {
         inventory_bees: bees,
         inventory_elixir: elixir,
         plant_image: image,
+        plant: plant,
         plant_status: plant["status"],
       });
 
+      console.log("status is " + plant["status"]);
       await this.prepareSpecifics(plant);
 
       //   setTimeout(() => {
@@ -657,13 +661,23 @@ export default class GardenTesting extends Component {
   };
 
   checkIfWilted = async () => {
-    if (this.state.countdownFullySet == true) {
-      const res = await su.updateWilting(this.state.plant_position);
+    if (
+      this.state.countdownFullySet == true &&
+      this.state.checked_wilted == false
+    ) {
+      this.setState({ checked_wilted: true });
+      const res = await su.updateWilting(this.state.plant);
       console.log("checkIfWilted: result from updateWilting is " + res);
       if (res == 3) {
         alert("Your plant wilted! Use elixir to revive it.");
+        this.setState({
+          inventory_set: false,
+        });
       } else if (res == 4) {
         alert("Your plant died!");
+        this.setState({
+          inventory_set: false,
+        });
       } else {
         alert("Your plant is thriving! New streak started.");
         this.setState({
@@ -1612,6 +1626,7 @@ export default class GardenTesting extends Component {
     this.checkInitialized();
     this.getInventoryCounts();
     this.checkSeeds();
+    console.log("render says status is: " + this.state.plant_status);
     if (this.state.inventory_set_check && this.state.specifics_prepared) {
       return this.renderNormal();
     } else {
@@ -1672,11 +1687,17 @@ export default class GardenTesting extends Component {
         </View>
         <View
           style={{
-            flex: 2,
+            flex: 2, // 2
             backgroundColor: "#222",
+            alignItems: "center",
+            justifyContent: "center",
           }}
           // gray horizontal divider
         >
+          {/* <Image
+            source={require("./assets/five-stars-wide.png")}
+            style={styles.starBar}
+          ></Image> */}
           {/* <Text style={styles.whiteText}>Blue-Pleated Rhododendron</Text> */}
         </View>
 
@@ -1782,7 +1803,7 @@ export default class GardenTesting extends Component {
         </View>
         <View
           style={{
-            flex: 2,
+            flex: 2, // 2
             backgroundColor: "#222",
           }}
         >
@@ -1862,6 +1883,10 @@ const styles = StyleSheet.create({
     height: screen.width / 9.3,
     // borderWidth: 1,
     // borderColor: "#854832",
+  },
+  starBar: {
+    width: screen.width / 1.5, // 11
+    height: screen.width / 15, // 11
   },
   inventoryOutline: {
     borderWidth: 5,

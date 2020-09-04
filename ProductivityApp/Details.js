@@ -109,7 +109,7 @@ export default class Details extends Component {
     });
   };
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     console.log("componentWillReceiveProps called in Details");
     this.setState({ ltStats: false });
   }
@@ -160,12 +160,14 @@ export default class Details extends Component {
             >
               view your past statistics!
             </Text>
-            <TouchableOpacity onPress={() => navigate("CumulativeStats")}>
+
+            {/* // for testing: buttons to go to cumulativestats, garden2 */}
+            {/* <TouchableOpacity onPress={() => navigate("CumulativeStats")}>
               <Text>Click for CumulativeStats</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigate("Garden2")}>
               <Text>Click for Garden2</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <View
@@ -177,9 +179,10 @@ export default class Details extends Component {
           >
             <View style={{ flex: 0.7 }}></View>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <TouchableOpacity onPress={() => navigate("Loading")}>
+              {/* // for testing: button to go to loading page */}
+              {/* <TouchableOpacity onPress={() => navigate("Loading")}>
                 <Text>Loading</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TextInput
                 onChangeText={minutes => this.setState({ minutes })}
                 placeholder={"# of minutes"}
@@ -241,10 +244,17 @@ export default class Details extends Component {
                   <Text style={styles.smallLinkText}>[Refresh]</Text>
                 </TouchableOpacity> */}
 
-                <Text style={styles.smallText}></Text>
-
-                <TouchableOpacity onPress={() => navigate("Timer5")}>
-                  <Text style={styles.smallLinkText}>See more stats!</Text>
+                <TouchableOpacity onPress={() => navigate("CumulativeStats")}>
+                  <Text style={styles.smallText}></Text>
+                  <Text
+                    style={{
+                      color: "#09495c",
+                      fontSize: 20,
+                      marginLeft: screen.width / 15,
+                    }}
+                  >
+                    See more stats!
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.5 }}></View>
@@ -322,7 +332,7 @@ export default class Details extends Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 0.35, justifyContent: "center" }}>
-                <TouchableOpacity onPress={() => navigate("Stats")}>
+                <TouchableOpacity onPress={() => navigate("CumulativeStats")}>
                   <View
                     style={[
                       styles.pinkButton2,

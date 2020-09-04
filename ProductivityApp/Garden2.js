@@ -140,13 +140,14 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 1,
+      status: 2,
       position: 1,
       permanent: {
         event: "none",
         rarity: "C",
         species: "snowcrested fern",
         date_planted: "",
+        price: "550",
       },
       zero: { zero_image: "plantpot" },
       one: {
@@ -159,12 +160,12 @@ export default class Garden extends Component {
         two_image: "ferns",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-07-28T17:52:25.437-07:00",
+        water_end: "2020-09-03T17:52:25.437-07:00",
       },
       three: {
         three_image: "ferns",
         wilt_start: "",
-        wilt_end: "2020-07-28T17:52:25.437-07:00",
+        wilt_end: "2020-09-03T17:52:25.437-07:00",
       },
       four: { four_image: "ferns" },
     };
