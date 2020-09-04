@@ -90,7 +90,26 @@ export default class CumulativeStats extends React.Component {
   setSpecific = async (key) => {
     let val = Number.parseInt(await SecureStore.getItemAsync(key));
     console.log(key + ": " + val);
+    if (
+      (key == "morning_count" ||
+        key == "afternoon_count" ||
+        key == "evening_count" ||
+        key == "night_count") &
+      (val == 0)
+    ) {
+      val = -1;
+      await SecureStore.setItemAsync(key, val + "");
+    }
+    if (val != val) {
+      if (key.indexOf("count") == -1) {
+        val = 0;
+      } else {
+        val = -1;
+      }
+      await SecureStore.setItemAsync(key, val + "");
+    }
     this.setState({ [key]: val });
+    console.log(key + " AFTER: " + val);
   };
 
   findMax(metric) {
@@ -126,27 +145,6 @@ export default class CumulativeStats extends React.Component {
       <View style={styles.container}>
         <Text>Total Sprints: {this.state.sprint_count}</Text>
         <Text>Longest Streak: {this.state.longest_streak}</Text>
-        <VictoryPie
-          startAngle={-90}
-          endAngle={90}
-          animate={{
-            duration: 2000,
-            onLoad: { duration: 1000 },
-          }}
-          colorScale={["gold", "orange", "tomato", "navy"]}
-          data={[
-            { x: "Morning", y: this.state.morning_count },
-            { x: "Afternoon", y: this.state.afternoon_count },
-            { x: "Evening", y: this.state.evening_count },
-            { x: "Night", y: this.state.night_count },
-          ]}
-          // data={[
-          //   { x: "Morning", y: 3 },
-          //   { x: "Afternoon", y: 5 },
-          //   { x: "Evening", y: 2 },
-          //   { x: "Night", y: 8 },
-          // ]}
-        />
         {/* <VictoryChart
           domainPadding={{
             x: [100, 100],
@@ -276,63 +274,63 @@ export default class CumulativeStats extends React.Component {
           {this.state.total_happiness / this.state.sprint_count}
         </Text>
         <Text>
-          You are typically happiest when sprinting during the{" "}
-          {this.findMax("happiness")}
-        </Text>
-        {this.findMax("happiness") === "morning" ? (
-          <Image style={styles.pic} source={require("./assets/morning.png")} />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("happiness") === "afternoon" ? (
-          <Image
-            style={styles.pic}
-            source={require("./assets/afternoon.png")}
-          />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("happiness") === "evening" ? (
-          <Image style={styles.pic} source={require("./assets/evening.png")} />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("happiness") === "night" ? (
-          <Image style={styles.pic} source={require("./assets/night.png")} />
-        ) : (
-          <View></View>
-        )}
-        <Text>
           Average Productivity During Sprints:{" "}
           {this.state.total_productivity / this.state.sprint_count}
         </Text>
-        <Text>
-          You are typically most productive when sprinting during the{" "}
-          {this.findMax("productivity")}
-        </Text>
-        {this.findMax("productivity") === "morning" ? (
-          <Image style={styles.pic} source={require("./assets/morning.png")} />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("productivity") === "afternoon" ? (
-          <Image
-            style={styles.pic}
-            source={require("./assets/afternoon.png")}
+        <VictoryPie
+          startAngle={-90}
+          endAngle={90}
+          animate={{
+            duration: 2000,
+            onLoad: { duration: 1000 },
+          }}
+          colorScale={["gold", "orange", "tomato", "navy"]}
+          data={[
+            { x: "Morning", y: this.state.morning_count },
+            { x: "Afternoon", y: this.state.afternoon_count },
+            { x: "Evening", y: this.state.evening_count },
+            { x: "Night", y: this.state.night_count },
+          ]}
+          // data={[
+          //   { x: "Morning", y: 3 },
+          //   { x: "Afternoon", y: 5 },
+          //   { x: "Evening", y: 2 },
+          //   { x: "Night", y: 8 },
+          // ]}
+          labels={({ datum }) => (datum.y > 0 ? `${datum.x}` : ``)}
+        />
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate("CumulStats2", {
+                morning_count: this.state.morning_count,
+                afternoon_count: this.state.afternoon_count,
+                evening_count: this.state.evening_count,
+                night_count: this.state.night_count,
+                morning_total_happiness: this.state.morning_total_happiness,
+                afternoon_total_happiness: this.state.afternoon_total_happiness,
+                evening_total_happiness: this.state.evening_total_happiness,
+                night_total_happiness: this.state.night_total_happiness,
+                night_count: this.state.night_count,
+                morning_total_productivity: this.state.total_productivity,
+                afternoon_total_productivity: this.state
+                  .afternoon_total_productivity,
+                evening_total_productivity: this.state
+                  .evening_total_productivity,
+                night_total_productivity: this.state.night_total_productivity,
+              })
+            }
+            title="Details"
+            color="#35F2E9"
           />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("productivity") === "evening" ? (
-          <Image style={styles.pic} source={require("./assets/evening.png")} />
-        ) : (
-          <View></View>
-        )}
-        {this.findMax("productivity") === "night" ? (
-          <Image style={styles.pic} source={require("./assets/night.png")} />
-        ) : (
-          <View></View>
-        )}
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+          <Button
+            onPress={() => this.props.navigation.navigate("Home")}
+            title="HOME"
+            color="#35F2E9"
+          />
+        </TouchableOpacity>
       </View>
     );
   }

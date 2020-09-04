@@ -18,6 +18,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import { RECORDING_OPTION_IOS_OUTPUT_FORMAT_APPLELOSSLESS } from "expo-av/build/Audio";
 import { TapGestureHandler } from "react-native-gesture-handler";
+import Loading from "./Loading";
 const screen = Dimensions.get("window");
 
 // const data = [
@@ -71,6 +72,7 @@ export default class App extends React.Component {
     if (this.state.message_boolean == true) {
       return;
     } else {
+      this.setState({ message_boolean: true });
       if (start === end) {
         this.setState({ time_of_day_1: start });
         let key = start + "_count";
@@ -101,7 +103,6 @@ export default class App extends React.Component {
           message: "Grinding from " + start + " 'til " + end + "!",
         });
       }
-      this.setState({ message_boolean: true });
     }
   };
 
@@ -139,47 +140,46 @@ export default class App extends React.Component {
         unpaused = 0;
       }
 
-        // console.log(this.state);
-        // console.log(this.state.timer_time);
-        // console.log(this.state.total_time);
-        // console.log(paused + " " + unpaused + " " + total);
+      // console.log(this.state);
+      // console.log(this.state.timer_time);
+      // console.log(this.state.total_time);
+      // console.log(paused + " " + unpaused + " " + total);
 
-        total += Number.parseInt(this.state.timer_time);
+      total += Number.parseInt(this.state.timer_time);
 
-        unpaused += Number.parseInt(this.state.timer_time);
+      unpaused += Number.parseInt(this.state.timer_time);
 
-        paused +=
-          Number.parseFloat(this.state.total_time / 60000) -
-          Number.parseInt(this.state.timer_time);
+      paused +=
+        Number.parseFloat(this.state.total_time / 60000) -
+        Number.parseInt(this.state.timer_time);
 
-        console.log(
-          total +
-            " was total; " +
-            unpaused +
-            " was unpaused; " +
-            paused +
-            " was paused"
-        );
+      console.log(
+        total +
+          " was total; " +
+          unpaused +
+          " was unpaused; " +
+          paused +
+          " was paused"
+      );
 
-        await SecureStore.setItemAsync("total_sprint_time", total + "");
-        await SecureStore.setItemAsync("total_unpaused", unpaused + "");
-        await SecureStore.setItemAsync("total_paused", paused + "");
+      await SecureStore.setItemAsync("total_sprint_time", total + "");
+      await SecureStore.setItemAsync("total_unpaused", unpaused + "");
+      await SecureStore.setItemAsync("total_paused", paused + "");
 
-        this.setState({ addedTotals: true });
-        //   await SecureStore this.state.timer_time
-        // securestore variables:
-        // today_time = (25 + 50 + 10 + 12) = 97
-        // today_productiviity = (100*25 + 85*50 + 86*10 + 95*12) = 8750
-        // today_happiness = similar to today_productivity ^^^
-        // when calculating avg productivity, divide productivity by time
-        // (don't store avgs in securestore)
-        // update time by adding time, update productivity and happiness
-        // by weights (not by averages)
-      }
+      this.setState({ addedTotals: true });
+      //   await SecureStore this.state.timer_time
+      // securestore variables:
+      // today_time = (25 + 50 + 10 + 12) = 97
+      // today_productiviity = (100*25 + 85*50 + 86*10 + 95*12) = 8750
+      // today_happiness = similar to today_productivity ^^^
+      // when calculating avg productivity, divide productivity by time
+      // (don't store avgs in securestore)
+      // update time by adding time, update productivity and happiness
+      // by weights (not by averages)
     }
   };
 
-  render() {
+  renderN() {
     this.updateDailyStats();
 
     const startHours = endHours - Math.floor(this.state.total_time / 3600000);
@@ -199,6 +199,44 @@ export default class App extends React.Component {
     const startTimeOfDay = this.timeOfDay(startHours);
     const endTimeOfDay = this.timeOfDay(endHours);
 
+    this.encourage(startTimeOfDay, endTimeOfDay);
+
+    if (
+      this.state.message_boolean == true &&
+      this.state.update_daily_boolean == true
+    ) {
+      return this.renderNormal();
+    } else {
+      return this.renderLoading();
+    }
+  }
+
+  renderLoading() {
+    return <Loading />;
+  }
+
+  render() {
+    // ~✰~ moved to render() - uncomment here if needed
+    this.updateDailyStats();
+
+    const startHours = endHours - Math.floor(this.state.total_time / 3600000);
+    const startHours12h = startHours <= 12 ? startHours : startHours % 12;
+    const startAMPM = startHours <= 12 ? " AM" : " PM";
+    if (startHours == 24) {
+      startHours12h = 12;
+      startAMPM = " AM";
+    }
+    const startMins = endMins - Math.floor(this.state.total_time / 60000);
+    const endHours12h = endHours <= 12 ? endHours : endHours % 12;
+    const endAMPM = endHours <= 12 ? " AM" : " PM";
+    if (endHours == 24) {
+      endHours12h = 12;
+      endAMPM = " AM";
+    }
+    const startTimeOfDay = this.timeOfDay(startHours);
+    const endTimeOfDay = this.timeOfDay(endHours);
+
+    // ~✰~ moved to render() - uncomment here if needed
     this.encourage(startTimeOfDay, endTimeOfDay);
 
     // if (12 <= startHours <= 4) {
@@ -295,8 +333,8 @@ export default class App extends React.Component {
                 90,
             ],
           }}
-          width={360}
-          height={320}
+          width={screen.width / 1.1}
+          height={screen.height / 2}
         >
           <VictoryLabel
             text="Sprint versus Break Time"

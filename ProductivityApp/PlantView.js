@@ -19,6 +19,8 @@ import CountDown from "react-native-countdown-component";
 import DateTime from "luxon/src/datetime.js";
 import moment from "moment";
 
+import Loading from "./Loading";
+
 import ProgressBarAnimated from "react-native-progress-bar-animated";
 
 const screen = Dimensions.get("window");
@@ -82,6 +84,9 @@ export default class GardenTesting extends Component {
       alert_info: "",
 
       growth_streak_length: 0,
+
+      specifics_prepared: false,
+      inventory_set_check: false,
     };
 
     // console.log(this.props);
@@ -505,6 +510,12 @@ export default class GardenTesting extends Component {
       });
 
       await this.prepareSpecifics(plant);
+
+      //   setTimeout(() => {
+      //     this.setState({ inventory_set_check: true });
+      //   }, 3000);
+
+      this.setState({ inventory_set_check: true }); // for render to check
     }
   };
 
@@ -591,6 +602,7 @@ export default class GardenTesting extends Component {
     //
     else {
     }
+    this.setState({ specifics_prepared: true });
   };
 
   /* Determines which buttons - x1, x5, MAX - to show for
@@ -1592,7 +1604,21 @@ export default class GardenTesting extends Component {
     // console.log(this.state.temp + " = temp");
   };
 
+  renderLoading() {
+    return <Loading />;
+  }
+
   render() {
+    this.checkInitialized();
+    this.getInventoryCounts();
+    this.checkSeeds();
+    if (this.state.inventory_set_check && this.state.specifics_prepared) {
+      return this.renderNormal();
+    } else {
+      return this.renderLoading();
+    }
+  }
+  renderNormal() {
     // console.log("props are...");
     // console.log(this.props);
 
@@ -1785,11 +1811,11 @@ export default class GardenTesting extends Component {
               <Text style={styles.redText}> Return to Garden </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.refreshAll} activeOpacity={0.5}>
+          {/* <TouchableOpacity onPress={this.refreshAll} activeOpacity={0.5}>
             <View style={styles.red}>
               <Text style={styles.redText}> Refresh </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* <View style={{ flexDirection: "row" }}></View> */}
         {/* {console.log("you are here" + vv)}
@@ -1869,9 +1895,9 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: screen.width / 1.5, //1.6
     height: screen.width / 2.4, //2.4
-    borderColor: "#fff",
+    borderColor: "#472b25",
     borderRadius: screen.width / 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#472b25",
     alignItems: "center",
     justifyContent: "flex-end",
   },

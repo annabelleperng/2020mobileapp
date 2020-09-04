@@ -21,10 +21,13 @@ import SeedUtils from "./SeedUtils";
 import SeedUtils2 from "./SeedUtils2";
 import RewardUtils from "./RewardUtils";
 
+import Loading from "./Loading";
+
 import * as SecureStore from "expo-secure-store";
 import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 import { enableScreens } from "react-native-screens";
 import { RotationGestureHandler } from "react-native-gesture-handler";
+import { getNativeSourceAndFullInitialStatusForLoadAsync } from "expo-av/build/AV";
 // import { ConsoleWriter } from "istanbul-lib-report";
 // import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
@@ -97,6 +100,7 @@ export default class Garden extends Component {
       acquiredSeed: "",
 
       plantsInitialized: false,
+      plantsInitialized2: false,
     };
   }
 
@@ -177,7 +181,8 @@ export default class Garden extends Component {
   //   }
 
   UNSAFE_componentWillReceiveProps() {
-    this.refreshPlants();
+    this.setState({ plantsInitialized2: false });
+    this.refreshPlants(); // sets plantsInitialized to false
     this.showNotifs();
   }
 
@@ -367,7 +372,6 @@ export default class Garden extends Component {
   initializePlants = async () => {
     if (this.state.plantsInitialized == false) {
       this.setState({ plantsInitialized: true });
-
       let plant1 = JSON.parse(await SecureStore.getItemAsync("1_plant"));
       let plant2 = JSON.parse(await SecureStore.getItemAsync("2_plant"));
       let plant3 = JSON.parse(await SecureStore.getItemAsync("3_plant"));
@@ -422,6 +426,12 @@ export default class Garden extends Component {
       //   this.state.plant5["two"]["current_waters"] = 32;
 
       this.showNotifs();
+
+      //   setTimeout(() => {
+      //     this.setState({ plantsInitialized2: true });
+      //   }, 3000);
+
+      this.setState({ plantsInitialized2: true });
     }
   };
 
@@ -511,7 +521,23 @@ export default class Garden extends Component {
     this.setState({ plantsInitialized: false });
   };
 
+  renderLoading() {
+    return <Loading />;
+  }
+
   render() {
+    console.log("rendering!!");
+    this.assureRefresh();
+    this.syncInventory();
+    if (this.state.plantSynced == false) this.initializePlants();
+    if (this.state.plantsInitialized2 == false) {
+      return this.renderLoading();
+    } else {
+      return this.renderNormal();
+    }
+  }
+
+  renderNormal() {
     // this.updateStuff();
 
     // console.log(this.state.plantsInitialized);

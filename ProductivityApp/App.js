@@ -33,6 +33,7 @@ import PlantView from "./PlantView";
 import Settings from "./Settings";
 import Seeds from "./Seeds";
 import CumulativeStats from "./CumulativeStats";
+import CumulStats2 from "./CumulStats2";
 import Loading from "./Loading";
 import Help from "./Help";
 import { NavigationContainer } from "@react-navigation/native";
@@ -86,6 +87,8 @@ export default function App() {
           <Stack.Screen name="Seeds" component={Seeds} />
           <Stack.Screen name="CumulativeStats" component={CumulativeStats} />
           <Stack.Screen name="Help" component={Help} />
+          <Stack.Screen name="CumulStats2" component={CumulStats2} />
+          <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
