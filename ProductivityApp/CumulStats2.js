@@ -35,36 +35,36 @@ export default class CumulStats2 extends React.Component {
     super(props);
 
     this.state = {
-      //   morning_count: this.props.route.params.morning_count,
-      //   afternoon_count: this.props.route.params.afternoon_count,
-      //   evening_count: this.props.route.params.evening_count,
-      //   night_count: this.props.route.params.night_count,
-      //   morning_total_happiness: this.props.route.params.morning_total_happiness,
-      //   afternoon_total_happiness: this.props.route.params
-      //     .afternoon_total_happiness,
-      //   evening_total_happiness: this.props.route.params.evening_total_happiness,
-      //   night_total_happiness: this.props.route.params.night_total_happiness,
-      //   morning_total_productivity: this.props.route.params
-      //     .morning_total_productivity,
-      //   afternoon_total_productivity: this.props.route.params
-      //     .afternoon_total_productivity,
-      //   evening_total_productivity: this.props.route.params
-      //     .evening_total_productivity,
-      //   night_total_productivity: this.props.route.params
-      //     .night_total_productivity,
+      morning_count: this.props.route.params.morning_count,
+      afternoon_count: this.props.route.params.afternoon_count,
+      evening_count: this.props.route.params.evening_count,
+      night_count: this.props.route.params.night_count,
+      morning_total_happiness: this.props.route.params.morning_total_happiness,
+      afternoon_total_happiness: this.props.route.params
+        .afternoon_total_happiness,
+      evening_total_happiness: this.props.route.params.evening_total_happiness,
+      night_total_happiness: this.props.route.params.night_total_happiness,
+      morning_total_productivity: this.props.route.params
+        .morning_total_productivity,
+      afternoon_total_productivity: this.props.route.params
+        .afternoon_total_productivity,
+      evening_total_productivity: this.props.route.params
+        .evening_total_productivity,
+      night_total_productivity: this.props.route.params
+        .night_total_productivity,
       set: 0,
-      morning_count: 0,
-      afternoon_count: 0,
-      evening_count: 0,
-      night_count: 26,
-      morning_total_happiness: 0,
-      afternoon_total_happiness: 0,
-      evening_total_happiness: 0,
-      night_total_happiness: 0,
-      morning_total_productivity: 204,
-      afternoon_total_productivity: 0,
-      evening_total_productivity: 0,
-      night_total_productivity: 175,
+      // morning_count: 0,
+      // afternoon_count: 0,
+      // evening_count: 0,
+      // night_count: 26,
+      // morning_total_happiness: 0,
+      // afternoon_total_happiness: 0,
+      // evening_total_happiness: 0,
+      // night_total_happiness: 0,
+      // morning_total_productivity: 204,
+      // afternoon_total_productivity: 0,
+      // evening_total_productivity: 0,
+      // night_total_productivity: 175,
     };
     console.log(this.state);
   }
@@ -106,13 +106,20 @@ export default class CumulStats2 extends React.Component {
 
     return (
       <View style={styles.container}>
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+          <Button
+            onPress={() => this.props.navigation.navigate("CumulativeStats")}
+            title="Back to general statistics"
+            color="#35F2E9"
+          />
+        </TouchableOpacity>
         <VictoryChart
           domainPadding={{
             x: [30, 30],
-            y: [200, 200],
+            y: [30, 30],
           }}
-          width={350}
-          height={350}
+          width={screen.width / 1.1}
+          height={screen.height / 3.7}
         >
           <VictoryLabel
             text="Happiness vs. Time of Day"
@@ -123,7 +130,7 @@ export default class CumulStats2 extends React.Component {
           <VictoryAxis
             tickFormat={["Morning", "Afternoon", "Evening", "Night"]}
           />
-          <VictoryAxis dependentAxis tickFormat={(x) => `${x}\npoints`} />
+          <VictoryAxis dependentAxis tickFormat={(x) => `${x}%`} />
           <VictoryBar
             style={{
               data: { fill: (d) => "#83E130" },
@@ -164,26 +171,28 @@ export default class CumulStats2 extends React.Component {
             y="time"
           />
         </VictoryChart>
-        {/* <VictoryChart
+        <VictoryChart
           domainPadding={{
-            x: [100, 100],
-            y: [300, 300],
+            x: [30, 30],
+            y: [30, 30],
           }}
-          width={250}
-          height={250}
+          width={screen.width / 1.1}
+          height={screen.height / 3.7}
         >
           <VictoryLabel
             text="Productivity vs. Time of Day"
-            x={180}
+            x={200}
             y={30}
             textAnchor="middle"
           />
           <VictoryAxis
             tickFormat={["Morning", "Afternoon", "Evening", "Night"]}
           />
-          <VictoryAxis dependentAxis tickFormat={(x) => `${x}\npoints`} />
+          <VictoryAxis dependentAxis tickFormat={(x) => `${x}%`} />
           <VictoryBar
-            style={{ data: { fill: (d) => "#83E130" } }}
+            style={{
+              data: { fill: (d) => "#83E130" },
+            }}
             animate={{
               duration: 2000,
               onLoad: { duration: 1000 },
@@ -199,33 +208,32 @@ export default class CumulStats2 extends React.Component {
                 action: "Morning",
                 time:
                   this.state.morning_total_productivity /
-                  this.state.sprint_count,
+                  this.state.morning_count,
               },
               {
                 action: "Afternoon",
                 time:
                   this.state.afternoon_total_productivity /
-                  this.state.sprint_count,
+                  this.state.afternoon_count,
               },
               {
                 action: "Evening",
                 time:
                   this.state.evening_total_productivity /
-                  this.state.sprint_count,
+                  this.state.evening_count,
               },
               {
                 action: "Night",
                 time:
-                  this.state.night_total_productivity / this.state.sprint_count,
+                  this.state.night_total_productivity / this.state.night_count,
               },
             ]}
             x="action"
             y="time"
           />
-        </VictoryChart> */}
-        <Text>
-          You are typically happiest when sprinting during the{" "}
-          {this.findMax("happiness")}
+        </VictoryChart>
+        <Text style={styles.encourage}>
+          You are typically happiest in the {this.findMax("happiness")}
         </Text>
         {this.findMax("happiness") === "morning" ? (
           <Image style={styles.pic} source={require("./assets/morning.png")} />
@@ -250,8 +258,8 @@ export default class CumulStats2 extends React.Component {
         ) : (
           <View></View>
         )}
-        <Text>
-          You are typically most productive when sprinting during the{" "}
+        <Text style={styles.encourage}>
+          You are typically most productive in the{" "}
           {this.findMax("productivity")}
         </Text>
         {this.findMax("productivity") === "morning" ? (
@@ -277,6 +285,13 @@ export default class CumulStats2 extends React.Component {
         ) : (
           <View></View>
         )}
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+          <Button
+            onPress={() => this.props.navigation.navigate("Home")}
+            title="HOME"
+            color="#35F2E9"
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -324,5 +339,6 @@ const styles = StyleSheet.create({
     color: "#74D130",
     fontSize: 15,
     marginTop: 3,
+    textAlign: "center",
   },
 });

@@ -90,7 +90,13 @@ export default class CumulativeStats extends React.Component {
   setSpecific = async (key) => {
     let val = Number.parseInt(await SecureStore.getItemAsync(key));
     console.log(key + ": " + val);
-    if ((!key.indexOf("count") == -1) & (val == 0)) {
+    if (
+      (key == "morning_count" ||
+        key == "afternoon_count" ||
+        key == "evening_count" ||
+        key == "night_count") &
+      (val == 0)
+    ) {
       val = -1;
       await SecureStore.setItemAsync(key, val + "");
     }
@@ -103,6 +109,7 @@ export default class CumulativeStats extends React.Component {
       await SecureStore.setItemAsync(key, val + "");
     }
     this.setState({ [key]: val });
+    console.log(key + " AFTER: " + val);
   };
 
   findMax(metric) {
@@ -296,37 +303,33 @@ export default class CumulativeStats extends React.Component {
           <Button
             onPress={() =>
               this.props.navigation.navigate("CumulStats2", {
-                // morning_count: this.state.morning_count,
-                // afternoon_count: this.state.afternoon_count,
-                // evening_count: this.state.evening_count,
-                // night_count: this.state.night_count,
-                // morning_total_happiness: this.state.morning_total_happiness,
-                // afternoon_total_happiness: this.state.afternoon_total_happiness,
-                // evening_total_happiness: this.state.evening_total_happiness,
-                // night_total_happiness: this.state.evening_total_happiness,
-                // night_count: this.state.night_count,
-                // morning_total_productivity: this.state.total_productivity,
-                // afternoon_total_productivity: this.state
-                //   .afternoon_total_productivity,
-                // evening_total_productivity: this.state
-                //   .evening_total_productivity,
-                // night_total_productivity: this.state.night_total_productivity,
+                morning_count: this.state.morning_count,
+                afternoon_count: this.state.afternoon_count,
+                evening_count: this.state.evening_count,
+                night_count: this.state.night_count,
+                morning_total_happiness: this.state.morning_total_happiness,
+                afternoon_total_happiness: this.state.afternoon_total_happiness,
+                evening_total_happiness: this.state.evening_total_happiness,
+                night_total_happiness: this.state.night_total_happiness,
+                night_count: this.state.night_count,
+                morning_total_productivity: this.state.total_productivity,
+                afternoon_total_productivity: this.state
+                  .afternoon_total_productivity,
+                evening_total_productivity: this.state
+                  .evening_total_productivity,
+                night_total_productivity: this.state.night_total_productivity,
               })
             }
             title="Details"
             color="#35F2E9"
           />
-          {/* <Button
-            onPress={() =>
-              this.props.navigation.navigate("CumulStats2", {
-                morning_count: 1,
-              })
-            } */}
-          {/* <Button
-            onPress={() => console.log(this.state)}
-            title="Details"
-            color="#35F2E9" //button bg for android, text for ios
-          /> */}
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+          <Button
+            onPress={() => this.props.navigation.navigate("Home")}
+            title="HOME"
+            color="#35F2E9"
+          />
         </TouchableOpacity>
       </View>
     );
