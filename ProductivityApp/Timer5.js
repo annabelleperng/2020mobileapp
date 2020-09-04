@@ -17,6 +17,9 @@ import * as SecureStore from "expo-secure-store";
 
 const screen = Dimensions.get("window");
 
+import { Audio } from "expo-av";
+const soundObject = new Audio.Sound();
+
 export default class StopWatch extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +42,14 @@ export default class StopWatch extends Component {
   componentWillUnmount() {
     clearInterval(this.state.timer);
   }
+
+  playSound = async () => {
+    try {
+      console.log("called playSound at some point");
+      await soundObject.loadAsync(require("./assets/timer_done.mp3"));
+      await soundObject.playAsync();
+    } catch (error) {}
+  };
 
   updateLatestSprints = async () => {
     var localZone = await SecureStore.getItemAsync("timezone");
@@ -66,6 +77,7 @@ export default class StopWatch extends Component {
       ) {
         count = "00";
         num = "00";
+        this.playSound();
         clearInterval(this.state.timer);
         this.onButtonStop;
         var currentTime = new Date();
