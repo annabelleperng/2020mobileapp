@@ -88,7 +88,6 @@ export default function App() {
           <Stack.Screen name="CumulativeStats" component={CumulativeStats} />
           <Stack.Screen name="Help" component={Help} />
           <Stack.Screen name="CumulStats2" component={CumulStats2} />
-          <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

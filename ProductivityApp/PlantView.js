@@ -89,6 +89,9 @@ export default class GardenTesting extends Component {
       inventory_set_check: false,
 
       checked_wilted: false,
+
+      gold: -1,
+      gems: -1,
     };
 
     // console.log(this.props);
@@ -500,6 +503,23 @@ export default class GardenTesting extends Component {
 
       let image = this.determineImage(plant);
 
+      console.log("HAHAHHAHAHHAHAAAAAAHAAAAAAAAAAHAAAAAAAAAHHHHAAAAAAAAAA");
+      let gold = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_gold")
+      );
+      let gems = Number.parseInt(
+        await SecureStore.getItemAsync("inventory_gems")
+      );
+      if (gold != gold || gold < 0) {
+        console.log("goldgoldgold: " + gold);
+        gold = 0;
+        await SecureStore.setItemAsync("inventory_gold", "0");
+      }
+      if (gems != gems || gems < 0) {
+        gems = 0;
+        await SecureStore.setItemAsync("inventory_gems", "0");
+      }
+
       this.determineInfo(plant);
 
       this.setState({
@@ -510,6 +530,8 @@ export default class GardenTesting extends Component {
         plant_image: image,
         plant: plant,
         plant_status: plant["status"],
+        gold: Number.parseInt(await SecureStore.getItemAsync("inventory_gold")),
+        gems: gems,
       });
 
       console.log("status is " + plant["status"]);
@@ -1666,6 +1688,33 @@ export default class GardenTesting extends Component {
           flex: 1,
         }}
       >
+        <View
+          style={{
+            backgroundColor: "#334E33",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {console.log("STATE GEMS: " + this.state.gems)}
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <Image
+              style={styles.smallButton}
+              source={require("./assets/gold.png")}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <Image
+              style={styles.smallButton}
+              source={require("./assets/gem.png")}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>
+          </View>
+        </View>
         <View
           style={{
             flex: 13,

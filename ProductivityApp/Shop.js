@@ -28,6 +28,7 @@ export default class Shop extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gems: -1,
       gold: -1,
       canBuyRarePlant: false,
       canBuyElixir: false,
@@ -70,9 +71,20 @@ export default class Shop extends Component {
   }
 
   initialize = async () => {
+    // await SecureStore.setItemAsync("inventory_gems", "0");
     console.log("initializing shop");
     let goldAmt = await SecureStore.getItemAsync("inventory_gold");
     this.setState({ gold: goldAmt });
+    let gemAmt = await SecureStore.getItemAsync("inventory_gems");
+    if (goldAmt != goldAmt || goldAmt < 0) {
+      goldAmt = 0;
+      await SecureStore.setItemAsync("inventory_gold", 0 + "");
+    }
+    if (gemAmt != gemAmt || gemAmt < 0) {
+      gemAmt = 0;
+      await SecureStore.setItemAsync("inventory_gems", 0 + "");
+    }
+    console.log("gems: " + gemAmt);
 
     const localZone = await SecureStore.getItemAsync("timezone");
     // const localTime = DateTime.local().setZone(localZone);
@@ -199,6 +211,12 @@ export default class Shop extends Component {
 
     await SecureStore.setItemAsync("shop_refreshed", localTime.toISO());
   };
+
+  // setGems = async () => {
+  //   await SecureStore.setItemAsync("inventory_gems", "0");
+  //   this.setState({ gems: 0 });
+  //   console.log("CURRENT GEMS: " + this.state.gems);
+  // };
 
   eventChance = () => {
     const rarityRand = Math.floor(Math.random() * 100) + 1;
@@ -340,6 +358,12 @@ export default class Shop extends Component {
       this.initialize();
       this.setState({ initialized: true });
     }
+    if (this.state.gold < 0) {
+      this.setState({ gold: 0 });
+    }
+    if (this.state.gems < 0) {
+      this.setState({ gems: 0 });
+    }
 
     const gold = rewardUtils.getGold();
 
@@ -351,6 +375,47 @@ export default class Shop extends Component {
           justifyContent: "center",
         }}
       >
+        {/* <View
+          style={{
+            flex: 0.7,
+            backgroundColor: "#333333",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {console.log("gold: " + this.state.gold)}
+          <Text style={{ color: "#ffffff" }}>
+            {" "}
+            gold: {this.state.gold} gems: {this.state.gems}{" "}
+          </Text>
+        </View> */}
+        <View
+          style={{
+            backgroundColor: "#334E33",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {console.log("STATE GEMS: " + this.state.gems)}
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <Image
+              style={styles.smallButton}
+              source={require("./assets/gold.png")}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <Image
+              style={styles.smallButton}
+              source={require("./assets/gem.png")}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>
+          </View>
+        </View>
         <View
           style={{ flex: 4, backgroundColor: "#57423e", alignItems: "center" }}
         >
@@ -991,7 +1056,7 @@ export default class Shop extends Component {
         </View>
 
         <View style={{ flex: 1.3, backgroundColor: "#57423e" }}></View>
-        <View
+        {/* <View
           style={{
             flex: 0.7,
             backgroundColor: "#333333",
@@ -1001,7 +1066,7 @@ export default class Shop extends Component {
         >
           {console.log("gold: " + this.state.gold)}
           <Text style={{ color: "#ffffff" }}> gold: {this.state.gold}</Text>
-        </View>
+        </View> */}
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
           <View
             style={{
@@ -1021,7 +1086,7 @@ export default class Shop extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.toggleBees()}
+              onPress={() => this.setGems()}
               activeOpacity={0.5}
             >
               <Image
