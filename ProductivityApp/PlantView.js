@@ -1568,17 +1568,17 @@ export default class GardenTesting extends Component {
             Use the shovel in your inventory to dig it up, or use a gem to
             revive it.
           </Text>
-          <Text></Text>
-          <View
-            style={{
-              flex: 2,
-              backgroundColor: "#111",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            // right side for progress bar and buttons
-          >
-            <TouchableOpacity onPress={this.useGems.bind(this)}>
+          <View style={{ marginBottom: screen.height / 20 }}></View>
+          <TouchableOpacity onPress={this.useGems.bind(this)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#111",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // right side for progress bar and buttons
+            >
               <View
                 style={{
                   borderWidth: 1.2,
@@ -1614,8 +1614,8 @@ export default class GardenTesting extends Component {
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
         </View>
       );
     } else {
