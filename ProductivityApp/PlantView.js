@@ -65,6 +65,7 @@ export default class GardenTesting extends Component {
       inventory_bees: 0,
       inventory_elixir: 0,
       inventory_set: false,
+      inventory_gems: 0,
       button_x1: false,
       button_x5: false,
       button_max: false,
@@ -412,6 +413,77 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
+    this.setState({
+      countdownSet: false,
+      countdownFullySet: false,
+      inventory_set: false,
+    });
+  };
+
+  useGems = async () => {
+    if (this.state.plant_status != 4) {
+      console.log("error: can only revive dead plants");
+      return -1;
+    }
+
+    let inventory_gems = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_gems")
+    );
+
+    if (inventory_gems < 1) {
+      console.log("error: not enough gems to use");
+      alert(
+        "You don't have enough gems! " + "Gems can be bought from the gem shop."
+      );
+      return -1;
+    }
+
+    let key = this.state.plant_position + "_plant";
+    let plant = JSON.parse(await SecureStore.getItemAsync(key));
+
+    inventory_gems -= 1;
+
+    this.setState({ plant_status: 3, inventory_gems: inventory_gems });
+
+    Alert.alert(
+      "SUCCESS!",
+      "You used x1 GEM to revitalize the plant.",
+      [
+        {
+          text: "OK",
+        },
+      ],
+      { cancelable: false }
+    );
+
+    plant["status"] = 3;
+    plant["two"]["current_waters"] = 0;
+    const start = DateTime.local();
+    const startMidnight = DateTime.fromObject({
+      year: start.year,
+      month: start.month,
+      day: start.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+    }); // the midnight that just passed
+
+    const endMidnight = startMidnight.plus({ day: 4 });
+    plant["two"]["water_start"] = start.toISO();
+    plant["two"]["water_end"] = endMidnight.toISO();
+
+    this.setState({
+      plant_status: 3,
+      inventory_water: 0,
+      progress: 0,
+    });
+
+    // sets SecureStore values
+    await SecureStore.setItemAsync("inventory_gems", "" + inventory_gems);
+    await SecureStore.setItemAsync(key, JSON.stringify(plant));
+
+    // updates progress bar, display number
+    this.increase("progress", 100);
     this.setState({
       countdownSet: false,
       countdownFullySet: false,
@@ -1493,8 +1565,32 @@ export default class GardenTesting extends Component {
               marginRight: screen.width / 30,
             }}
           >
-            Use the shovel in your inventory to dig it up.
+            Use the shovel in your inventory to dig it up, or use a gem to
+            revive it.
           </Text>
+          <Text></Text>
+          <TouchableOpacity onPress={this.useGems.bind(this)}>
+            <View
+              style={{
+                borderWidth: 1.2,
+                width: screen.width / 2,
+                height: screen.width / 10,
+                borderColor: "#525252",
+                color: "#1ce",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={[
+                  styles.rectangularText,
+                  { fontSize: 18, color: "#eee", alignSelf: "center" },
+                ]}
+              >
+                REVIVE
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       );
     } else {
@@ -1706,10 +1802,30 @@ export default class GardenTesting extends Component {
             <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
           </View>
           <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <Image
-              style={styles.smallButton}
-              source={require("./assets/gem.png")}
-            />
+            <View
+              style={{
+                backgroundColor: "#334E33",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 2, alignItems: "flex-end" }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("GemShop")}
+                >
+                  <Image
+                    style={styles.smallButton}
+                    source={require("./assets/plus.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1, alignItems: "flex-end" }}>
+                <Image
+                  style={styles.smallButton}
+                  source={require("./assets/gem.png")}
+                />
+              </View>
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
             <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>

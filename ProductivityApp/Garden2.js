@@ -143,7 +143,7 @@ export default class Garden extends Component {
     await seedUtils2.initializeAllSeeds();
 
     let hardcoded_plant = {
-      status: 2,
+      status: 4,
       position: 1,
       permanent: {
         event: "none",
@@ -603,10 +603,30 @@ export default class Garden extends Component {
             <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
           </View>
           <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <Image
-              style={styles.smallButton}
-              source={require("./assets/gem.png")}
-            />
+            <View
+              style={{
+                backgroundColor: "#334E33",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 2, alignItems: "flex-end" }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("GemShop")}
+                >
+                  <Image
+                    style={styles.smallButton}
+                    source={require("./assets/plus.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1, alignItems: "flex-end" }}>
+                <Image
+                  style={styles.smallButton}
+                  source={require("./assets/gem.png")}
+                />
+              </View>
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
             <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>

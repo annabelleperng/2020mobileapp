@@ -76,6 +76,7 @@ export default class Shop extends Component {
     let goldAmt = await SecureStore.getItemAsync("inventory_gold");
     this.setState({ gold: goldAmt });
     let gemAmt = await SecureStore.getItemAsync("inventory_gems");
+    console.log("GEEEEEMS: " + gemAmt);
     if (goldAmt != goldAmt || goldAmt < 0) {
       goldAmt = 0;
       await SecureStore.setItemAsync("inventory_gold", 0 + "");
@@ -407,10 +408,30 @@ export default class Shop extends Component {
             <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
           </View>
           <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <Image
-              style={styles.smallButton}
-              source={require("./assets/gem.png")}
-            />
+            <View
+              style={{
+                backgroundColor: "#334E33",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 2, alignItems: "flex-end" }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("GemShop")}
+                >
+                  <Image
+                    style={styles.smallButton}
+                    source={require("./assets/plus.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1, alignItems: "flex-end" }}>
+                <Image
+                  style={styles.smallButton}
+                  source={require("./assets/gem.png")}
+                />
+              </View>
+            </View>
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
             <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>
