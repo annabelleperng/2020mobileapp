@@ -1569,28 +1569,53 @@ export default class GardenTesting extends Component {
             revive it.
           </Text>
           <Text></Text>
-          <TouchableOpacity onPress={this.useGems.bind(this)}>
-            <View
-              style={{
-                borderWidth: 1.2,
-                width: screen.width / 2,
-                height: screen.width / 10,
-                borderColor: "#525252",
-                color: "#1ce",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={[
-                  styles.rectangularText,
-                  { fontSize: 18, color: "#eee", alignSelf: "center" },
-                ]}
+          <View
+            style={{
+              flex: 2,
+              backgroundColor: "#111",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            // right side for progress bar and buttons
+          >
+            <TouchableOpacity onPress={this.useGems.bind(this)}>
+              <View
+                style={{
+                  borderWidth: 1.2,
+                  width: screen.width / 2,
+                  height: screen.width / 10,
+                  borderColor: "#525252",
+                  color: "#1ce",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                REVIVE
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flex: 1, alignItems: "flex-end" }}>
+                    <Image
+                      style={styles.smallButton}
+                      source={require("./assets/gem.png")}
+                    />
+                  </View>
+                  <View style={{ flex: 1.5, alignItems: "flex-start" }}>
+                    <Text
+                      style={[
+                        styles.rectangularText,
+                        { fontSize: 18, color: "#eee" },
+                      ]}
+                    >
+                      REVIVE
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     } else {
