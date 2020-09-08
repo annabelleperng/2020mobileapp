@@ -109,7 +109,7 @@ export default class SeedUtils extends Component {
    *   ex. rarity: "C"
    *   ex. event: "none"
    */
-  plantSeed = async (position, rarity, event) => {
+  plantSeed = async (position, event, rarity) => {
     // console.log("plantSeed called");
 
     let newPlant = {
@@ -147,7 +147,8 @@ export default class SeedUtils extends Component {
 
     // setting respective images
 
-    const image1 = "growing_c";
+    // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + rarity);
+    let image1 = "growing_c";
     if (rarity == "R") {
       image1 = "growing_r";
     } else if (rarity == "U") {
@@ -172,6 +173,7 @@ export default class SeedUtils extends Component {
 
     // test printing:
     // console.log(position + "_plant");
+    // console.log(JSON.stringify(newPlant));
     // var testtest = JSON.parse(
     //   await SecureStore.getItemAsync(position + "_plant")
     // );

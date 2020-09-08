@@ -1130,6 +1130,13 @@ export default class GardenTesting extends Component {
       { cancelable: false }
     );
 
+    console.log(
+      this.state.plant_positio +
+        "\n\n\n" +
+        this.state.seed_event +
+        "\n\n\n" +
+        this.state.seed_rarity
+    );
     await su.plantSeed(
       this.state.plant_position,
       this.state.seed_event,
