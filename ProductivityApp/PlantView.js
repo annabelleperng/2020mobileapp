@@ -1875,8 +1875,17 @@ export default class GardenTesting extends Component {
               marginRight: screen.width / 30,
             }}
           >
-            Use the shovel in your inventory to dig it up, or use a gem to
-            revive it.
+            Use the shovel in your inventory to dig it up
+          </Text>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 18,
+              marginLeft: screen.width / 30,
+              marginRight: screen.width / 30,
+            }}
+          >
+            Use a gem to revive it.
           </Text>
           <View style={{ marginBottom: screen.height / 20 }}></View>
           <TouchableOpacity onPress={this.useGems.bind(this)}>
@@ -2121,7 +2130,7 @@ export default class GardenTesting extends Component {
       >
         <View
           style={{
-            backgroundColor: "#334E33",
+            backgroundColor: "#34eb4f",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -2139,7 +2148,7 @@ export default class GardenTesting extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#334E33",
+                backgroundColor: "#34eb4f",
                 flexDirection: "row",
                 alignItems: "center",
               }}
