@@ -4,16 +4,94 @@ import DateTime from "luxon/src/datetime.js";
 import Interval from "luxon/src/interval.js";
 import * as SecureStore from "expo-secure-store";
 
-let none = [
+let none_old = [
   ["daisy", "aster", "sunflower", "tulip", "lily", "marigold"],
   ["dahlia", "lilac", "daffodil", "amaryllis", "orchid", "snapdragon"],
   ["chrysanthemum", "morning glory", "hibiscus", "hydrangea", "hyacinth"],
 ];
 
-let fernsTulips = [
-  ["tulips", "tulips", "tulips"],
-  ["tulips"],
-  ["tulips", "ferns"],
+let none = [
+  [
+    "yellow_pinwheel",
+    "wild_redquill",
+    "white_frostflower",
+    "white_cupcake",
+    "undersea_pineapple",
+    "titled_rose",
+    "sunset_shrooms",
+    "summer_cactus",
+    "stocky_corn",
+    "startrail_dandelion",
+    "snowcrested_fern",
+    "sharp_succulent",
+    "scarlet_spiderlily",
+    "robin_tulip",
+    "powderball_flower",
+    "monarch_grass",
+    "mario_mushrooms",
+    "lemon_daisy",
+    "forget-me-not_wildflower",
+    "flowery_bush",
+    "flowering_cactus",
+    "flamingo_tulip",
+    "fishy_seaweed",
+    "first-frost_bluebell",
+    "ducky_reeds",
+    "dotted_cactus",
+    "common_carrots",
+    "cherry_grass",
+    "calla_lily",
+    "californian_chaparral",
+    "butterfly_iris",
+    "bushy_butterfly",
+    "blue-dotted_bush",
+    "blue_cerealcup",
+    "blue_burst",
+    "bark_mushroom",
+    "apple_lotus",
+  ],
+  [
+    "sunstruck_rose",
+    "simpson_flower",
+    "purple_cactusflower",
+    "powder_bloom",
+    "pointy_aloe",
+    "pink_lily",
+    "peachy_tree",
+    "paper_fern",
+    "miniature_sakura",
+    "lantern_mushroom",
+    "imposter_corn",
+    "icefrost_rose",
+    "henny_flower",
+    "hedgy_lettuce",
+    "frost_bluebell",
+    "flame_bud",
+    "firefly_fern",
+    "dusk-purple_pendents",
+    "dawn_hibiscus",
+    "crimson_carnation",
+    "cotton-candy_wildflower",
+    "christmas_tree",
+    "blue_tulip",
+    "blue_pinwheel",
+    "blood_flower",
+  ],
+  [
+    "yellow-spotted_mushrooms",
+    "viney_flower",
+    "venus_flytrap",
+    "stardust_nightshroom",
+    "snow_violet",
+    "skydrop_ghostflower",
+    "quartz_wildflower",
+    "frost_indigo",
+    "double-layered_bloom",
+    "conchy_flower",
+    "blue_dames-rocket",
+    "blue_daisy",
+    "amethyst_spikeplant",
+  ],
 ];
 
 let noneLength = 17;
@@ -67,14 +145,36 @@ export default class SeedUtils extends Component {
       "streak_length"
     );
 
+    // setting respective images
+
+    const image1 = "growing_c";
+    if (rarity == "R") {
+      image1 = "growing_r";
+    } else if (rarity == "U") {
+      image1 = "growing_u";
+    }
+
+    const image2 = species + "2";
+    const image3 = species + "3";
+    const image4 = species + "4";
+
+    newPlant["one"]["one_image"] = image1;
+    newPlant["two"]["two_image"] = image2;
+    newPlant["three"]["three_image"] = image3;
+    newPlant["four"]["four_image"] = image4;
+
+    // saving to SecureStore
+
     await SecureStore.setItemAsync(
       position + "_plant",
       JSON.stringify(newPlant)
     );
+
+    // test printing:
     // console.log(position + "_plant");
-    var testtest = JSON.parse(
-      await SecureStore.getItemAsync(position + "_plant")
-    );
+    // var testtest = JSON.parse(
+    //   await SecureStore.getItemAsync(position + "_plant")
+    // );
     // console.log(testtest.toString());
 
     // console.log("plantSeed finished\n\n\n");
@@ -100,11 +200,11 @@ export default class SeedUtils extends Component {
   };
 
   determineSpecies_none = (rarity) => {
-    if (rarity == "1") {
-      const rand = Math.floor(Math.random() * fernsTulips[0].length);
-      return fernsTulips[0][rand];
+    if (rarity == "C") {
+      const rand = Math.floor(Math.random() * none[0].length);
+      return none[0][rand];
     }
-    if (rarity == "2") {
+    if (rarity == "U") {
       const rand = Math.floor(Math.random() * none[1].length);
       return none[1][rand];
     }
@@ -118,7 +218,8 @@ export default class SeedUtils extends Component {
   };
 
   determineSpecies_valentines = (rarity) => {
-    return "rose"; //placeholder
+    return "ferns";
+    // return "rose"; //placeholder
   };
 
   /* Sells a plant according to the price specified in its JSON

@@ -10,7 +10,7 @@ import {
   TextInput,
   Alert,
   SafeAreaView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 
@@ -31,7 +31,7 @@ export default class Help extends Component {
               style={{
                 flex: 0.1,
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <Text style={{ fontSize: 36 }}>Welcome to [ app name ]</Text>
@@ -44,14 +44,14 @@ export default class Help extends Component {
             </View>
             <View style={{ flex: 0.7, marginLeft: 20, marginRight: 20 }}>
               <Text style={styles.body}>
-                Start navigating from the home page
+                Start navigating from the home page.
               </Text>
               <Image
                 source={require("./assets/home.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Start a sprint by inputting how much time you plan on working.
+                Start a sprint by specifying how much time you plan on working.
               </Text>
               <Image
                 source={require("./assets/start_sprint.png")}
@@ -65,22 +65,21 @@ export default class Help extends Component {
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Keep track of your plants in the garden
+                Keep track of your plants in the garden!
               </Text>
               <Image
                 source={require("./assets/garden.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Click on an empty pot to start growing. Press the 'seeds'
-                button!
+                Click on an empty pot to start growing. Tap the 'Seeds' button!
               </Text>
               <Image
                 source={require("./assets/empty_pot.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Pick a seed from your inventory to plant
+                Pick a seed from your inventory to plant.
               </Text>
               <Image
                 source={require("./assets/seeds_inventory.png")}
@@ -91,36 +90,36 @@ export default class Help extends Component {
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Click on any pot with a plant from the garden to see your
-                plant's progress
+                Click on any plant to see its progress.
               </Text>
               <Image
                 source={require("./assets/growing_plant.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                Use water to help your plants grow. Fertilizer can be used to
-                speed up growth{" "}
+                Sprint for three days to help your plants grow. Fertilizer can
+                be used to speed up growth!
               </Text>
               <Text style={styles.body}>
-                If you don't water your plants for 3 days your plants will wilt!
+                Grown plants must be watered. If you don't water your plants for
+                3 days, they will wilt! You can earn water from sprints.
               </Text>
               <Image
                 source={require("./assets/until_wilted.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                You can use exilir to restore wilted plants. You buy elixir,
-                fertilizer and other seeds from the shop
+                You can use elixir to restore wilted plants. Elixir, fertilizer,
+                and other seeds can be bought from the shop.
               </Text>
               <Image
                 source={require("./assets/shop.png")}
                 style={styles.image}
               />
               <Text style={styles.body}>
-                When you have two fully grown plants you can breed them! Click
-                the bee at the bottom, then click the bees under the two plants
-                you want to breed.
+                When you have two fully grown plants you can breed them! Tap on
+                the bee button at the bottom, then tap on the bees under the
+                plants you want to breed.
               </Text>
               <Image
                 source={require("./assets/before_breed.png")}
@@ -140,8 +139,8 @@ export default class Help extends Component {
                       height:
                         Platform.OS == "android"
                           ? screen.width / 12
-                          : screen.width / 10
-                    }
+                          : screen.width / 10,
+                    },
                   ]}
                 >
                   <Text style={styles.smallWhiteText}>Back to home</Text>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   pinkButton2: {
     borderWidth: 2,
@@ -172,21 +171,29 @@ const styles = StyleSheet.create({
     // color: "#fff",
     // fontSize: 30,
     justifyContent: "center",
-    marginLeft: screen.width / 15
+    marginLeft: screen.width / 15,
   },
   image: {
     width: undefined,
-    resizeMode: "stretch"
+    resizeMode: "stretch",
+  },
+  image1: {
+    width: 150,
+    height: 150,
+    // height: screen.height / 1,
+    // width: 50,
+    // height: 50,
   },
   container: {
-    flex: 1
+    flex: 1,
     // marginTop: Constants.statusBarHeight
   },
   scrollView: {
-    backgroundColor: "pink"
+    flex: 1,
+    backgroundColor: "pink",
     // marginHorizontal: 20
   },
   body: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });

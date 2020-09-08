@@ -43,12 +43,322 @@ let bees = {
   "notif ": require("./assets/dostuff.png"),
 };
 
-let images = {
+let images1 = {
   invis: require("./assets/invis.png"),
   growing: require("./assets/growinglarge.png"),
   plantpot: require("./assets/plantpotlarge.png"),
   ferns: require("./assets/fernsbig.png"),
   tulips: require("./assets/tulipsbig.png"),
+};
+
+let images = {
+  plantpot: require("./assets/plantpotlarge.png"),
+  invis: require("./assets/invis.png"),
+  growing: require("./assets/growinglarge.png"),
+
+  growing_c: require("./assets/plants/growing_c.png"),
+  growing_u: require("./assets/plants/growing_u.png"),
+  growing_r: require("./assets/plants/growing_r.png"),
+
+  yellow_pinwheel2: require("./assets/plants/yellow_pinwheel2.png"),
+  yellow_pinwheel3: require("./assets/plants/yellow_pinwheel3.png"),
+  yellow_pinwheel4: require("./assets/plants/yellow_pinwheel4.png"),
+
+  wild_redquill2: require("./assets/plants/wild_redquill2.png"),
+  wild_redquill3: require("./assets/plants/wild_redquill3.png"),
+  wild_redquill4: require("./assets/plants/wild_redquill4.png"),
+
+  white_frostflower2: require("./assets/plants/white_frostflower2.png"),
+  white_frostflower3: require("./assets/plants/white_frostflower3.png"),
+  white_frostflower4: require("./assets/plants/white_frostflower4.png"),
+
+  white_cupcake2: require("./assets/plants/white_cupcake2.png"),
+  white_cupcake3: require("./assets/plants/white_cupcake3.png"),
+  white_cupcake4: require("./assets/plants/white_cupcake4.png"),
+
+  undersea_pineapple2: require("./assets/plants/undersea_pineapple2.png"),
+  undersea_pineapple3: require("./assets/plants/undersea_pineapple3.png"),
+  undersea_pineapple4: require("./assets/plants/undersea_pineapple4.png"),
+
+  titled_rose2: require("./assets/plants/titled_rose2.png"),
+  titled_rose3: require("./assets/plants/titled_rose3.png"),
+  titled_rose4: require("./assets/plants/titled_rose4.png"),
+
+  sunset_shrooms2: require("./assets/plants/sunset_shrooms2.png"),
+  sunset_shrooms3: require("./assets/plants/sunset_shrooms3.png"),
+  sunset_shrooms4: require("./assets/plants/sunset_shrooms4.png"),
+
+  summer_cactus2: require("./assets/plants/summer_cactus2.png"),
+  summer_cactus3: require("./assets/plants/summer_cactus3.png"),
+  summer_cactus4: require("./assets/plants/summer_cactus4.png"),
+
+  stocky_corn2: require("./assets/plants/stocky_corn2.png"),
+  stocky_corn3: require("./assets/plants/stocky_corn3.png"),
+  stocky_corn4: require("./assets/plants/stocky_corn4.png"),
+
+  startrail_dandelion2: require("./assets/plants/startrail_dandelion2.png"),
+  startrail_dandelion3: require("./assets/plants/startrail_dandelion3.png"),
+  startrail_dandelion4: require("./assets/plants/startrail_dandelion4.png"),
+
+  snowcrested_fern2: require("./assets/plants/snowcrested_fern2.png"),
+  snowcrested_fern3: require("./assets/plants/snowcrested_fern3.png"),
+  snowcrested_fern4: require("./assets/plants/snowcrested_fern4.png"),
+
+  sharp_succulent2: require("./assets/plants/sharp_succulent2.png"),
+  sharp_succulent3: require("./assets/plants/sharp_succulent3.png"),
+  sharp_succulent4: require("./assets/plants/sharp_succulent4.png"),
+
+  scarlet_spiderlily2: require("./assets/plants/scarlet_spiderlily2.png"),
+  scarlet_spiderlily3: require("./assets/plants/scarlet_spiderlily3.png"),
+  scarlet_spiderlily4: require("./assets/plants/scarlet_spiderlily4.png"),
+
+  robin_tulip2: require("./assets/plants/robin_tulip2.png"),
+  robin_tulip3: require("./assets/plants/robin_tulip3.png"),
+  robin_tulip4: require("./assets/plants/robin_tulip4.png"),
+
+  powderball_flower2: require("./assets/plants/powderball_flower2.png"),
+  powderball_flower3: require("./assets/plants/powderball_flower3.png"),
+  powderball_flower4: require("./assets/plants/powderball_flower4.png"),
+
+  monarch_grass2: require("./assets/plants/monarch_grass2.png"),
+  monarch_grass3: require("./assets/plants/monarch_grass3.png"),
+  monarch_grass4: require("./assets/plants/monarch_grass4.png"),
+
+  mario_mushrooms2: require("./assets/plants/mario_mushrooms2.png"),
+  mario_mushrooms3: require("./assets/plants/mario_mushrooms3.png"),
+  mario_mushrooms4: require("./assets/plants/mario_mushrooms4.png"),
+
+  lemon_daisy2: require("./assets/plants/lemon_daisy2.png"),
+  lemon_daisy3: require("./assets/plants/lemon_daisy3.png"),
+  lemon_daisy4: require("./assets/plants/lemon_daisy4.png"),
+
+  "forget-me-not_wildflower2": require("./assets/plants/forget-me-not_wildflower2.png"),
+  "forget-me-not_wildflower3": require("./assets/plants/forget-me-not_wildflower3.png"),
+  "forget-me-not_wildflower4": require("./assets/plants/forget-me-not_wildflower4.png"),
+
+  flowery_bush2: require("./assets/plants/flowery_bush2.png"),
+  flowery_bush3: require("./assets/plants/flowery_bush3.png"),
+  flowery_bush4: require("./assets/plants/flowery_bush4.png"),
+
+  flowering_cactus2: require("./assets/plants/flowering_cactus2.png"),
+  flowering_cactus3: require("./assets/plants/flowering_cactus3.png"),
+  flowering_cactus4: require("./assets/plants/flowering_cactus4.png"),
+
+  flamingo_tulip2: require("./assets/plants/flamingo_tulip2.png"),
+  flamingo_tulip3: require("./assets/plants/flamingo_tulip3.png"),
+  flamingo_tulip4: require("./assets/plants/flamingo_tulip4.png"),
+
+  fishy_seaweed2: require("./assets/plants/fishy_seaweed2.png"),
+  fishy_seaweed3: require("./assets/plants/fishy_seaweed3.png"),
+  fishy_seaweed4: require("./assets/plants/fishy_seaweed4.png"),
+
+  "first-frost_bluebell2": require("./assets/plants/first-frost_bluebell2.png"),
+  "first-frost_bluebell3": require("./assets/plants/first-frost_bluebell3.png"),
+  "first-frost_bluebell4": require("./assets/plants/first-frost_bluebell4.png"),
+
+  ducky_reeds2: require("./assets/plants/ducky_reeds2.png"),
+  ducky_reeds3: require("./assets/plants/ducky_reeds3.png"),
+  ducky_reeds4: require("./assets/plants/ducky_reeds4.png"),
+
+  dotted_cactus2: require("./assets/plants/dotted_cactus2.png"),
+  dotted_cactus3: require("./assets/plants/dotted_cactus3.png"),
+  dotted_cactus4: require("./assets/plants/dotted_cactus4.png"),
+
+  common_carrots2: require("./assets/plants/common_carrots2.png"),
+  common_carrots3: require("./assets/plants/common_carrots3.png"),
+  common_carrots4: require("./assets/plants/common_carrots4.png"),
+
+  cherry_grass2: require("./assets/plants/cherry_grass2.png"),
+  cherry_grass3: require("./assets/plants/cherry_grass3.png"),
+  cherry_grass4: require("./assets/plants/cherry_grass4.png"),
+
+  calla_lily2: require("./assets/plants/calla_lily2.png"),
+  calla_lily3: require("./assets/plants/calla_lily3.png"),
+  calla_lily4: require("./assets/plants/calla_lily4.png"),
+
+  californian_chaparral2: require("./assets/plants/californian_chaparral2.png"),
+  californian_chaparral3: require("./assets/plants/californian_chaparral3.png"),
+  californian_chaparral4: require("./assets/plants/californian_chaparral4.png"),
+
+  butterfly_iris2: require("./assets/plants/butterfly_iris2.png"),
+  butterfly_iris3: require("./assets/plants/butterfly_iris3.png"),
+  butterfly_iris4: require("./assets/plants/butterfly_iris4.png"),
+
+  bushy_butterfly2: require("./assets/plants/bushy_butterfly2.png"),
+  bushy_butterfly3: require("./assets/plants/bushy_butterfly3.png"),
+  bushy_butterfly4: require("./assets/plants/bushy_butterfly4.png"),
+
+  "blue-dotted_bush2": require("./assets/plants/blue-dotted_bush2.png"),
+  "blue-dotted_bush3": require("./assets/plants/blue-dotted_bush3.png"),
+  "blue-dotted_bush4": require("./assets/plants/blue-dotted_bush4.png"),
+
+  blue_cerealcup2: require("./assets/plants/blue_cerealcup2.png"),
+  blue_cerealcup3: require("./assets/plants/blue_cerealcup3.png"),
+  blue_cerealcup4: require("./assets/plants/blue_cerealcup4.png"),
+
+  blue_burst2: require("./assets/plants/blue_burst2.png"),
+  blue_burst3: require("./assets/plants/blue_burst3.png"),
+  blue_burst4: require("./assets/plants/blue_burst4.png"),
+
+  bark_mushroom2: require("./assets/plants/bark_mushroom2.png"),
+  bark_mushroom3: require("./assets/plants/bark_mushroom3.png"),
+  bark_mushroom4: require("./assets/plants/bark_mushroom4.png"),
+
+  apple_lotus2: require("./assets/plants/apple_lotus2.png"),
+  apple_lotus3: require("./assets/plants/apple_lotus3.png"),
+  apple_lotus4: require("./assets/plants/apple_lotus4.png"),
+
+  sunstruck_rose2: require("./assets/plants/sunstruck_rose2.png"),
+  sunstruck_rose3: require("./assets/plants/sunstruck_rose3.png"),
+  sunstruck_rose4: require("./assets/plants/sunstruck_rose4.png"),
+
+  simpson_flower2: require("./assets/plants/simpson_flower2.png"),
+  simpson_flower3: require("./assets/plants/simpson_flower3.png"),
+  simpson_flower4: require("./assets/plants/simpson_flower4.png"),
+
+  purple_cactusflower2: require("./assets/plants/purple_cactusflower2.png"),
+  purple_cactusflower3: require("./assets/plants/purple_cactusflower3.png"),
+  purple_cactusflower4: require("./assets/plants/purple_cactusflower4.png"),
+
+  powder_bloom2: require("./assets/plants/powder_bloom2.png"),
+  powder_bloom3: require("./assets/plants/powder_bloom3.png"),
+  powder_bloom4: require("./assets/plants/powder_bloom4.png"),
+
+  pointy_aloe2: require("./assets/plants/pointy_aloe2.png"),
+  pointy_aloe3: require("./assets/plants/pointy_aloe3.png"),
+  pointy_aloe4: require("./assets/plants/pointy_aloe4.png"),
+
+  pink_lily2: require("./assets/plants/pink_lily2.png"),
+  pink_lily3: require("./assets/plants/pink_lily3.png"),
+  pink_lily4: require("./assets/plants/pink_lily4.png"),
+
+  peachy_tree2: require("./assets/plants/peachy_tree2.png"),
+  peachy_tree3: require("./assets/plants/peachy_tree3.png"),
+  peachy_tree4: require("./assets/plants/peachy_tree4.png"),
+
+  paper_fern2: require("./assets/plants/paper_fern2.png"),
+  paper_fern3: require("./assets/plants/paper_fern3.png"),
+  paper_fern4: require("./assets/plants/paper_fern4.png"),
+
+  miniature_sakura2: require("./assets/plants/miniature_sakura2.png"),
+  miniature_sakura3: require("./assets/plants/miniature_sakura3.png"),
+  miniature_sakura4: require("./assets/plants/miniature_sakura4.png"),
+
+  lantern_mushroom2: require("./assets/plants/lantern_mushroom2.png"),
+  lantern_mushroom3: require("./assets/plants/lantern_mushroom3.png"),
+  lantern_mushroom4: require("./assets/plants/lantern_mushroom4.png"),
+
+  imposter_corn2: require("./assets/plants/imposter_corn2.png"),
+  imposter_corn3: require("./assets/plants/imposter_corn3.png"),
+  imposter_corn4: require("./assets/plants/imposter_corn4.png"),
+
+  icefrost_rose2: require("./assets/plants/icefrost_rose2.png"),
+  icefrost_rose3: require("./assets/plants/icefrost_rose3.png"),
+  icefrost_rose4: require("./assets/plants/icefrost_rose4.png"),
+
+  henny_flower2: require("./assets/plants/henny_flower2.png"),
+  henny_flower3: require("./assets/plants/henny_flower3.png"),
+  henny_flower4: require("./assets/plants/henny_flower4.png"),
+
+  hedgy_lettuce2: require("./assets/plants/hedgy_lettuce2.png"),
+  hedgy_lettuce3: require("./assets/plants/hedgy_lettuce3.png"),
+  hedgy_lettuce4: require("./assets/plants/hedgy_lettuce4.png"),
+
+  frost_bluebell2: require("./assets/plants/frost_bluebell2.png"),
+  frost_bluebell3: require("./assets/plants/frost_bluebell3.png"),
+  frost_bluebell4: require("./assets/plants/frost_bluebell4.png"),
+
+  flame_bud2: require("./assets/plants/flame_bud2.png"),
+  flame_bud3: require("./assets/plants/flame_bud3.png"),
+  flame_bud4: require("./assets/plants/flame_bud4.png"),
+
+  firefly_fern2: require("./assets/plants/firefly_fern2.png"),
+  firefly_fern3: require("./assets/plants/firefly_fern3.png"),
+  firefly_fern4: require("./assets/plants/firefly_fern4.png"),
+
+  "dusk-purple_pendents2": require("./assets/plants/dusk-purple_pendents2.png"),
+  "dusk-purple_pendents3": require("./assets/plants/dusk-purple_pendents3.png"),
+  "dusk-purple_pendents4": require("./assets/plants/dusk-purple_pendents4.png"),
+
+  dawn_hibiscus2: require("./assets/plants/dawn_hibiscus2.png"),
+  dawn_hibiscus3: require("./assets/plants/dawn_hibiscus3.png"),
+  dawn_hibiscus4: require("./assets/plants/dawn_hibiscus4.png"),
+
+  crimson_carnation2: require("./assets/plants/crimson_carnation2.png"),
+  crimson_carnation3: require("./assets/plants/crimson_carnation3.png"),
+  crimson_carnation4: require("./assets/plants/crimson_carnation4.png"),
+
+  "cotton-candy_wildflower2": require("./assets/plants/cotton-candy_wildflower2.png"),
+  "cotton-candy_wildflower3": require("./assets/plants/cotton-candy_wildflower3.png"),
+  "cotton-candy_wildflower4": require("./assets/plants/cotton-candy_wildflower4.png"),
+
+  christmas_tree2: require("./assets/plants/christmas_tree2.png"),
+  christmas_tree3: require("./assets/plants/christmas_tree3.png"),
+  christmas_tree4: require("./assets/plants/christmas_tree4.png"),
+
+  blue_tulip2: require("./assets/plants/blue_tulip2.png"),
+  blue_tulip3: require("./assets/plants/blue_tulip3.png"),
+  blue_tulip4: require("./assets/plants/blue_tulip4.png"),
+
+  blue_pinwheel2: require("./assets/plants/blue_pinwheel2.png"),
+  blue_pinwheel3: require("./assets/plants/blue_pinwheel3.png"),
+  blue_pinwheel4: require("./assets/plants/blue_pinwheel4.png"),
+
+  blood_flower2: require("./assets/plants/blood_flower2.png"),
+  blood_flower3: require("./assets/plants/blood_flower3.png"),
+  blood_flower4: require("./assets/plants/blood_flower4.png"),
+
+  "yellow-spotted_mushrooms2": require("./assets/plants/yellow-spotted_mushrooms2.png"),
+  "yellow-spotted_mushrooms3": require("./assets/plants/yellow-spotted_mushrooms3.png"),
+  "yellow-spotted_mushrooms4": require("./assets/plants/yellow-spotted_mushrooms4.png"),
+
+  viney_flower2: require("./assets/plants/viney_flower2.png"),
+  viney_flower3: require("./assets/plants/viney_flower3.png"),
+  viney_flower4: require("./assets/plants/viney_flower4.png"),
+
+  venus_flytrap2: require("./assets/plants/venus_flytrap2.png"),
+  venus_flytrap3: require("./assets/plants/venus_flytrap3.png"),
+  venus_flytrap4: require("./assets/plants/venus_flytrap4.png"),
+
+  stardust_nightshroom2: require("./assets/plants/stardust_nightshroom2.png"),
+  stardust_nightshroom3: require("./assets/plants/stardust_nightshroom3.png"),
+  stardust_nightshroom4: require("./assets/plants/stardust_nightshroom4.png"),
+
+  snow_violet2: require("./assets/plants/snow_violet2.png"),
+  snow_violet3: require("./assets/plants/snow_violet3.png"),
+  snow_violet4: require("./assets/plants/snow_violet4.png"),
+
+  skydrop_ghostflower2: require("./assets/plants/skydrop_ghostflower2.png"),
+  skydrop_ghostflower3: require("./assets/plants/skydrop_ghostflower3.png"),
+  skydrop_ghostflower4: require("./assets/plants/skydrop_ghostflower4.png"),
+
+  quartz_wildflower2: require("./assets/plants/quartz_wildflower2.png"),
+  quartz_wildflower3: require("./assets/plants/quartz_wildflower3.png"),
+  quartz_wildflower4: require("./assets/plants/quartz_wildflower4.png"),
+
+  frost_indigo2: require("./assets/plants/frost_indigo2.png"),
+  frost_indigo3: require("./assets/plants/frost_indigo3.png"),
+  frost_indigo4: require("./assets/plants/frost_indigo4.png"),
+
+  "double-layered_bloom2": require("./assets/plants/double-layered_bloom2.png"),
+  "double-layered_bloom3": require("./assets/plants/double-layered_bloom3.png"),
+  "double-layered_bloom4": require("./assets/plants/double-layered_bloom4.png"),
+
+  conchy_flower2: require("./assets/plants/conchy_flower2.png"),
+  conchy_flower3: require("./assets/plants/conchy_flower3.png"),
+  conchy_flower4: require("./assets/plants/conchy_flower4.png"),
+
+  "blue_dames-rocket2": require("./assets/plants/blue_dames-rocket2.png"),
+  "blue_dames-rocket3": require("./assets/plants/blue_dames-rocket3.png"),
+  "blue_dames-rocket4": require("./assets/plants/blue_dames-rocket4.png"),
+
+  blue_daisy2: require("./assets/plants/blue_daisy2.png"),
+  blue_daisy3: require("./assets/plants/blue_daisy3.png"),
+  blue_daisy4: require("./assets/plants/blue_daisy4.png"),
+
+  amethyst_spikeplant2: require("./assets/plants/amethyst_spikeplant2.png"),
+  amethyst_spikeplant3: require("./assets/plants/amethyst_spikeplant3.png"),
+  amethyst_spikeplant4: require("./assets/plants/amethyst_spikeplant4.png"),
 };
 
 export default class Garden extends Component {
@@ -142,40 +452,49 @@ export default class Garden extends Component {
 
     await seedUtils2.initializeAllSeeds();
 
-    let hardcoded_plant = {
-      status: 4,
-      position: 1,
-      permanent: {
-        event: "none",
-        rarity: "C",
-        species: "snowcrested fern",
-        date_planted: "",
-        price: "550",
-      },
-      zero: { zero_image: "plantpot" },
-      one: {
-        one_image: "growing",
-        grow_start: "",
-        grow_offset: 0,
-        grow_streak_length: 2,
-      },
-      two: {
-        two_image: "ferns",
-        current_waters: 8,
-        water_start: "",
-        water_end: "2020-09-03T17:52:25.437-07:00",
-      },
-      three: {
-        three_image: "ferns",
-        wilt_start: "",
-        wilt_end: "2020-09-03T17:52:25.437-07:00",
-      },
-      four: { four_image: "ferns" },
-    };
+    // let hardcoded_plant = {
+    //   status: 4,
+    //   position: 1,
+    //   permanent: {
+    //     event: "none",
+    //     rarity: "C",
+    //     species: "snowcrested fern",
+    //     date_planted: "",
+    //     price: "550",
+    //   },
+    //   zero: { zero_image: "plantpot" },
+    //   one: {
+    //     one_image: "growing",
+    //     grow_start: "",
+    //     grow_offset: 0,
+    //     grow_streak_length: 2,
+    //   },
+    //   two: {
+    //     two_image: "ferns",
+    //     current_waters: 8,
+    //     water_start: "",
+    //     water_end: "2020-09-03T17:52:25.437-07:00",
+    //   },
+    //   three: {
+    //     three_image: "ferns",
+    //     wilt_start: "",
+    //     wilt_end: "2020-09-03T17:52:25.437-07:00",
+    //   },
+    //   four: { four_image: "ferns" },
+    // };
 
-    let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
-    await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
-    await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
+    let seeds2 = {
+      none: { C: 8, U: 50, R: 50 },
+      christmas: { C: 0, U: 0, R: 0 },
+      valentines: { C: 0, U: 0, R: 0 },
+    };
+    let seedsString2 = JSON.stringify(seeds2);
+
+    await SecureStore.setItemAsync("inventory_seeds", seedsString2);
+
+    // let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
+    // await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    // await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
 
     console.log("done initializing garden");
   };
