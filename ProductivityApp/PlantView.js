@@ -1211,7 +1211,7 @@ export default class GardenTesting extends Component {
 
           <View style={{ flex: 0.1 }}></View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            onPress={this.sellThisPlant}
             activeOpacity={0.5}
             // inventory item: sell
           >
@@ -1962,6 +1962,27 @@ export default class GardenTesting extends Component {
     }
   };
 
+  sellThisPlant = async () => {
+    await su.sellPlant(this.state.plant);
+
+    Alert.alert(
+      "SUCCESS",
+      "Plant sold!",
+      [
+        {
+          text: "OK",
+        },
+      ],
+      { cancelable: false }
+    );
+
+    this.setState({
+      countdownSet: false,
+      countdownFullySet: false,
+      inventory_set: false,
+    });
+  };
+
   getCountdownLength = async () => {
     // console.log("getCountdownLength called");
 
@@ -2137,7 +2158,7 @@ export default class GardenTesting extends Component {
       >
         <View
           style={{
-            backgroundColor: "#34eb4f",
+            backgroundColor: "#34eb44",
             flexDirection: "row",
             alignItems: "center",
           }}

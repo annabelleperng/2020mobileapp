@@ -101,6 +101,21 @@ export default class SeedUtils extends Component {
     super(props);
   }
 
+  useSeedFromInventory = async (event, rarity) => {
+    let seedsString = await SecureStore.getItemAsync("inventory_seeds");
+    let seeds = JSON.parse(seedsString);
+    if (seeds[event][rarity] <= 0) {
+      return -1;
+    }
+
+    seeds[event][rarity] -= 1;
+    console.log(seeds);
+
+    seedsString = JSON.stringify(seeds);
+    await SecureStore.getItemAsync("inventory_seeds", seedsString);
+    return 1;
+  };
+
   /*
    * Plants a rarity, event seed.
    * plant is parsed JSON object from SecureStore which contains
@@ -112,6 +127,11 @@ export default class SeedUtils extends Component {
   plantSeed = async (position, event, rarity) => {
     // console.log("plantSeed called");
 
+    // let res = await this.useSeedFromInventory(event, rarity);
+    // if (res == -1) {
+    //   return -1;
+    // }
+
     let newPlant = {
       status: 1,
       position: position,
@@ -120,6 +140,7 @@ export default class SeedUtils extends Component {
         rarity: rarity,
         species: "",
         date_planted: "",
+        price: "200",
       },
       zero: { zero_image: "plantpot" },
       one: {
@@ -151,8 +172,10 @@ export default class SeedUtils extends Component {
     let image1 = "growing_c";
     if (rarity == "R") {
       image1 = "growing_r";
+      newPlant["permanent"]["price"] = "500";
     } else if (rarity == "U") {
       image1 = "growing_u";
+      newPlant["permanent"]["price"] = "300";
     }
 
     const image2 = species + "2";
