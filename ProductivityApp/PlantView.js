@@ -408,7 +408,7 @@ export default class GardenTesting extends Component {
     // console.log(this.props);
   }
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     this.setState({
       plant_position: this.props.route.params.position,
 
@@ -962,6 +962,7 @@ export default class GardenTesting extends Component {
     //
     else if (plant["status"] == 1) {
       let key = this.state.plant_position + "_plant";
+      console.log("kEYYYYYYYYYYYYYYYYY = " + key);
       let growthStreak = plant["one"]["grow_streak_length"];
       this.setState({ growth_streak_length: growthStreak });
       if (growthStreak == 0) {
@@ -1075,6 +1076,8 @@ export default class GardenTesting extends Component {
       if (res == 3) {
         alert("Your plant wilted! Use elixir to revive it.");
         this.setState({
+          countdownSet: false,
+          countdownFullySet: false,
           inventory_set: false,
         });
       } else if (res == 4) {
@@ -2457,9 +2460,9 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: screen.width / 1.5, //1.6
     height: screen.width / 2.4, //2.4
-    borderColor: "#472b25",
+    borderColor: "#57423e",
     borderRadius: screen.width / 15,
-    backgroundColor: "#472b25",
+    backgroundColor: "#57423e", // 472b25
     alignItems: "center",
     justifyContent: "flex-end",
   },

@@ -398,16 +398,37 @@ export default class SeedUtils extends Component {
     }
   };
 
-  updateWilting = async (plant) => {
-    if (plant["status"] != 2) {
-      console.log("error: only grown plants can wilt");
-      console.log("the status is " + plant["status"]);
-      console.log(" the plant is " + JSON.stringify(plant));
+  updateDying = async (plant) => {
+    if (plant["status"] != 3) {
       return -1;
     }
 
     const currDate = DateTime.local();
     const periodEnd = DateTime.fromISO(plant["three"]["wilt_end"]);
+
+    if (currDate >= periodEnd) {
+      plant["status"] = 4;
+      const key = plant["position"].toString() + "_plant";
+      let plantStr = JSON.stringify(plant);
+      await SecureStore.setItemAsync(key, plantStr);
+      return 4;
+    }
+
+    return 3;
+  };
+
+  updateWilting = async (plant) => {
+    if (plant["status"] != 2) {
+      //   console.log("error: only grown plants can wilt");
+      //   console.log("the status is " + plant["status"]);
+      //   console.log(" the plant is " + JSON.stringify(plant));
+      await this.updateDying(plant);
+      return -1;
+    }
+
+    const currDate = DateTime.local();
+    // const periodEnd = DateTime.fromISO(plant["three"]["wilt_end"]);
+    const periodEnd = DateTime.fromISO(plant["two"]["water_end"]);
 
     const waters = Number.parseInt(plant["two"]["current_waters"]);
 
@@ -425,6 +446,7 @@ export default class SeedUtils extends Component {
         plant["two"]["water_end"] = newEnd.toISO();
         plant["two"]["current_waters"] = "0";
       }
+      return 2;
     }
 
     // if current period hasn't ended, do nothing
@@ -442,6 +464,10 @@ export default class SeedUtils extends Component {
     if (diff < 73) {
       //   await this.wiltPlant(plant);
       plant["status"] = 3;
+      plant["three"]["wilt_start"] = periodEnd.toISO();
+      const wiltEnd = periodEnd.plus({ day: 3 });
+      plant["three"]["wilt_end"] = wiltEnd.toISO();
+
       let plantStr = JSON.stringify(plant);
       await SecureStore.setItemAsync(key, plantStr);
       return 3;
