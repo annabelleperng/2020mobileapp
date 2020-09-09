@@ -514,9 +514,17 @@ export default class SeedUtils extends Component {
   /* Takes in 2 plants to be breeded
    * that have been parsed using JSON.parse from SecureStore.
    * Takes in seeds, also parsed using JSON.parse from SecureStore,
-   * and adds a new seed to seeds.
+   * and adds a new seed to seeds. EDIT: It no longer takes in seeds.
    */
-  breedPlants = async (plantA, plantB, seeds) => {
+  breedPlants = async (plantAPos, plantBPos) => {
+    let plantA = JSON.parse(
+      await SecureStore.getItemAsync(plantAPos.toString() + "_plant")
+    );
+    let plantB = JSON.parse(
+      await SecureStore.getItemAsync(plantBPos.toString() + "_plant")
+    );
+
+    let seeds = JSON.parse(await SecureStore.getItemAsync("inventory_seeds"));
     if (plantA["status"] != 2) {
       console.log("error: plant A isn't grown and can't breed");
       return -1;
@@ -597,11 +605,13 @@ export default class SeedUtils extends Component {
       event = "none";
     }
 
-    console.log(rarity + event + "                    ");
+    console.log(rarity + "         " + event + "                    ");
 
     console.log("seeds before breeding: \n", seeds);
-    seeds["event"]["rarity"] += 1;
+    seeds[event][rarity] += 1;
     console.log("seeds after breeding: \n", seeds);
+
+    return rarity + event;
   };
 
   initializeAllSeeds = async () => {

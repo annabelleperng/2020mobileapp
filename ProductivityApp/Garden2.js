@@ -545,7 +545,7 @@ export default class Garden extends Component {
   };
 
   breedTwo = async () => {
-    const res = await seedUtils.breedPlants(
+    const res = await seedUtils2.breedPlants(
       this.state.firstParent,
       this.state.secondParent
     );
@@ -683,9 +683,9 @@ export default class Garden extends Component {
   };
 
   syncInventory = async () => {
-    console.log(
-      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    );
+    // console.log(
+    //   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    // );
     if (this.state.inventorySynced == false) {
       var bees = Number.parseInt(
         await SecureStore.getItemAsync("inventory_bees")
@@ -783,7 +783,7 @@ export default class Garden extends Component {
   };
 
   showNotifs = () => {
-    console.log(this.state);
+    // console.log(this.state);
     if (
       (this.state.plant1["status"] == 2 || this.state.plant1["status"] == 3) &&
       this.state.plant1["two"]["current_waters"] < 15
@@ -873,7 +873,7 @@ export default class Garden extends Component {
   }
 
   render() {
-    console.log("rendering!!");
+    // console.log("rendering!!");
     this.assureRefresh();
     this.syncInventory();
     if (this.state.plantSynced == false) this.initializePlants();
