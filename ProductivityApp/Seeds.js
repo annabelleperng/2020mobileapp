@@ -46,7 +46,7 @@ export default class Shop extends Component {
       eventName: "",
       eventCountdown: -1,
 
-      itemPrices: ["3", "0", "10", "1", "4", "2", "30", "0", "7", "127"],
+      itemPrices: ["3", "5", "10", "1", "4", "2", "30", 5, "7", "127"],
       price8: "???",
       price9: "???",
       price10: "???",

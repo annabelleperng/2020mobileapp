@@ -4,16 +4,94 @@ import DateTime from "luxon/src/datetime.js";
 import Interval from "luxon/src/interval.js";
 import * as SecureStore from "expo-secure-store";
 
-let none = [
+let none_old = [
   ["daisy", "aster", "sunflower", "tulip", "lily", "marigold"],
   ["dahlia", "lilac", "daffodil", "amaryllis", "orchid", "snapdragon"],
   ["chrysanthemum", "morning glory", "hibiscus", "hydrangea", "hyacinth"],
 ];
 
-let fernsTulips = [
-  ["tulips", "tulips", "tulips"],
-  ["tulips"],
-  ["tulips", "ferns"],
+let none = [
+  [
+    "yellow_pinwheel",
+    "wild_redquill",
+    "white_frostflower",
+    "white_cupcake",
+    "undersea_pineapple",
+    "titled_rose",
+    "sunset_shrooms",
+    "summer_cactus",
+    "stocky_corn",
+    "startrail_dandelion",
+    "snowcrested_fern",
+    "sharp_succulent",
+    "scarlet_spiderlily",
+    "robin_tulip",
+    "powderball_flower",
+    "monarch_grass",
+    "mario_mushrooms",
+    "lemon_daisy",
+    "forget-me-not_wildflower",
+    "flowery_bush",
+    "flowering_cactus",
+    "flamingo_tulip",
+    "fishy_seaweed",
+    "first-frost_bluebell",
+    "ducky_reeds",
+    "dotted_cactus",
+    "common_carrots",
+    "cherry_grass",
+    "calla_lily",
+    "californian_chaparral",
+    "butterfly_iris",
+    "bushy_butterfly",
+    "blue-dotted_bush",
+    "blue_cerealcup",
+    "blue_burst",
+    "bark_mushroom",
+    "apple_lotus",
+  ],
+  [
+    "sunstruck_rose",
+    "simpson_flower",
+    "purple_cactusflower",
+    "powder_bloom",
+    "pointy_aloe",
+    "pink_lily",
+    "peachy_tree",
+    "paper_fern",
+    "miniature_sakura",
+    "lantern_mushroom",
+    "imposter_corn",
+    "icefrost_rose",
+    "henny_flower",
+    "hedgy_lettuce",
+    "frost_bluebell",
+    "flame_bud",
+    "firefly_fern",
+    "dusk-purple_pendents",
+    "dawn_hibiscus",
+    "crimson_carnation",
+    "cotton-candy_wildflower",
+    "christmas_tree",
+    "blue_tulip",
+    "blue_pinwheel",
+    "blood_flower",
+  ],
+  [
+    "yellow-spotted_mushrooms",
+    "viney_flower",
+    "venus_flytrap",
+    "stardust_nightshroom",
+    "snow_violet",
+    "skydrop_ghostflower",
+    "quartz_wildflower",
+    "frost_indigo",
+    "double-layered_bloom",
+    "conchy_flower",
+    "blue_dames-rocket",
+    "blue_daisy",
+    "amethyst_spikeplant",
+  ],
 ];
 
 let noneLength = 17;
@@ -23,6 +101,21 @@ export default class SeedUtils extends Component {
     super(props);
   }
 
+  useSeedFromInventory = async (event, rarity) => {
+    let seedsString = await SecureStore.getItemAsync("inventory_seeds");
+    let seeds = JSON.parse(seedsString);
+    if (seeds[event][rarity] <= 0) {
+      return -1;
+    }
+
+    seeds[event][rarity] -= 1;
+    console.log(seeds);
+
+    seedsString = JSON.stringify(seeds);
+    await SecureStore.getItemAsync("inventory_seeds", seedsString);
+    return 1;
+  };
+
   /*
    * Plants a rarity, event seed.
    * plant is parsed JSON object from SecureStore which contains
@@ -31,8 +124,13 @@ export default class SeedUtils extends Component {
    *   ex. rarity: "C"
    *   ex. event: "none"
    */
-  plantSeed = async (position, rarity, event) => {
+  plantSeed = async (position, event, rarity) => {
     // console.log("plantSeed called");
+
+    // let res = await this.useSeedFromInventory(event, rarity);
+    // if (res == -1) {
+    //   return -1;
+    // }
 
     let newPlant = {
       status: 1,
@@ -42,6 +140,7 @@ export default class SeedUtils extends Component {
         rarity: rarity,
         species: "",
         date_planted: "",
+        price: "200",
       },
       zero: { zero_image: "plantpot" },
       one: {
@@ -67,14 +166,40 @@ export default class SeedUtils extends Component {
       "streak_length"
     );
 
+    // setting respective images
+
+    // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + rarity);
+    let image1 = "growing_c";
+    if (rarity == "R") {
+      image1 = "growing_r";
+      newPlant["permanent"]["price"] = "500";
+    } else if (rarity == "U") {
+      image1 = "growing_u";
+      newPlant["permanent"]["price"] = "300";
+    }
+
+    const image2 = species + "2";
+    const image3 = species + "3";
+    const image4 = species + "4";
+
+    newPlant["one"]["one_image"] = image1;
+    newPlant["two"]["two_image"] = image2;
+    newPlant["three"]["three_image"] = image3;
+    newPlant["four"]["four_image"] = image4;
+
+    // saving to SecureStore
+
     await SecureStore.setItemAsync(
       position + "_plant",
       JSON.stringify(newPlant)
     );
+
+    // test printing:
     // console.log(position + "_plant");
-    var testtest = JSON.parse(
-      await SecureStore.getItemAsync(position + "_plant")
-    );
+    // console.log(JSON.stringify(newPlant));
+    // var testtest = JSON.parse(
+    //   await SecureStore.getItemAsync(position + "_plant")
+    // );
     // console.log(testtest.toString());
 
     // console.log("plantSeed finished\n\n\n");
@@ -100,11 +225,11 @@ export default class SeedUtils extends Component {
   };
 
   determineSpecies_none = (rarity) => {
-    if (rarity == "1") {
-      const rand = Math.floor(Math.random() * fernsTulips[0].length);
-      return fernsTulips[0][rand];
+    if (rarity == "C") {
+      const rand = Math.floor(Math.random() * none[0].length);
+      return none[0][rand];
     }
-    if (rarity == "2") {
+    if (rarity == "U") {
       const rand = Math.floor(Math.random() * none[1].length);
       return none[1][rand];
     }
@@ -118,7 +243,8 @@ export default class SeedUtils extends Component {
   };
 
   determineSpecies_valentines = (rarity) => {
-    return "rose"; //placeholder
+    return "ferns";
+    // return "rose"; //placeholder
   };
 
   /* Sells a plant according to the price specified in its JSON
@@ -272,16 +398,37 @@ export default class SeedUtils extends Component {
     }
   };
 
-  updateWilting = async (plant) => {
-    if (plant["status"] != 2) {
-      console.log("error: only grown plants can wilt");
-      console.log("the status is " + plant["status"]);
-      console.log(" the plant is " + JSON.stringify(plant));
+  updateDying = async (plant) => {
+    if (plant["status"] != 3) {
       return -1;
     }
 
     const currDate = DateTime.local();
     const periodEnd = DateTime.fromISO(plant["three"]["wilt_end"]);
+
+    if (currDate >= periodEnd) {
+      plant["status"] = 4;
+      const key = plant["position"].toString() + "_plant";
+      let plantStr = JSON.stringify(plant);
+      await SecureStore.setItemAsync(key, plantStr);
+      return 4;
+    }
+
+    return 3;
+  };
+
+  updateWilting = async (plant) => {
+    if (plant["status"] != 2) {
+      //   console.log("error: only grown plants can wilt");
+      //   console.log("the status is " + plant["status"]);
+      //   console.log(" the plant is " + JSON.stringify(plant));
+      await this.updateDying(plant);
+      return -1;
+    }
+
+    const currDate = DateTime.local();
+    // const periodEnd = DateTime.fromISO(plant["three"]["wilt_end"]);
+    const periodEnd = DateTime.fromISO(plant["two"]["water_end"]);
 
     const waters = Number.parseInt(plant["two"]["current_waters"]);
 
@@ -299,6 +446,7 @@ export default class SeedUtils extends Component {
         plant["two"]["water_end"] = newEnd.toISO();
         plant["two"]["current_waters"] = "0";
       }
+      return 2;
     }
 
     // if current period hasn't ended, do nothing
@@ -316,6 +464,10 @@ export default class SeedUtils extends Component {
     if (diff < 73) {
       //   await this.wiltPlant(plant);
       plant["status"] = 3;
+      plant["three"]["wilt_start"] = periodEnd.toISO();
+      const wiltEnd = periodEnd.plus({ day: 3 });
+      plant["three"]["wilt_end"] = wiltEnd.toISO();
+
       let plantStr = JSON.stringify(plant);
       await SecureStore.setItemAsync(key, plantStr);
       return 3;
@@ -362,9 +514,17 @@ export default class SeedUtils extends Component {
   /* Takes in 2 plants to be breeded
    * that have been parsed using JSON.parse from SecureStore.
    * Takes in seeds, also parsed using JSON.parse from SecureStore,
-   * and adds a new seed to seeds.
+   * and adds a new seed to seeds. EDIT: It no longer takes in seeds.
    */
-  breedPlants = async (plantA, plantB, seeds) => {
+  breedPlants = async (plantAPos, plantBPos) => {
+    let plantA = JSON.parse(
+      await SecureStore.getItemAsync(plantAPos.toString() + "_plant")
+    );
+    let plantB = JSON.parse(
+      await SecureStore.getItemAsync(plantBPos.toString() + "_plant")
+    );
+
+    let seeds = JSON.parse(await SecureStore.getItemAsync("inventory_seeds"));
     if (plantA["status"] != 2) {
       console.log("error: plant A isn't grown and can't breed");
       return -1;
@@ -445,11 +605,13 @@ export default class SeedUtils extends Component {
       event = "none";
     }
 
-    console.log(rarity + event + "                    ");
+    console.log(rarity + "         " + event + "                    ");
 
     console.log("seeds before breeding: \n", seeds);
-    seeds["event"]["rarity"] += 1;
+    seeds[event][rarity] += 1;
     console.log("seeds after breeding: \n", seeds);
+
+    return rarity + event;
   };
 
   initializeAllSeeds = async () => {

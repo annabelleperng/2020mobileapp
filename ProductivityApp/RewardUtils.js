@@ -148,6 +148,24 @@ export default class App extends React.Component {
     return added;
   };
 
+  getGem = async () => {
+    const count = Number.parseInt(
+      await SecureStore.getItemAsync("inventory_gems")
+    );
+    return count;
+  };
+
+  useGold = async (count) => {
+    const prevCount = await SecureStore.getItemAsync("inventory_gems");
+    if (count > Number.parseInt(prevCount)) {
+      console.log("error: not enough gold");
+      return -1;
+    }
+    const newCount = Number.parseInt(prevCount) - count;
+    await SecureStore.setItemAsync("inventory_gems", "" + newCount);
+    return newCount;
+  };
+
   obtainFertilizer = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_fertilizer");
     const newCount = Number.parseInt(prevCount) + count;
