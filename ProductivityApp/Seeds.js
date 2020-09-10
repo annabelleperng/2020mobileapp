@@ -88,29 +88,46 @@ export default class Shop extends Component {
     }
   };
 
-  garden = (e, r) => {
-    // this.props.navigation.navigate("Seeds", { event: e, rarity: r });
+  decrement = async (e, r) => {
+    console.log(
+      "CANT TAKE BIG DICK BUT I SUCK ON IT I AINT FUCKIN WITH A PUSSY GOT A HUMP ON IT BAD BITCH PUT THE PUSSY ON ME!!!"
+    );
+    console.log(this.state.seeds);
+
+    let seedStorage = await seedUtils.decreaseBy(this.state.seeds, e, r, 1);
+    let seedString = JSON.stringify(seedStorage);
+    await SecureStore.setItemAsync("inventory_seeds", seedString);
+    this.setState({ seeds: seedStorage });
+    console.log(this.state.seeds);
+
+    this.props.navigation.navigate("PlantView", {
+      position: this.state.plant_position,
+      event: e,
+      rarity: r
+    });
   };
 
-  selectSeed = (e, r) => {
+  selectSeed = async (e, r) => {
     Alert.alert(
       "Selected seed",
       "Are you sure you wish to select this seed?",
       [
         {
           text: "yes",
-          onPress: () =>
-            this.props.navigation.navigate("PlantView", {
-              position: this.state.plant_position,
-              event: e,
-              rarity: r
-            })
+          onPress:
+            // this.props.navigation.navigate("PlantView", {
+            //   position: this.state.plant_position,
+            //   event: e,
+            //   rarity: r
+            // })
+            this.decrement(e, r)
         },
         { text: "cancel" }
       ],
       { cancelable: false }
     );
-    this.state.seeds[e][r] = this.state.seeds[e][r] - 1;
+
+    // this.state.seeds[e][r] = this.state.seeds[e][r] - 1;
   };
 
   render() {
