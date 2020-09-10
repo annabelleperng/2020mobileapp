@@ -114,7 +114,7 @@ export default class Shop extends Component {
       [
         {
           text: "yes",
-          onPress:
+          onPress: () =>
             // this.props.navigation.navigate("PlantView", {
             //   position: this.state.plant_position,
             //   event: e,
