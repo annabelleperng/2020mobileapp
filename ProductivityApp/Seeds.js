@@ -59,8 +59,9 @@ export default class Shop extends Component {
 
       seeds: {
         none: { C: 0, U: 0, R: 0 },
-        christmas: { C: 0, U: 0, R: 0 },
-        valentines: { C: 0, U: 0, R: 0 }
+        welcome: { C: 0, U: 0, R: 0 }
+        // christmas: { C: 0, U: 0, R: 0 },
+        // valentines: { C: 0, U: 0, R: 0 }
       }
     };
   }
@@ -343,7 +344,7 @@ export default class Shop extends Component {
                       backgroundColor: "#000000"
                     }}
                   >
-                    <Text style={styles.itemName1}>Christmas</Text>
+                    <Text style={styles.itemName1}>Welcome</Text>
                     <Text style={styles.itemName2}>Seeds</Text>
                   </View>
                 </View>
@@ -357,14 +358,14 @@ export default class Shop extends Component {
                 >
                   <View style={{ flex: 0.2 }}></View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.seeds.christmas["C"] == 0 ? (
+                    {this.state.seeds.welcome["C"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() => this.selectSeed("christmas", "C")}
+                        onPress={() => this.selectSeed("welcome", "C")}
                       >
                         <Image
                           style={styles.items}
@@ -374,14 +375,14 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.seeds.christmas["U"] == 0 ? (
+                    {this.state.seeds.welcome["U"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() => this.selectSeed("christmas", "U")}
+                        onPress={() => this.selectSeed("welcome", "U")}
                       >
                         <Image
                           style={styles.items}
@@ -391,14 +392,14 @@ export default class Shop extends Component {
                     )}
                   </View>
                   <View style={{ flex: 1, alignItems: "center" }}>
-                    {this.state.seeds.christmas["R"] == 0 ? (
+                    {this.state.seeds.welcome["R"] == 0 ? (
                       <Image
                         style={styles.items}
                         source={require("./assets/uncommon_seed_bought.png")}
                       />
                     ) : (
                       <TouchableOpacity
-                        onPress={() => this.selectSeed("christmas", "R")}
+                        onPress={() => this.selectSeed("welcome", "R")}
                       >
                         <Image
                           style={styles.items}
@@ -425,13 +426,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {this.state.seeds.christmas["C"] == 0 ? (
+                      {this.state.seeds.welcome["C"] == 0 ? (
                         <Text style={styles.none}>
-                          {this.state.seeds.christmas["C"]}
+                          {this.state.seeds.welcome["C"]}
                         </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {this.state.seeds.christmas["C"]}
+                          {this.state.seeds.welcome["C"]}
                         </Text>
                       )}
                     </View>
@@ -440,13 +441,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {this.state.seeds.christmas["U"] == 0 ? (
+                      {this.state.seeds.welcome["U"] == 0 ? (
                         <Text style={styles.none}>
-                          {this.state.seeds.christmas["U"]}
+                          {this.state.seeds.welcome["U"]}
                         </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {this.state.seeds.christmas["U"]}
+                          {this.state.seeds.welcome["U"]}
                         </Text>
                       )}
                     </View>
@@ -455,13 +456,13 @@ export default class Shop extends Component {
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View>
-                      {this.state.seeds.christmas["R"] == 0 ? (
+                      {this.state.seeds.welcome["R"] == 0 ? (
                         <Text style={styles.none}>
-                          {this.state.seeds.christmas["R"]}
+                          {this.state.seeds.welcome["R"]}
                         </Text>
                       ) : (
                         <Text style={styles.bought}>
-                          {this.state.seeds.christmas["R"]}
+                          {this.state.seeds.welcome["R"]}
                         </Text>
                       )}
                     </View>
@@ -471,7 +472,7 @@ export default class Shop extends Component {
                 <View style={{ flex: 0.2 }}></View>
               </View>
 
-              <View
+              {/* <View
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
@@ -496,9 +497,9 @@ export default class Shop extends Component {
                     <Text style={styles.itemName1}>Valentine's</Text>
                     <Text style={styles.itemName2}>Seed</Text>
                   </View>
-                </View>
+                </View> */}
 
-                <View
+              {/* <View
                   style={{
                     flexDirection: "row",
                     marginTop: 0
@@ -556,9 +557,9 @@ export default class Shop extends Component {
                         />
                       </TouchableOpacity>
                     )}
-                  </View>
+                  </View> */}
 
-                  <View style={{ flex: 0.2 }}></View>
+              {/* <View style={{ flex: 0.2 }}></View>
                 </View>
               </View>
               <View
@@ -583,9 +584,9 @@ export default class Shop extends Component {
                           {this.state.seeds.valentines["C"]}
                         </Text>
                       )}
-                    </View>
+                    </View> */}
 
-                    {/* {gold < Number.parseInt(this.state.itemPrices[0]) ? (
+              {/* {gold < Number.parseInt(this.state.itemPrices[0]) ? (
                 <View>
                   <Text style={styles.poor}>{this.state.itemPrices[0]}</Text>
                 </View>
@@ -594,7 +595,7 @@ export default class Shop extends Component {
                   <Text style={styles.prices}>{this.state.itemPrices[0]}</Text>
                 </View>
               )} */}
-                  </View>
+              {/* </View>
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -628,7 +629,7 @@ export default class Shop extends Component {
                 </View>
 
                 <View style={{ flex: 0.2 }}></View>
-              </View>
+              </View> */}
 
               <View
                 style={{
