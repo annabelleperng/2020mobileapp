@@ -26,9 +26,9 @@ const screen = Dimensions.get("window");
 //   { action: "Break time", time: 20, fill: "red" },
 // ];
 
-const endTime = new Date();
-const endHours = endTime.getHours();
-const endMins = endTime.getMinutes();
+let endTime = new Date();
+let endHours = endTime.getHours();
+let endMins = endTime.getMinutes();
 
 export default class App extends React.Component {
   constructor(props) {

@@ -515,6 +515,15 @@ export default class Garden extends Component {
     const gardenLastUpdated = DateTime.fromISO(
       await SecureStore.getItemAsync("garden_last_updated")
     );
+    const gardenMidnight = DateTime.fromObject({
+      year: gardenLastUpdated.year,
+      month: gardenLastUpdated.month,
+      day: gardenLastUpdated.day,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      // zone: localZone,
+    });
     // console.log("garden last updated: " + gardenLastUpdated);
 
     // let start;
@@ -528,7 +537,7 @@ export default class Garden extends Component {
 
     // console.log("localTime is " + localTime.toISO());
     // console.log("periodStart is " + periodStart.toISO());
-    const diff = localTime.diff(gardenLastUpdated);
+    const diff = localTime.diff(gardenMidnight);
     // console.log("difference is" + diff);
     if (diff.hours() >= 24) {
       rewardUtils.updateStreak();

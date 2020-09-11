@@ -30,35 +30,44 @@ export default class App extends React.Component {
     //TESTING
     const prevDay = Interval.fromDateTimes(localPrevMidnight, localMidnight);
 
-    const latestSprintDay = DateTime.fromISO(
-      await SecureStore.getItemAsync("latest_sprint")
-    );
-    console.log("latestSprintDay: " + latestSprintDay.toISO());
-    let streakLength = Number.parseInt(
-      await SecureStore.getItemAsync("streak_length")
-    );
-    if (prevDay.contains(latestSprintDay)) {
-      console.log("STREAK BOOSTED");
-      streakLength += 1;
-    } else if (prevDay.isAfter(latestSprintDay)) {
-      console.log("STREAK RESET");
-      streakLength = 0;
-    }
-    await SecureStore.setItemAsync("streak_length", "" + streakLength);
-    console.log("\n\n\n\n\nUpdated streak to " + streakLength);
-    let longestStreak = Number.parseInt(
-      await SecureStore.getItemAsync("longest_streak")
-    );
-    if (longestStreak !== longestStreak || longestStreak < streakLength) {
-      longestStreak = streakLength;
-    }
-    await SecureStore.setItemAsync("longest_streak", "" + longestStreak);
-    var i;
-    for (i = 1; i <= 9; i++) {
-      utils.updateGrowthStreak(i);
+    let latestSprintDay = await SecureStore.getItemAsync("latest_sprint");
+    if (latestSprintDay == null || latestSprintDay == "") {
+      await SecureStore.setItemAsync("latest_sprint", localTime.toISO());
+      await SecureStore.setItemAsync("temp_sprint", localTime.toISO());
+      await SecureStore.setItemAsync("streak_length", "1");
+      await SecureStore.setItemAsync("longest_streak", "1");
+    } else {
+      latestSprintDay = DateTime.fromISO(
+        await SecureStore.getItemAsync("latest_sprint")
+      );
+
+      console.log("latestSprintDay: " + latestSprintDay.toISO());
+      let streakLength = Number.parseInt(
+        await SecureStore.getItemAsync("streak_length")
+      );
+      if (prevDay.contains(latestSprintDay)) {
+        console.log("STREAK BOOSTED");
+        streakLength += 1;
+      } else if (prevDay.isAfter(latestSprintDay)) {
+        console.log("STREAK RESET");
+        streakLength = 0;
+      }
+      await SecureStore.setItemAsync("streak_length", "" + streakLength);
+      console.log("\n\n\n\n\nUpdated streak to " + streakLength);
+      let longestStreak = Number.parseInt(
+        await SecureStore.getItemAsync("longest_streak")
+      );
+      if (longestStreak !== longestStreak || longestStreak < streakLength) {
+        longestStreak = streakLength;
+      }
+      await SecureStore.setItemAsync("longest_streak", "" + longestStreak);
+      var i;
+      for (i = 1; i <= 9; i++) {
+        utils.updateGrowthStreak(i);
+      }
     }
 
-    await SecureStore.setItemAsync("last_updated", localMidnight.toISO());
+    // await SecureStore.setItemAsync("last_updated", localMidnight.toISO());
   };
 
   getWater = async () => {
