@@ -364,7 +364,7 @@ let images = {
 export default class Garden extends Component {
   constructor(props) {
     super(props);
-    this.initializeGarden();
+    // this.initializeGarden();
     this.assureRefresh();
     this.state = {
       showCancel: false,

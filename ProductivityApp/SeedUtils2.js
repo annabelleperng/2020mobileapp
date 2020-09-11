@@ -616,10 +616,15 @@ export default class SeedUtils extends Component {
 
   initializeAllSeeds = async () => {
     let seeds = {
-      none: { C: 2, U: 0, R: 0 },
-      christmas: { C: 0, U: 127, R: 0 },
-      valentines: { C: 0, U: 0, R: 7 },
+      none: { C: 1, U: 1, R: 1 },
+      welcome: { C: 0, U: 0, R: 0 },
     };
+
+    // let seeds = {
+    //     none: { C: 1, U: 1, R: 1 },
+    //     christmas: { C: 0, U: 0, R: 0 },
+    //     valentines: { C: 0, U: 0, R: 0 },
+    //   };
 
     // console.log(seeds);
 
@@ -670,11 +675,11 @@ export default class SeedUtils extends Component {
         rarity: "",
         species: "",
         date_planted: "",
-        price: "550",
+        price: "200",
       },
       zero: { zero_image: "plantpot" },
       one: {
-        one_image: "growing",
+        one_image: "growing_c",
         grow_start: "",
         grow_offset: 0,
         grow_streak_length: 0,

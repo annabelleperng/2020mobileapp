@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import {
   FormLabel,
   FormInput,
-  FormValidationMessage
+  FormValidationMessage,
 } from "react-native-elements";
+
 import {
   StyleSheet,
   Text,
@@ -16,10 +17,14 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from "react-native";
 
+import DateTime from "luxon/src/datetime.js";
+import SeedUtils2 from "./SeedUtils2";
+
 import * as SecureStore from "expo-secure-store";
+
 import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 //import CombinedButton from "react-native-combined-button";
@@ -28,15 +33,18 @@ import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 const screen = Dimensions.get("window");
 
+const seedUtils2 = new SeedUtils2();
+
 export default class Details extends Component {
   constructor(props) {
     super(props);
+    this.setFirstTimeValues();
     this.state = {
       minutes: 10,
       ltStats: false,
       totalTime: 0,
       unpausedRatio: 0,
-      pausedRatio: 0
+      pausedRatio: 0,
     };
   }
 
@@ -62,6 +70,127 @@ export default class Details extends Component {
   //     { cancelable: false }
   //   );
   // };
+
+  setFirstTimeValues = async () => {
+    // boolean to see if it's the first time the user
+    // is opening the app
+
+    let valuesSet = await SecureStore.getItemAsync("first_time_set");
+    if (valuesSet == "true") {
+      return;
+    }
+    await SecureStore.setItemAsync("first_time_set", "true");
+
+    // initial inventory item values
+
+    await SecureStore.setItemAsync("inventory_water", "0");
+    await SecureStore.setItemAsync("inventory_bees", "1");
+    await SecureStore.setItemAsync("inventory_gold", "250");
+    await SecureStore.setItemAsync("inventory_fertilizer", "1");
+    await SecureStore.setItemAsync("inventory_elixir", "0");
+    await SecureStore.setItemAsync("inventory_gems", "1");
+
+    await SecureStore.setItemAsync("bee_in_progress", "0");
+
+    // const localTime = DateTime.local();
+    // const localMidnight = DateTime.fromObject({
+    //   year: localTime.year,
+    //   month: localTime.month,
+    //   day: localTime.day,
+    //   hour: 0,
+    //   minute: 0,
+    //   second: 0,
+    // });
+    // const localPrevMidnight = localMidnight.minus({ days: 1 });
+
+    // sprint statistics values
+
+    await SecureStore.setItemAsync("sprint_count", "0");
+    await SecureStore.setItemAsync("total_happiness", "0");
+    await SecureStore.setItemAsync("total_productivity", "0");
+
+    await SecureStore.setItemAsync("total_sprint_time", "0");
+    await SecureStore.setItemAsync("total_unpaused", "0");
+    await SecureStore.setItemAsync("total_paused", "0");
+
+    await SecureStore.setItemAsync("streak_length", "0");
+    await SecureStore.setItemAsync("longest_streak", "0");
+
+    await SecureStore.setItemAsync("latest_sprint", "");
+    await SecureStore.setItemAsync("temp_sprint", "");
+
+    // date placeholders
+
+    let currDate = DateTime.local().toISO();
+    await SecureStore.setItemAsync("garden_last_updated", currDate);
+    await SecureStore.setItemAsync("shop_refreshed", currDate);
+
+    // events
+
+    await SecureStore.setItemAsync("event_name", "welcome");
+    await SecureStore.setItemAsync("event_countdown", "7");
+
+    // x_plant
+
+    await seedUtils2.createPlants();
+
+    // inventory_seeds
+
+    await seedUtils2.initializeAllSeeds();
+
+    // misc.
+
+    await SecureStore.setItemAsync(
+      "motivation",
+      "This is your note to yourself! You'll see it every time you " +
+        "start a sprint. You can edit what it says in Settings."
+    );
+
+    // everything hardcoded for testing
+
+    // let hardcoded_plant = {
+    //   status: 2,
+    //   position: 1,
+    //   permanent: {
+    //     event: "none",
+    //     rarity: "R",
+    //     species: "stardust_nightshroom",
+    //     date_planted: "",
+    //     price: "550",
+    //   },
+    //   zero: { zero_image: "plantpot" },
+    //   one: {
+    //     one_image: "growing_rs",
+    //     grow_start: "",
+    //     grow_offset: 0,
+    //     grow_streak_length: 2,
+    //   },
+    //   two: {
+    //     two_image: "stardust_nightshroom2",
+    //     current_waters: 8,
+    //     water_start: "",
+    //     water_end: "2020-09-07T17:52:25.437-07:00",
+    //   },
+    //   three: {
+    //     three_image: "stardust_nightshroom3",
+    //     wilt_start: "",
+    //     wilt_end: "2020-09-10T17:52:25.437-07:00",
+    //   },
+    //   four: { four_image: "stardust_nightshroom4" },
+    // };
+
+    // let seeds2 = {
+    //   none: { C: 8, U: 50, R: 50 },
+    //   christmas: { C: 0, U: 0, R: 0 },
+    //   valentines: { C: 0, U: 0, R: 0 },
+    // };
+    // let seedsString2 = JSON.stringify(seeds2);
+
+    // await SecureStore.setItemAsync("inventory_seeds", seedsString2);
+
+    // let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
+    // await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+  };
 
   getStats = async () => {
     if (this.state.ltStats == false) {
@@ -94,7 +223,7 @@ export default class Details extends Component {
       this.setState({
         totalTime: unpaused,
         unpausedRatio: unpausedRatio,
-        pausedRatio: pausedRatio
+        pausedRatio: pausedRatio,
       });
     }
   };
@@ -105,7 +234,7 @@ export default class Details extends Component {
       return;
     }
     this.props.navigation.navigate("Timer5", {
-      JSON_ListView_Clicked_Item: Math.ceil(this.state.minutes)
+      JSON_ListView_Clicked_Item: Math.ceil(this.state.minutes),
     });
   };
 
@@ -125,20 +254,20 @@ export default class Details extends Component {
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
         <View
           style={{
-            flex: 1
+            flex: 1,
           }} // top part: header + subheader
         >
           <View
             style={{
               flex: 2.5,
               backgroundColor: "#BADFE7",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <Text
               style={{
                 textAlign: "center",
-                fontSize: 30
+                fontSize: 30,
               }}
             >
               Time to get grinding!{" "}
@@ -147,7 +276,7 @@ export default class Details extends Component {
             <Text
               style={{
                 textAlign: "center",
-                fontSize: 18
+                fontSize: 18,
               }}
             >
               Start a sprint now or
@@ -155,7 +284,7 @@ export default class Details extends Component {
             <Text
               style={{
                 textAlign: "center",
-                fontSize: 18
+                fontSize: 18,
               }}
             >
               view your past statistics!
@@ -174,7 +303,7 @@ export default class Details extends Component {
             style={{
               flex: 2,
               backgroundColor: "#e7f2e5",
-              alignItems: "center"
+              alignItems: "center",
             }} // enter time to start a sprint
           >
             <View style={{ flex: 0.7 }}></View>
@@ -184,12 +313,12 @@ export default class Details extends Component {
                 <Text>Loading</Text>
               </TouchableOpacity> */}
               <TextInput
-                onChangeText={minutes => this.setState({ minutes })}
+                onChangeText={(minutes) => this.setState({ minutes })}
                 placeholder={"# of minutes"}
                 keyboardType="number-pad"
                 style={[
                   styles.input,
-                  { height: Platform.OS == "android" ? 40 : 35 }
+                  { height: Platform.OS == "android" ? 40 : 35 },
                 ]}
               />
             </View>
@@ -207,7 +336,7 @@ export default class Details extends Component {
               flex: 5,
               justifyContent: "center",
               flexDirection: "row",
-              backgroundColor: "#64A0B1"
+              backgroundColor: "#64A0B1",
             }}
           >
             <View style={{ flex: 1, backgroundColor: "#64A0B1" }}>
@@ -288,8 +417,8 @@ export default class Details extends Component {
                         height:
                           Platform.OS == "android"
                             ? screen.width / 12
-                            : screen.width / 10
-                      }
+                            : screen.width / 10,
+                      },
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>GARDEN</Text>
@@ -305,8 +434,8 @@ export default class Details extends Component {
                         height:
                           Platform.OS == "android"
                             ? screen.width / 12
-                            : screen.width / 10
-                      }
+                            : screen.width / 10,
+                      },
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>SHOP</Text>
@@ -323,8 +452,8 @@ export default class Details extends Component {
                         height:
                           Platform.OS == "android"
                             ? screen.width / 12
-                            : screen.width / 10
-                      }
+                            : screen.width / 10,
+                      },
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>SETTINGS</Text>
@@ -340,8 +469,8 @@ export default class Details extends Component {
                         height:
                           Platform.OS == "android"
                             ? screen.width / 12
-                            : screen.width / 10
-                      }
+                            : screen.width / 10,
+                      },
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>STATS</Text>
@@ -357,8 +486,8 @@ export default class Details extends Component {
                         height:
                           Platform.OS == "android"
                             ? screen.width / 12
-                            : screen.width / 10
-                      }
+                            : screen.width / 10,
+                      },
                     ]}
                   >
                     <Text style={styles.smallWhiteText}>HELP</Text>
@@ -380,25 +509,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    padding: 16
+    padding: 16,
   },
   input: {
     width: 200,
     height: 44,
     padding: 10,
     marginBottom: 10,
-    backgroundColor: "#DBDBD6"
+    backgroundColor: "#DBDBD6",
   },
   openButton: {
     backgroundColor: "#979797",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   pinkButton2: {
     borderWidth: 2,
@@ -408,31 +537,31 @@ const styles = StyleSheet.create({
     borderRadius: screen.width / 2,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: screen.width / 15
+    marginLeft: screen.width / 15,
   },
   smallWhiteText: {
     color: "#f0ecc5",
     fontSize: 20,
-    marginTop: 5
+    marginTop: 5,
   },
   smallText: {
     color: "#000000",
     fontSize: 20,
-    marginLeft: screen.width / 15
+    marginLeft: screen.width / 15,
   },
   smallLinkText: {
     color: "#09495c",
     fontSize: 20,
-    marginLeft: screen.width / 15
+    marginLeft: screen.width / 15,
   },
   smallGreenText: {
     color: "#b6f542",
     fontSize: 20,
-    marginLeft: screen.width / 15
+    marginLeft: screen.width / 15,
   },
   smallRedText: {
     color: "#ff4e47",
     fontSize: 20,
-    marginLeft: screen.width / 15
-  }
+    marginLeft: screen.width / 15,
+  },
 });

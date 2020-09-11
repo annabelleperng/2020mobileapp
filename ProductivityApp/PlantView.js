@@ -443,10 +443,10 @@ export default class GardenTesting extends Component {
     // this.initializeGarden();
   };
 
-  componentWillUnmount = () => {
-    console.log("here - unmounted");
-    // this.stopPlaying();
-  };
+  //   componentWillUnmount = () => {
+  //     console.log("here - unmounted");
+  //     // this.stopPlaying();
+  //   };
 
   initializeGarden = async () => {};
 

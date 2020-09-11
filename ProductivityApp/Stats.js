@@ -47,8 +47,11 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillReceiveProps = () => {
+  UNSAFE_componentWillReceiveProps = () => {
     this.endTime = new Date();
+    this.endHours = this.endTime.getHours();
+    this.endMins = this.endTime.getMinutes();
+    console.log("endtime = " + this.endTime + "          !!!!!!!!!!!!!!!");
   };
 
   timeOfDay(hours) {
@@ -111,6 +114,10 @@ export default class App extends React.Component {
       return;
     } else {
       this.setState({ update_daily_boolean: true });
+      this.endTime = new Date();
+      this.endHours = this.endTime.getHours();
+      this.endMins = this.endTime.getMinutes();
+      console.log("endtime = " + this.endTime + "    2      !!!!!!!!!!!!!!!");
     }
     let sprintCount = Number.parseInt(
       await SecureStore.getItemAsync("sprint_count")
