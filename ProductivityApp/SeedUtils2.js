@@ -94,12 +94,96 @@ let none = [
   ]
 ];
 
+let myPlants = {
+  yellow_pinwheel: 0,
+  wild_redquill: 0,
+  white_frostflower: 1,
+  white_cupcake: 0,
+  undersea_pineapple: 0,
+  titled_rose: 0,
+  sunset_shrooms: 0,
+  summer_cactus: 0,
+  stocky_corn: 0,
+  startrail_dandelion: 0,
+  snowcrested_fern: 0,
+  sharp_succulent: 0,
+  scarlet_spiderlily: 0,
+  robin_tulip: 0,
+  powderball_flower: 0,
+  monarch_grass: 0,
+  mario_mushrooms: 0,
+  lemon_daisy: 0,
+  "forget-me-not_wildflower": 0,
+  flowery_bush: 0,
+  flowering_cactus: 0,
+  flamingo_tulip: 0,
+  fishy_seaweed: 0,
+  "first-frost_bluebell": 0,
+  ducky_reeds: 0,
+  dotted_cactus: 0,
+  common_carrots: 0,
+  cherry_grass: 0,
+  calla_lily: 0,
+  californian_chaparral: 0,
+  butterfly_iris: 0,
+  bushy_butterfly: 0,
+  "blue-dotted_bush": 0,
+  blue_cerealcup: 0,
+  blue_burst: 0,
+  bark_mushroom: 0,
+  apple_lotus: 0,
+
+  sunstruck_rose: 0,
+  simpson_flower: 0,
+  purple_cactusflower: 0,
+  powder_bloom: 0,
+  pointy_aloe: 0,
+  pink_lily: 0,
+  peachy_tree: 0,
+  paper_fern: 0,
+  miniature_sakura: 0,
+  lantern_mushroom: 0,
+  imposter_corn: 1,
+  icefrost_rose: 0,
+  henny_flower: 0,
+  hedgy_lettuce: 0,
+  frost_bluebell: 0,
+  flame_bud: 0,
+  firefly_fern: 0,
+  "dusk-purple_pendents": 0,
+  dawn_hibiscus: 0,
+  crimson_carnation: 0,
+  "cotton-candy_wildflower": 0,
+  christmas_tree: 0,
+  blue_tulip: 0,
+  blue_pinwheel: 0,
+  blood_flower: 0,
+
+  "yellow-spotted_mushrooms": 0,
+  viney_flower: 0,
+  venus_flytrap: 0,
+  stardust_nightshroom: 0,
+  snow_violet: 0,
+  skydrop_ghostflower: 1,
+  quartz_wildflower: 0,
+  frost_indigo: 0,
+  "double-layered_bloom": 0,
+  conchy_flower: 0,
+  "blue_dames-rocket": 0,
+  blue_daisy: 0,
+  amethyst_spikeplant: 0
+};
+
 let noneLength = 17;
 
 export default class SeedUtils extends Component {
   constructor(props) {
     super(props);
   }
+
+  getMyPlants = () => {
+    return myPlants;
+  };
 
   useSeedFromInventory = async (event, rarity) => {
     let seedsString = await SecureStore.getItemAsync("inventory_seeds");
