@@ -40,7 +40,7 @@ let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
   "color ": require("./assets/largebee.png"),
-  "notif ": require("./assets/dostuff.png"),
+  "notif ": require("./assets/newicons/newnotif.png"),
 };
 
 let images1 = {

@@ -1194,7 +1194,8 @@ export default class GardenTesting extends Component {
 
           <View style={{ flex: 0.1 }}></View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("GardenTesting")}
+            // onPress={() => this.props.navigation.navigate("Shop")}
+            onPress={() => this.useElixir.bind(this)}
             activeOpacity={0.5}
             // inventory item: elixir
           >
@@ -1239,7 +1240,7 @@ export default class GardenTesting extends Component {
             // inventory item: fertilizer
           >
             <Image
-              source={require("./assets/fertilizer.png")}
+              source={require("./assets/newicons/newfertilizer.png")}
               style={styles.menuIcons}
             ></Image>
           </TouchableOpacity>
@@ -2266,18 +2267,18 @@ export default class GardenTesting extends Component {
                   {this.state.inventory_water}
                 </Text>
                 <View style={{ flex: 0.05 }}></View>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("GardenTesting")
-                  }
-                  activeOpacity={0.5}
-                  // inventory item: water
-                >
-                  <Image
-                    source={require("./assets/largewater.png")}
-                    style={styles.menuIcons}
-                  ></Image>
-                </TouchableOpacity>
+                {/* <TouchableOpacity
+                //   onPress={() =>
+                //     this.props.navigation.navigate("GardenTesting")
+                //   }
+                //   activeOpacity={0.5}
+                // inventory item: water
+                > */}
+                <Image
+                  source={require("./assets/largewater.png")}
+                  style={styles.menuIcons}
+                ></Image>
+                {/* </TouchableOpacity> */}
               </View>
               {/* <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.smallWhiteText}>
@@ -2316,7 +2317,7 @@ export default class GardenTesting extends Component {
                 </TouchableOpacity>
               </View> */}
               <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={[styles.smallWhiteText, { color: "#ff4b1f" }]}>
+                <Text style={[styles.smallWhiteText, { color: "#b0d156" }]}>
                   SHOP
                 </Text>
                 <View style={{ flex: 0.1 }}></View>
@@ -2326,7 +2327,7 @@ export default class GardenTesting extends Component {
                   // inventory item: elixir
                 >
                   <Image
-                    source={require("./assets/largeshop2.png")}
+                    source={require("./assets/largeshop34.png")}
                     style={styles.menuIcons2}
                   ></Image>
                 </TouchableOpacity>
