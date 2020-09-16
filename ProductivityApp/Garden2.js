@@ -951,7 +951,7 @@ export default class Garden extends Component {
               <View style={{ flex: 1, alignItems: "flex-end" }}>
                 <Image
                   style={styles.smallButton}
-                  source={require("./assets/gem.png")}
+                  source={require("./assets/newicons/newgem.png")}
                 />
               </View>
             </View>
@@ -1416,7 +1416,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.menuIcons}
-                  source={require("./assets/largeshop.png")}
+                  source={require("./assets/newicons/newhouse.png")}
                 />
               </TouchableOpacity>
             </View>
@@ -1441,7 +1441,7 @@ export default class Garden extends Component {
               >
                 <Image
                   style={styles.menuIcons2}
-                  source={require("./assets/largeshop.png")}
+                  source={require("./assets/largeshop34.png")}
                 />
               </TouchableOpacity>
               {/* <Text style={styles.smallWhiteText}>SHOP</Text> */}
@@ -1452,8 +1452,8 @@ export default class Garden extends Component {
                 activeOpacity={0.5}
               >
                 <Image
-                  style={styles.menuIcons2}
-                  source={require("./assets/largeshop.png")}
+                  style={styles.menuIcons3}
+                  source={require("./assets/newicons/newalmanac.png")}
                 />
               </TouchableOpacity>
             </View>
@@ -1471,12 +1471,17 @@ const styles = StyleSheet.create({
     height: screen.width / 3.5,
   },
   menuIcons: {
-    width: screen.width / 9,
-    height: screen.width / 9,
+    width: screen.width / 8.5,
+    height: screen.width / 8.5,
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
+    // marginLeft: screen.width / 10,
+  },
+  menuIcons3: {
+    width: screen.width / 7.5,
+    height: screen.width / 7.5,
     // marginLeft: screen.width / 10,
   },
   pinkButton: {
