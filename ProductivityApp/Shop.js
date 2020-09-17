@@ -24,6 +24,12 @@ const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils();
 const rewardUtils = new RewardUtils();
 
+let eventPics = {
+  welcomeCommon: require("./assets/newicons/newwelcomec.png"),
+  welcomeUncommon: require("./assets/newicons/newwelcomeu.png"),
+  welcomeRare: require("./assets/newicons/newwelcomer.png"),
+};
+
 export default class Shop extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +73,9 @@ export default class Shop extends Component {
       rarity8: "",
       rarity9: "",
       rarity10: "",
+      eventPic8: null,
+      eventPic9: null,
+      eventPic10: null,
     };
   }
 
@@ -144,10 +153,14 @@ export default class Shop extends Component {
       prevDay.isBefore(lastRefreshed)
     ) {
       console.log("REFRESHED TODAY!");
-      // await SecureStore.setItemAsync("rolled_today", "0"); //remove later
+      // await SecureStore.setItemAsync("rolled_today", "0"); //for testing purposes
+      // this.eventChance(); //for testing purposes
       let r = await SecureStore.getItemAsync("rolled_today");
       console.log("TELL ME R, BITCH: " + r);
       this.setState({
+        eventPic8: await SecureStore.getItemAsync("eventPic8"),
+        eventPic9: await SecureStore.getItemAsync("eventPic9"),
+        eventPic10: await SecureStore.getItemAsync("eventPic10"),
         rolled: r,
         price8: await SecureStore.getItemAsync("price8"),
         price9: await SecureStore.getItemAsync("price9"),
@@ -163,6 +176,8 @@ export default class Shop extends Component {
         bought8: await SecureStore.getItemAsync("bought8"),
         bought9: await SecureStore.getItemAsync("bought9"),
         bought10: await SecureStore.getItemAsync("bought10"),
+        rarity8: await SecureStore.getItemAsync("rarity8"),
+        rarity9: await SecureStore.getItemAsync("rarity9"),
         rarity10: await SecureStore.getItemAsync("rarity10"),
       });
       console.log("INITIALIZATION ROLL VALUE: " + this.state.rolled);
@@ -190,11 +205,15 @@ export default class Shop extends Component {
       await SecureStore.setItemAsync("bought7", "" + this.state.bought7);
 
       let diff = lastRefreshed.diffNow().days;
+      console.log("DIFF BIFF: " + diff);
       if (Number.parseInt(eventCountdown) > 0) {
-        eventCountdown = Number.parseInt(eventCountdown) - diff + "";
+        console.log("hereiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam");
+        eventCountdown = Number.parseInt(eventCountdown) - diff;
+        eventCountdown = eventCountdown + "";
       }
 
       if (Number.parseInt(eventCountdown) <= 0) {
+        console.log("WHY THE FUCK ARE YOU HERE YO");
         await SecureStore.setItemAsync("rolled_today", this.state.rolled);
         await SecureStore.setItemAsync("event_countdown", "0");
         await SecureStore.setItemAsync("event_name", "");
@@ -206,9 +225,10 @@ export default class Shop extends Component {
         await SecureStore.setItemAsync("rarity10", "");
         this.setState({ eventCountdown: -1, eventName: "" });
       } else {
+        console.log("IM IN HERE BRO");
+        this.eventChance();
         await SecureStore.setItemAsync("event_countdown", "" + eventCountdown);
         this.setState({ eventName: eventName });
-        this.eventChance();
         await SecureStore.setItemAsync("price8", "" + this.state.price8);
         await SecureStore.setItemAsync("price9", "" + this.state.price9);
         await SecureStore.setItemAsync("price10", "" + this.state.price10);
@@ -238,14 +258,27 @@ export default class Shop extends Component {
       let rarityRand = Math.floor(Math.random() * 100) + 1;
       let rarityKey = "rarity" + i;
       let priceKey = "price" + i;
+      let picKey = "eventPic" + i;
       if (rarityRand > 75) {
-        this.setState({ [rarityKey]: "rare", [priceKey]: "300" });
+        this.setState({
+          [rarityKey]: "rare",
+          [priceKey]: "300",
+          [picKey]: "welcomeRare",
+        });
         await SecureStore.setItemAsync(priceKey, "300");
       } else if (rarityRand > 50) {
-        this.setState({ [rarityKey]: "uncommon", [priceKey]: "225" });
+        this.setState({
+          [rarityKey]: "uncommon",
+          [priceKey]: "225",
+          [picKey]: "welcomeUncommon",
+        });
         await SecureStore.setItemAsync(priceKey, "225");
       } else {
-        this.setState({ [rarityKey]: "common", [priceKey]: "150" });
+        this.setState({
+          [rarityKey]: "common",
+          [priceKey]: "150",
+          [picKey]: "welcomeCommon",
+        });
         await SecureStore.setItemAsync(priceKey, "150");
       }
     }
@@ -417,7 +450,7 @@ export default class Shop extends Component {
     if (!this.state.initialized) {
       console.log("ROLLED OR NAH, BEFORE: " + this.state.rolled);
       this.initialize();
-      this.eventChance();
+      // this.eventChance();
       this.setState({ initialized: true });
       console.log("ROLLED OR NAH, AFTER: " + this.state.rolled);
       console.log("STATE EVENT NAMEEEEE: " + this.state.eventName);
@@ -544,13 +577,13 @@ export default class Shop extends Component {
               {this.state.bought0 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/common_seed_bought.png")}
+                  source={require("./assets/newicons/newcommonseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(0)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/common_seed.png")}
+                    source={require("./assets/newicons/newcommonseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -559,13 +592,13 @@ export default class Shop extends Component {
               {this.state.bought1 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/common_seed_bought.png")}
+                  source={require("./assets/newicons/newcommonseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(1)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/common_seed.png")}
+                    source={require("./assets/newicons/newcommonseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -574,13 +607,13 @@ export default class Shop extends Component {
               {this.state.bought2 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/common_seed_bought.png")}
+                  source={require("./assets/newicons/newcommonseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(2)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/common_seed.png")}
+                    source={require("./assets/newicons/newcommonseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -589,7 +622,7 @@ export default class Shop extends Component {
               {this.state.bought3 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/fertilizer_bought.png")}
+                  source={require("./assets/newicons/newfertilizer.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(3)}>
@@ -757,13 +790,13 @@ export default class Shop extends Component {
               {this.state.bought4 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/uncommon_seed_bought.png")}
+                  source={require("./assets/newicons/newuncommonseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(4)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/uncommon_seed.png")}
+                    source={require("./assets/newicons/newuncommonseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -772,13 +805,13 @@ export default class Shop extends Component {
               {this.state.bought5 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/uncommon_seed_bought.png")}
+                  source={require("./assets/newicons/newuncommonseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(5)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/uncommon_seed.png")}
+                    source={require("./assets/newicons/newuncommonseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -787,13 +820,13 @@ export default class Shop extends Component {
               {this.state.bought6 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/rare_seed_bought.png")}
+                  source={require("./assets/newicons/newrareseed.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(6)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/rare_seed.png")}
+                    source={require("./assets/newicons/newrareseed.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -802,7 +835,7 @@ export default class Shop extends Component {
               {this.state.bought7 == 1 ? (
                 <Image
                   style={styles.items}
-                  source={require("./assets/elixir_bought.png")}
+                  source={require("./assets/newicons/newelixir.png")}
                 />
               ) : (
                 <TouchableOpacity onPress={() => this.buy(7)}>
@@ -1009,13 +1042,13 @@ export default class Shop extends Component {
                   {this.state.bought8 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/fernsbig.png")}
+                      source={eventPics[this.state.eventPic8]}
                     />
                   ) : (
                     <TouchableOpacity onPress={() => this.buy(8)}>
                       <Image
                         style={styles.items}
-                        source={require("./assets/fernsbig.png")}
+                        source={eventPics[this.state.eventPic8]}
                       />
                     </TouchableOpacity>
                   )}
@@ -1024,42 +1057,28 @@ export default class Shop extends Component {
                   {this.state.bought9 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/fernsbig.png")}
+                      source={eventPics[this.state.eventPic9]}
                     />
                   ) : (
                     <TouchableOpacity onPress={() => this.buy(9)}>
                       <Image
                         style={styles.items}
-                        source={require("./assets/fernsbig.png")}
+                        source={eventPics[this.state.eventPic9]}
                       />
                     </TouchableOpacity>
                   )}
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.rarity10 == "uncommon" ? (
-                    this.state.bought10 == 1 ? (
-                      <Image
-                        style={styles.items}
-                        source={require("./assets/fernsbig.png")}
-                      />
-                    ) : (
-                      <TouchableOpacity onPress={() => this.buy(10)}>
-                        <Image
-                          style={styles.items}
-                          source={require("./assets/fernsbig.png")}
-                        />
-                      </TouchableOpacity>
-                    )
-                  ) : this.state.bought10 == 1 ? (
+                  {this.state.bought10 == 1 ? (
                     <Image
                       style={styles.items}
-                      source={require("./assets/tulipsbig.png")}
+                      source={eventPics[this.state.eventPic10]}
                     />
                   ) : (
                     <TouchableOpacity onPress={() => this.buy(10)}>
                       <Image
                         style={styles.items}
-                        source={require("./assets/tulipsbig.png")}
+                        source={eventPics[this.state.eventPic10]}
                       />
                     </TouchableOpacity>
                   )}
