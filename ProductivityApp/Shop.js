@@ -48,11 +48,11 @@ export default class Shop extends Component {
       initialized: false,
       eventName: "",
       eventCountdown: -1,
+      rolled: 0,
       itemPrices: ["100", "100", "100", "300", "150", "150", "200", "600"],
       price8: "???",
       price9: "???",
       price10: "???",
-      price11: "???",
       bought0: 0,
       bought1: 0,
       bought2: 0,
@@ -64,15 +64,15 @@ export default class Shop extends Component {
       bought8: 0,
       bought9: 0,
       bought10: 0,
-      bought11: 0,
-      rarity10: "uncommon",
-      rarity11: "uncommon",
+      rarity8: "",
+      rarity9: "",
+      rarity10: "",
     };
   }
 
   initialize = async () => {
     // await SecureStore.setItemAsync("inventory_gems", "0");
-    console.log("initializing shop");
+    console.log("\n \n \n initializing shop");
     let goldAmt = await SecureStore.getItemAsync("inventory_gold");
     this.setState({ gold: goldAmt });
     let gemAmt = await SecureStore.getItemAsync("inventory_gems");
@@ -113,7 +113,17 @@ export default class Shop extends Component {
 
     var eventName = await SecureStore.getItemAsync("event_name");
     var eventCountdown = await SecureStore.getItemAsync("event_countdown");
-    if (eventCountdown == null || eventCountdown == "") {
+
+    if ((await SecureStore.getItemAsync("event_name")) != null) {
+      this.setState({
+        eventName: await SecureStore.getItemAsync("event_name"),
+        eventCountdown: Number.parseInt(
+          await SecureStore.getItemAsync("event_countdown")
+        ),
+      });
+    }
+
+    if ((eventName = "")) {
       if (this.state.eventCountdown > 0) {
         await SecureStore.setItemAsync("event_name", "" + this.state.eventName);
         eventName = this.state.eventName;
@@ -134,11 +144,14 @@ export default class Shop extends Component {
       prevDay.isBefore(lastRefreshed)
     ) {
       console.log("REFRESHED TODAY!");
+      // await SecureStore.setItemAsync("rolled_today", "0"); //remove later
+      let r = await SecureStore.getItemAsync("rolled_today");
+      console.log("TELL ME R, BITCH: " + r);
       this.setState({
+        rolled: r,
         price8: await SecureStore.getItemAsync("price8"),
         price9: await SecureStore.getItemAsync("price9"),
         price10: await SecureStore.getItemAsync("price10"),
-        price11: await SecureStore.getItemAsync("price11"),
         bought0: await SecureStore.getItemAsync("bought0"),
         bought1: await SecureStore.getItemAsync("bought1"),
         bought2: await SecureStore.getItemAsync("bought2"),
@@ -150,31 +163,23 @@ export default class Shop extends Component {
         bought8: await SecureStore.getItemAsync("bought8"),
         bought9: await SecureStore.getItemAsync("bought9"),
         bought10: await SecureStore.getItemAsync("bought10"),
-        bought11: await SecureStore.getItemAsync("bought11"),
         rarity10: await SecureStore.getItemAsync("rarity10"),
-        rarity11: await SecureStore.getItemAsync("rarity11"),
       });
-
-      if ((await SecureStore.getItemAsync("event_name")) != null) {
-        this.setState({
-          eventName: await SecureStore.getItemAsync("event_name"),
-          eventCountdown: Number.parseInt(
-            await SecureStore.getItemAsync("event_countdown")
-          ),
-        });
-      }
+      console.log("INITIALIZATION ROLL VALUE: " + this.state.rolled);
     }
-    console.log(await SecureStore.getItemAsync("event_name"));
+    // console.log(await SecureStore.getItemAsync("event_name"));
 
-    console.log(
-      "prevDay contains lastRefreshed? " + prevDay.contains(lastRefreshed)
-    );
-    console.log(
-      "prevDay after lastRefreshed? " + prevDay.isAfter(lastRefreshed)
-    );
+    // console.log(
+    //   "prevDay contains lastRefreshed? " + prevDay.contains(lastRefreshed)
+    // );
+    // console.log(
+    //   "prevDay after lastRefreshed? " + prevDay.isAfter(lastRefreshed)
+    // );
+
     if (prevDay.contains(lastRefreshed) || prevDay.isAfter(lastRefreshed)) {
       console.log("FIRST TIME IN SHOP TODAY!");
       //initialize
+      await SecureStore.setItemAsync("rolled_today", "" + this.state.rolled);
       await SecureStore.setItemAsync("bought0", "" + this.state.bought0);
       await SecureStore.setItemAsync("bought1", "" + this.state.bought1);
       await SecureStore.setItemAsync("bought2", "" + this.state.bought2);
@@ -184,33 +189,40 @@ export default class Shop extends Component {
       await SecureStore.setItemAsync("bought6", "" + this.state.bought6);
       await SecureStore.setItemAsync("bought7", "" + this.state.bought7);
 
+      let diff = lastRefreshed.diffNow().days;
       if (Number.parseInt(eventCountdown) > 0) {
-        eventCountdown = Number.parseInt(eventCountdown) - 1 + "";
+        eventCountdown = Number.parseInt(eventCountdown) - diff + "";
       }
-      await SecureStore.setItemAsync("event_countdown", "" + eventCountdown);
-      if (Number.parseInt(eventCountdown) == 0) {
+
+      if (Number.parseInt(eventCountdown) <= 0) {
+        await SecureStore.setItemAsync("rolled_today", this.state.rolled);
+        await SecureStore.setItemAsync("event_countdown", "0");
         await SecureStore.setItemAsync("event_name", "");
         await SecureStore.setItemAsync("bought8", "" + this.state.bought8);
         await SecureStore.setItemAsync("bought9", "" + this.state.bought9);
         await SecureStore.setItemAsync("bought10", "" + this.state.bought10);
-        await SecureStore.setItemAsync("bought11", "" + this.state.bought11);
-        await SecureStore.setItemAsync("rarity10", "uncommon");
-        await SecureStore.setItemAsync("rarity11", "uncommon");
+        await SecureStore.setItemAsync("rarity8", "");
+        await SecureStore.setItemAsync("rarity9", "");
+        await SecureStore.setItemAsync("rarity10", "");
+        this.setState({ eventCountdown: -1, eventName: "" });
       } else {
+        await SecureStore.setItemAsync("event_countdown", "" + eventCountdown);
         this.setState({ eventName: eventName });
         this.eventChance();
         await SecureStore.setItemAsync("price8", "" + this.state.price8);
         await SecureStore.setItemAsync("price9", "" + this.state.price9);
         await SecureStore.setItemAsync("price10", "" + this.state.price10);
-        await SecureStore.setItemAsync("price11", "" + this.state.price11);
         await SecureStore.setItemAsync("rarity10", "" + this.state.rarity10);
-        await SecureStore.setItemAsync("rarity11", "" + this.state.rarity11);
       }
     }
 
     console.log("set shop_refreshed to: " + localTime.toISO());
 
     await SecureStore.setItemAsync("shop_refreshed", localTime.toISO());
+
+    console.log(
+      "INITIALIZATION ROLL VALUE END OF INITIALIZATION: " + this.state.rolled
+    );
   };
 
   // setGems = async () => {
@@ -219,14 +231,57 @@ export default class Shop extends Component {
   //   console.log("CURRENT GEMS: " + this.state.gems);
   // };
 
-  eventChance = () => {
-    const rarityRand = Math.floor(Math.random() * 100) + 1;
-    if (rarityRand > 50) {
-      this.setState({ rarity11: "rare" });
+  eventChance = async () => {
+    console.log("doing eventChance!!!!!!!!!!!");
+    var i;
+    for (i = 8; i <= 10; i++) {
+      let rarityRand = Math.floor(Math.random() * 100) + 1;
+      let rarityKey = "rarity" + i;
+      let priceKey = "price" + i;
+      if (rarityRand > 75) {
+        this.setState({ [rarityKey]: "rare", [priceKey]: "300" });
+        await SecureStore.setItemAsync(priceKey, "300");
+      } else if (rarityRand > 50) {
+        this.setState({ [rarityKey]: "uncommon", [priceKey]: "225" });
+        await SecureStore.setItemAsync(priceKey, "225");
+      } else {
+        this.setState({ [rarityKey]: "common", [priceKey]: "150" });
+        await SecureStore.setItemAsync(priceKey, "150");
+      }
     }
-    if (rarityRand > 75) {
-      this.setState({ rarity10: "rare" });
-    }
+
+    // let rarityRand8 = Math.floor(Math.random() * 100) + 1;
+    // let rarityKey8 = "rarity" + i;
+    // let priceKey8 = "price" + i;
+    // if (rarityRand8 > 75) {
+    //   this.setState({ [rarityKey8]: "rare", [priceKey8]: "300" });
+    // } else if (rarityRand8 > 50) {
+    //   this.setState({ [rarityKey8]: "uncommon", [priceKey8]: "225" });
+    // } else {
+    //   this.setState({ [rarityKey8]: "common", [priceKey8]: "150" });
+    // }
+
+    // let rarityRand9 = Math.floor(Math.random() * 100) + 1;
+    // let rarityKey9 = "rarity" + i;
+    // let priceKey9 = "price" + i;
+    // if (rarityRand9 > 75) {
+    //   this.setState({ [rarityKey9]: "rare", [priceKey9]: "300" });
+    // } else if (rarityRand > 50) {
+    //   this.setState({ [rarityKey9]: "uncommon", [priceKey9]: "225" });
+    // } else {
+    //   this.setState({ [rarityKey9]: "common", [priceKey9]: "150" });
+    // }
+
+    // let rarityRand10 = Math.floor(Math.random() * 100) + 1;
+    // let rarityKey10 = "rarity" + i;
+    // let priceKey10 = "price" + i;
+    // if (rarityRand10 > 75) {
+    //   this.setState({ [rarityKey10]: "rare", [priceKey10]: "300" });
+    // } else if (rarityRand > 50) {
+    //   this.setState({ [rarityKey10]: "uncommon", [priceKey10]: "225" });
+    // } else {
+    //   this.setState({ [rarityKey10]: "common", [priceKey10]: "150" });
+    // }
   };
 
   buy = async (pos) => {
@@ -297,40 +352,36 @@ export default class Shop extends Component {
         { cancelable: false }
       );
     } else if (pos == 8 || pos == 9) {
-      await rewardUtils.obtainSeed(this.state.eventName, "C");
+      await rewardUtils.obtainSeed(
+        this.state.eventName,
+        this.state.rarity8.substring(0, 1).toUpperCase()
+      );
       alert(
-        "Congratulations!\nA new common " +
+        "Congratulations!\nA new " +
+          this.state.rarity8 +
           this.state.eventName +
           " seed has been added to your inventory."
       );
     } else if (pos == 10) {
       if (this.state.rarity10 == "uncommon") {
-        await rewardUtils.obtainSeed(this.state.eventName, "U");
+        await rewardUtils.obtainSeed(
+          this.state.eventName,
+          this.state.rarity9.substring(0, 1).toUpperCase()
+        );
         alert(
-          "Congratulations!\nA new uncommon " +
+          "Congratulations!\nA new " +
+            this.state.rarity9 +
             this.state.eventName +
             " seed has been added to your inventory."
         );
       } else if (this.state.rarity10 == "rare") {
-        await rewardUtils.obtainSeed(this.state.eventName, "R");
-        alert(
-          "Congratulations!\nA new rare " +
-            this.state.eventName +
-            " seed has been added to your inventory."
+        await rewardUtils.obtainSeed(
+          this.state.eventName,
+          this.state.rarity10.substring(0, 1).toUpperCase()
         );
-      }
-    } else if (pos == 11) {
-      if (this.state.rarity11 == "uncommon") {
-        await rewardUtils.obtainSeed(this.state.eventName, "U");
         alert(
-          "Congratulations!\nA new uncommon " +
-            this.state.eventName +
-            " seed has been added to your inventory."
-        );
-      } else if (this.state.rarity11 == "rare") {
-        await rewardUtils.obtainSeed(this.state.eventName, "R");
-        alert(
-          "Congratulations!\nA new rare " +
+          "Congratulations!\nA new " +
+            this.state.rarity10 +
             this.state.eventName +
             " seed has been added to your inventory."
         );
@@ -339,6 +390,7 @@ export default class Shop extends Component {
 
     await SecureStore.setItemAsync("bought" + pos, "1");
 
+    console.log("PRICEEEEE: " + this.state.itemPrices[pos]);
     await rewardUtils.useGold(Number.parseInt(this.state.itemPrices[pos]));
 
     console.log("boughtVar before setting: " + this.state[boughtVar]);
@@ -351,13 +403,24 @@ export default class Shop extends Component {
     let goldAmt = await SecureStore.getItemAsync("inventory_gold");
     this.setState({ gold: goldAmt });
     console.log("gold after buying: " + this.state.gold);
+
+    this.setState({ initialized: false });
+  };
+
+  roll = async () => {
+    this.setState({ rolled: "1" });
+    await SecureStore.setItemAsync("rolled_today", "1");
   };
 
   render() {
     // this.updateStuff();
     if (!this.state.initialized) {
+      console.log("ROLLED OR NAH, BEFORE: " + this.state.rolled);
       this.initialize();
+      this.eventChance();
       this.setState({ initialized: true });
+      console.log("ROLLED OR NAH, AFTER: " + this.state.rolled);
+      console.log("STATE EVENT NAMEEEEE: " + this.state.eventName);
     }
     if (this.state.gold < 0) {
       this.setState({ gold: 0 });
@@ -365,6 +428,7 @@ export default class Shop extends Component {
     if (this.state.gems < 0) {
       this.setState({ gems: 0 });
     }
+    console.log("STATEEVENTNAMEEEEE: " + this.state.eventName);
 
     const gold = rewardUtils.getGold();
 
@@ -853,146 +917,162 @@ export default class Shop extends Component {
           </View>
           <View style={{ flex: 0.2 }}></View>
         </View>
-        <View
-          style={{
-            flex: 4,
-            backgroundColor: "#57423e",
-            alignItems: "center",
-          }}
-        >
-          {this.state.eventName != "" && this.state.eventName != null ? (
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                alignItems: "center",
-                //   marginLeft: screen.width / 14,
-              }}
-            >
-              <View style={{ flex: 0.2 }}></View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.itemName1}>STAN</Text>
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.itemName1}>B</Text>
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.itemName1}>T</Text>
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.itemName1}>S</Text>
-              </View>
-              <View style={{ flex: 0.2 }}></View>
-            </View>
-          ) : (
-            <View></View>
-          )}
 
-          {this.state.eventName != "" && this.eventName != null ? (
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 0,
-                //   marginLeft: screen.width / 14,
-              }}
+        {console.log("HAVE WE ROLLED YET MOTHERFUCKER? " + this.state.rolled)}
+        {this.state.rolled == "0" ? (
+          <View
+            style={{
+              flex: 5,
+              backgroundColor: "#57423e",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => this.roll()}
+              style={[styles.button, { alignItems: "center" }]}
             >
-              <View style={{ flex: 0.2 }}></View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                {this.state.bought8 == 1 ? (
-                  <Image
-                    style={styles.items}
-                    source={require("./assets/fernsbig.png")}
-                  />
-                ) : (
-                  <TouchableOpacity onPress={() => this.buy(8)}>
-                    <Image
-                      style={styles.items}
-                      source={require("./assets/fernsbig.png")}
-                    />
-                  </TouchableOpacity>
-                )}
+              <Text style={styles.event}>Roll for today's event seeds!</Text>
+              <Image
+                style={[styles.items, { marginTop: screen.height / 50 }]}
+                source={require("./assets/dice.png")}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 5,
+              backgroundColor: "#57423e",
+              alignItems: "center",
+            }}
+          >
+            {this.state.eventName != "" && this.state.eventName != null ? (
+              <View style={{ textAlign: "center" }}>
+                <Text style={styles.event}>
+                  {this.state.eventCountdown +
+                    " days left of the " +
+                    this.state.eventName.substring(0, 1).toUpperCase() +
+                    this.state.eventName.substring(1) +
+                    " event!"}
+                </Text>
               </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                {this.state.bought9 == 1 ? (
-                  <Image
-                    style={styles.items}
-                    source={require("./assets/fernsbig.png")}
-                  />
-                ) : (
-                  <TouchableOpacity onPress={() => this.buy(9)}>
-                    <Image
-                      style={styles.items}
-                      source={require("./assets/fernsbig.png")}
-                    />
-                  </TouchableOpacity>
-                )}
+            ) : (
+              <View></View>
+            )}
+            {this.state.eventName != "" && this.state.eventName != null ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  alignItems: "center",
+                  //   marginLeft: screen.width / 14,
+                }}
+              >
+                <View style={{ flex: 0.2 }}></View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <Text style={styles.itemName1}>
+                    {this.state.rarity8.substring(0, 1).toUpperCase() +
+                      this.state.rarity8.substring(1)}
+                  </Text>
+                  <Text style={styles.itemName2}> Seed </Text>
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <Text style={styles.itemName1}>
+                    {this.state.rarity9.substring(0, 1).toUpperCase() +
+                      this.state.rarity9.substring(1)}
+                  </Text>
+                  <Text style={styles.itemName2}> Seed </Text>
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <Text style={styles.itemName1}>
+                    {this.state.rarity10.substring(0, 1).toUpperCase() +
+                      this.state.rarity10.substring(1)}
+                  </Text>
+                  <Text style={styles.itemName2}> Seed </Text>
+                </View>
+                <View style={{ flex: 0.2 }}></View>
               </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                {this.state.rarity10 == "uncommon" ? (
-                  this.state.bought10 == 1 ? (
+            ) : (
+              <View></View>
+            )}
+
+            {this.state.eventName != "" ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 0,
+                  //   marginLeft: screen.width / 14,
+                }}
+              >
+                <View style={{ flex: 0.2 }}></View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.bought8 == 1 ? (
                     <Image
                       style={styles.items}
                       source={require("./assets/fernsbig.png")}
                     />
                   ) : (
-                    <TouchableOpacity onPress={() => this.buy(10)}>
+                    <TouchableOpacity onPress={() => this.buy(8)}>
                       <Image
                         style={styles.items}
                         source={require("./assets/fernsbig.png")}
                       />
                     </TouchableOpacity>
-                  )
-                ) : this.state.bought10 == 1 ? (
-                  <Image
-                    style={styles.items}
-                    source={require("./assets/tulipsbig.png")}
-                  />
-                ) : (
-                  <TouchableOpacity onPress={() => this.buy(10)}>
-                    <Image
-                      style={styles.items}
-                      source={require("./assets/tulipsbig.png")}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                {this.state.rarity11 == "uncommon" ? (
-                  this.state.bought10 == 1 ? (
+                  )}
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.bought9 == 1 ? (
                     <Image
                       style={styles.items}
                       source={require("./assets/fernsbig.png")}
                     />
                   ) : (
-                    <TouchableOpacity onPress={() => this.buy(10)}>
+                    <TouchableOpacity onPress={() => this.buy(9)}>
                       <Image
                         style={styles.items}
                         source={require("./assets/fernsbig.png")}
                       />
                     </TouchableOpacity>
-                  )
-                ) : this.state.bought11 == 1 ? (
-                  <Image
-                    style={styles.items}
-                    source={require("./assets/tulipsbig.png")}
-                  />
-                ) : (
-                  <TouchableOpacity onPress={() => this.buy(11)}>
+                  )}
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.rarity10 == "uncommon" ? (
+                    this.state.bought10 == 1 ? (
+                      <Image
+                        style={styles.items}
+                        source={require("./assets/fernsbig.png")}
+                      />
+                    ) : (
+                      <TouchableOpacity onPress={() => this.buy(10)}>
+                        <Image
+                          style={styles.items}
+                          source={require("./assets/fernsbig.png")}
+                        />
+                      </TouchableOpacity>
+                    )
+                  ) : this.state.bought10 == 1 ? (
                     <Image
                       style={styles.items}
                       source={require("./assets/tulipsbig.png")}
                     />
-                  </TouchableOpacity>
-                )}
+                  ) : (
+                    <TouchableOpacity onPress={() => this.buy(10)}>
+                      <Image
+                        style={styles.items}
+                        source={require("./assets/tulipsbig.png")}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View style={{ flex: 0.2 }}></View>
               </View>
-              <View style={{ flex: 0.2 }}></View>
-            </View>
-          ) : (
-            <View>
-              <Text style={styles.comingSoon}>Event coming soon!</Text>
-            </View>
-          )}
-        </View>
+            ) : (
+              <View>
+                <Text style={styles.comingSoon}>Event coming soon!</Text>
+              </View>
+            )}
+          </View>
+        )}
 
         <View
           style={{
@@ -1010,13 +1090,21 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {this.state.gold < Number.parseInt(this.state.itemPrices[8]) ? (
+              {this.state.rolled == "0" ? (
                 <View>
-                  <Text style={styles.poor}>{this.state.price8}</Text>
+                  <Text style={styles.prices}>???</Text>
                 </View>
               ) : (
                 <View>
-                  <Text style={styles.prices}>{this.state.price8}</Text>
+                  {this.state.gold < Number.parseInt(this.state.price8) ? (
+                    <View>
+                      <Text style={styles.poor}>{this.state.price8}</Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <Text style={styles.prices}>{this.state.price8}</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -1027,13 +1115,21 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {this.state.gold < Number.parseInt(this.state.itemPrices[9]) ? (
+              {this.state.rolled == "0" ? (
                 <View>
-                  <Text style={styles.poor}>{this.state.price9}</Text>
+                  <Text style={styles.prices}>???</Text>
                 </View>
               ) : (
                 <View>
-                  <Text style={styles.prices}>{this.state.price9}</Text>
+                  {this.state.gold < Number.parseInt(this.state.price9) ? (
+                    <View>
+                      <Text style={styles.poor}>{this.state.price9}</Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <Text style={styles.prices}>{this.state.price9}</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -1044,31 +1140,21 @@ export default class Shop extends Component {
                 style={[styles.smallButton]}
                 source={require("./assets/gold.png")}
               />
-              {this.state.gold < Number.parseInt(this.state.itemPrices[10]) ? (
+              {this.state.rolled == "0" ? (
                 <View>
-                  <Text style={styles.poor}>{this.state.price10}</Text>
+                  <Text style={styles.prices}>???</Text>
                 </View>
               ) : (
                 <View>
-                  <Text style={styles.prices}>{this.state.price10}</Text>
-                </View>
-              )}
-            </View>
-          </View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
-              />
-              {this.state.gold < Number.parseInt(this.state.itemPrices[11]) ==
-              1 ? (
-                <View>
-                  <Text style={styles.poor}>{this.state.price11}</Text>
-                </View>
-              ) : (
-                <View>
-                  <Text style={styles.prices}>{this.state.price11}</Text>
+                  {this.state.gold < Number.parseInt(this.state.price10) ? (
+                    <View>
+                      <Text style={styles.poor}>{this.state.price10}</Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <Text style={styles.prices}>{this.state.price10}</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -1169,10 +1255,23 @@ const styles = StyleSheet.create({
     width: screen.height / 28,
     height: screen.height / 28,
   },
+  roll: {
+    width: "80%",
+    height: "15%",
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 7,
+    marginTop: 10,
+  },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 20,
+    marginTop: screen.height / 16,
+  },
+  event: {
+    color: "#74D130",
+    fontSize: 20,
+    marginTop: screen.height / 45,
   },
   prices: {
     color: "#FFFFFF",

@@ -133,13 +133,18 @@ export default class App extends React.Component {
   };
 
   useGold = async (count) => {
+    console.log("param: " + count);
     const prevCount = await SecureStore.getItemAsync("inventory_gold");
+    console.log("how much do i FUCKING HAVE: " + prevCount);
     if (count > Number.parseInt(prevCount)) {
       console.log("error: not enough gold");
       return -1;
     }
     const newCount = Number.parseInt(prevCount) - count;
     await SecureStore.setItemAsync("inventory_gold", "" + newCount);
+    console.log(
+      "GOLDDDDDDDD: " + (await SecureStore.getItemAsync("inventory_gold"))
+    );
     return newCount;
   };
 
@@ -164,10 +169,10 @@ export default class App extends React.Component {
     return count;
   };
 
-  useGold = async (count) => {
+  useGems = async (count) => {
     const prevCount = await SecureStore.getItemAsync("inventory_gems");
     if (count > Number.parseInt(prevCount)) {
-      console.log("error: not enough gold");
+      console.log("error: not enough gems");
       return -1;
     }
     const newCount = Number.parseInt(prevCount) - count;
