@@ -77,7 +77,7 @@ export default class Details extends Component {
 
     let valuesSet = await SecureStore.getItemAsync("first_time_set");
     if (valuesSet == "true") {
-      return;
+      //   return;
     }
     await SecureStore.setItemAsync("first_time_set", "true");
 
@@ -149,48 +149,47 @@ export default class Details extends Component {
 
     // everything hardcoded for testing
 
-    // let hardcoded_plant = {
-    //   status: 2,
-    //   position: 1,
-    //   permanent: {
-    //     event: "none",
-    //     rarity: "R",
-    //     species: "stardust_nightshroom",
-    //     date_planted: "",
-    //     price: "550",
-    //   },
-    //   zero: { zero_image: "plantpot" },
-    //   one: {
-    //     one_image: "growing_rs",
-    //     grow_start: "",
-    //     grow_offset: 0,
-    //     grow_streak_length: 2,
-    //   },
-    //   two: {
-    //     two_image: "stardust_nightshroom2",
-    //     current_waters: 8,
-    //     water_start: "",
-    //     water_end: "2020-09-09T17:52:25.437-07:00",
-    //   },
-    //   three: {
-    //     three_image: "stardust_nightshroom3",
-    //     wilt_start: "",
-    //     wilt_end: "2020-09-12T17:52:25.437-07:00",
-    //   },
-    //   four: { four_image: "stardust_nightshroom4" },
-    // };
+    let hardcoded_plant = {
+      status: 2,
+      position: 1,
+      permanent: {
+        event: "none",
+        rarity: "R",
+        species: "stardust_nightshroom",
+        date_planted: "",
+        price: "550",
+      },
+      zero: { zero_image: "plantpot" },
+      one: {
+        one_image: "growing_r",
+        grow_start: "",
+        grow_offset: 0,
+        grow_streak_length: 2,
+      },
+      two: {
+        two_image: "stardust_nightshroom2",
+        current_waters: 8,
+        water_start: "",
+        water_end: "2020-09-16T17:52:25.437-07:00",
+      },
+      three: {
+        three_image: "stardust_nightshroom3",
+        wilt_start: "",
+        wilt_end: "2020-09-18T17:52:25.437-07:00",
+      },
+      four: { four_image: "stardust_nightshroom4" },
+    };
 
-    // let seeds2 = {
-    //   none: { C: 8, U: 50, R: 50 },
-    //   christmas: { C: 0, U: 0, R: 0 },
-    //   valentines: { C: 0, U: 0, R: 0 },
-    // };
-    // let seedsString2 = JSON.stringify(seeds2);
+    let seeds2 = {
+      none: { C: 8, U: 50, R: 50 },
+      welcome: { C: 0, U: 0, R: 0 },
+    };
+    let seedsString2 = JSON.stringify(seeds2);
 
-    // await SecureStore.setItemAsync("inventory_seeds", seedsString2);
+    await SecureStore.setItemAsync("inventory_seeds", seedsString2);
 
-    // let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
-    // await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
+    await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
   };
 
   getStats = async () => {

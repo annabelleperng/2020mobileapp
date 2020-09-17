@@ -14,7 +14,7 @@ import {
   TextInput,
   SafeAreaView,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
 import SeedUtils2 from "./SeedUtils2";
 import RewardUtils from "./RewardUtils";
@@ -59,10 +59,10 @@ export default class Shop extends Component {
 
       seeds: {
         none: { C: 0, U: 0, R: 0 },
-        welcome: { C: 0, U: 0, R: 0 }
+        welcome: { C: 0, U: 0, R: 0 },
         // christmas: { C: 0, U: 0, R: 0 },
         // valentines: { C: 0, U: 0, R: 0 }
-      }
+      },
     };
   }
 
@@ -104,7 +104,7 @@ export default class Shop extends Component {
     this.props.navigation.navigate("PlantView", {
       position: this.state.plant_position,
       event: e,
-      rarity: r
+      rarity: r,
     });
   };
 
@@ -121,9 +121,9 @@ export default class Shop extends Component {
             //   event: e,
             //   rarity: r
             // })
-            this.decrement(e, r)
+            this.decrement(e, r),
         },
-        { text: "cancel" }
+        { text: "cancel" },
       ],
       { cancelable: false }
     );
@@ -144,7 +144,7 @@ export default class Shop extends Component {
     return (
       <View
         style={{
-          flex: 1
+          flex: 1,
         }}
       >
         <SafeAreaView style={([styles.container], { flex: 1 })}>
@@ -153,21 +153,21 @@ export default class Shop extends Component {
               style={{
                 flex: 1,
                 backgroundColor: "#57423e",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <View
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    alignItems: "center"
+                    alignItems: "center",
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -175,7 +175,7 @@ export default class Shop extends Component {
                     style={{
                       flex: 1,
                       alignItems: "center",
-                      backgroundColor: "#000000"
+                      backgroundColor: "#000000",
                     }}
                   >
                     <Text style={styles.itemName1}>Regular</Text>
@@ -186,7 +186,7 @@ export default class Shop extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginTop: 0
+                    marginTop: 0,
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -210,7 +210,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/common_seed.png")}
+                          source={require("./assets/newicons/newcommonseed.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -227,7 +227,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/common_seed.png")}
+                          source={require("./assets/newicons/newuncommonseed.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -244,7 +244,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/common_seed.png")}
+                          source={require("./assets/newicons/newrareseed.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -259,7 +259,7 @@ export default class Shop extends Component {
                   backgroundColor: "#472b25",
                   alignItems: "center",
                   flexDirection: "row",
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
@@ -326,14 +326,14 @@ export default class Shop extends Component {
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    alignItems: "center"
+                    alignItems: "center",
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -341,7 +341,7 @@ export default class Shop extends Component {
                     style={{
                       flex: 1,
                       alignItems: "center",
-                      backgroundColor: "#000000"
+                      backgroundColor: "#000000",
                     }}
                   >
                     <Text style={styles.itemName1}>Welcome</Text>
@@ -352,7 +352,7 @@ export default class Shop extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginTop: 0
+                    marginTop: 0,
                     //   marginLeft: screen.width / 14,
                   }}
                 >
@@ -361,7 +361,7 @@ export default class Shop extends Component {
                     {this.state.seeds.welcome["C"] == 0 ? (
                       <Image
                         style={styles.items}
-                        source={require("./assets/uncommon_seed_bought.png")}
+                        source={require("./assets/newicons/newwelcomec.png")}
                       />
                     ) : (
                       <TouchableOpacity
@@ -369,7 +369,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/uncommon_seed.png")}
+                          source={require("./assets/newicons/newwelcomec.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -378,7 +378,7 @@ export default class Shop extends Component {
                     {this.state.seeds.welcome["U"] == 0 ? (
                       <Image
                         style={styles.items}
-                        source={require("./assets/uncommon_seed_bought.png")}
+                        source={require("./assets/newicons/newwelcomeu.png")}
                       />
                     ) : (
                       <TouchableOpacity
@@ -386,7 +386,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/uncommon_seed.png")}
+                          source={require("./assets/newicons/newwelcomeu.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -395,7 +395,7 @@ export default class Shop extends Component {
                     {this.state.seeds.welcome["R"] == 0 ? (
                       <Image
                         style={styles.items}
-                        source={require("./assets/uncommon_seed_bought.png")}
+                        source={require("./assets/newicons/newwelcomer.png")}
                       />
                     ) : (
                       <TouchableOpacity
@@ -403,7 +403,7 @@ export default class Shop extends Component {
                       >
                         <Image
                           style={styles.items}
-                          source={require("./assets/uncommon_seed.png")}
+                          source={require("./assets/newicons/newwelcomer.png")}
                         />
                       </TouchableOpacity>
                     )}
@@ -419,7 +419,7 @@ export default class Shop extends Component {
                   backgroundColor: "#472b25",
                   alignItems: "center",
                   flexDirection: "row",
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
@@ -635,7 +635,7 @@ export default class Shop extends Component {
                 style={{
                   flex: 4,
                   backgroundColor: "#57423e",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 {this.state.eventName != "" && this.state.eventName != null ? (
@@ -643,7 +643,7 @@ export default class Shop extends Component {
                     style={{
                       flexDirection: "row",
                       flex: 1,
-                      alignItems: "center"
+                      alignItems: "center",
                       //   marginLeft: screen.width / 14,
                     }}
                   >
@@ -670,7 +670,7 @@ export default class Shop extends Component {
                   <View
                     style={{
                       flexDirection: "row",
-                      marginTop: 0
+                      marginTop: 0,
                       //   marginLeft: screen.width / 14,
                     }}
                   >
@@ -780,7 +780,7 @@ export default class Shop extends Component {
                   alignItems: "center",
                   flexDirection: "row",
                   justifyContent: "center",
-                  marginBottom: 10
+                  marginBottom: 10,
                 }}
               >
                 <View style={{ flex: 0.2 }}></View>
@@ -843,7 +843,7 @@ export default class Shop extends Component {
                 style={{
                   flexDirection: "row",
                   flex: 1,
-                  alignItems: "center"
+                  alignItems: "center",
                   //   marginLeft: screen.width / 14,
                 }}
               >
@@ -851,7 +851,7 @@ export default class Shop extends Component {
                   style={{
                     flex: 1,
                     alignItems: "center",
-                    backgroundColor: "#000000"
+                    backgroundColor: "#000000",
                   }}
                 >
                   <Text style={styles.itemName1}>Launch Event</Text>
@@ -867,7 +867,7 @@ export default class Shop extends Component {
                   flex: 1,
                   backgroundColor: "#57423e",
                   flexDirection: "row",
-                  alignItems: "center"
+                  alignItems: "center",
                 }} // breed / cancel buttons
               >
                 {/* {this.state.selectedParents == 2 ? ( */}
@@ -875,7 +875,7 @@ export default class Shop extends Component {
                   <TouchableOpacity
                     onPress={() =>
                       navigate("PlantView", {
-                        position: this.state.plant_position
+                        position: this.state.plant_position,
                       })
                     }
                   >
@@ -924,17 +924,17 @@ const styles = StyleSheet.create({
     marginTop: screen.height / 80,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
-    height: screen.width / 7
+    height: screen.width / 7,
   },
   menuIcons: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginBottom: 10
+    marginBottom: 10,
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10
+    marginLeft: screen.width / 10,
   },
   pinkButton: {
     borderWidth: 2,
@@ -943,51 +943,51 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
   },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 20
+    marginTop: screen.height / 20,
   },
   prices: {
     color: "#FFFFFF",
-    fontSize: 16
+    fontSize: 16,
   },
   poor: {
     color: "#F5493D",
-    fontSize: 16
+    fontSize: 16,
   },
   bought: {
     color: "#B9C4C4",
-    fontSize: 16
+    fontSize: 16,
   },
   none: {
     color: "#ff0000",
-    fontSize: 16
+    fontSize: 16,
   },
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
     marginTop: screen.height / 50,
-    textAlign: "center"
+    textAlign: "center",
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
     marginBottom: screen.height / 70,
-    textAlign: "center"
+    textAlign: "center",
   },
   container: {
-    flex: 1
+    flex: 1,
     // marginTop: Constants.statusBarHeight
   },
   scrollView: {
-    backgroundColor: "pink"
+    backgroundColor: "pink",
     // marginHorizontal: 20
   },
   pinkButton2: {
@@ -1000,15 +1000,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fca",
     // color: "#fff",
     // fontSize: 30,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   whiteText: {
     color: "#000",
-    fontSize: 23
-  }
+    fontSize: 23,
+  },
 });
