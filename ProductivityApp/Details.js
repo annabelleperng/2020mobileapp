@@ -133,6 +133,9 @@ export default class Details extends Component {
     await SecureStore.setItemAsync("eventPic8", "");
     await SecureStore.setItemAsync("eventPic9", "");
     await SecureStore.setItemAsync("eventPic10", "");
+    await SecureStore.setItemAsync("rarity8", "");
+    await SecureStore.setItemAsync("rarity9", "");
+    await SecureStore.setItemAsync("rarity10", "");
 
     // x_plant
 

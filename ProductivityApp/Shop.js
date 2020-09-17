@@ -204,6 +204,8 @@ export default class Shop extends Component {
       await SecureStore.setItemAsync("bought6", "" + this.state.bought6);
       await SecureStore.setItemAsync("bought7", "" + this.state.bought7);
 
+      this.eventChance();
+
       let diff = lastRefreshed.diffNow().days;
       console.log("DIFF BIFF: " + diff);
       if (Number.parseInt(eventCountdown) > 0) {
@@ -226,12 +228,13 @@ export default class Shop extends Component {
         this.setState({ eventCountdown: -1, eventName: "" });
       } else {
         console.log("IM IN HERE BRO");
-        this.eventChance();
         await SecureStore.setItemAsync("event_countdown", "" + eventCountdown);
         this.setState({ eventName: eventName });
         await SecureStore.setItemAsync("price8", "" + this.state.price8);
         await SecureStore.setItemAsync("price9", "" + this.state.price9);
         await SecureStore.setItemAsync("price10", "" + this.state.price10);
+        await SecureStore.setItemAsync("rarity8", "" + this.state.rarity8);
+        await SecureStore.setItemAsync("rarity9", "" + this.state.rarity9);
         await SecureStore.setItemAsync("rarity10", "" + this.state.rarity10);
       }
     }
