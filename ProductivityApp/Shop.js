@@ -132,18 +132,6 @@ export default class Shop extends Component {
       });
     }
 
-    if ((eventName = "")) {
-      if (this.state.eventCountdown > 0) {
-        await SecureStore.setItemAsync("event_name", "" + this.state.eventName);
-        eventName = this.state.eventName;
-        await SecureStore.setItemAsync(
-          "event_countdown",
-          "" + this.state.eventCountdown
-        );
-        eventCountdown = "" + this.state.eventCountdown;
-      }
-    }
-
     console.log(
       "prevDay before lastRefreshed? " + prevDay.isBefore(lastRefreshed)
     );
@@ -268,6 +256,7 @@ export default class Shop extends Component {
           [priceKey]: "300",
           [picKey]: "welcomeRare",
         });
+        await SecureStore.setItemAsync(picKey, "welcomeRare");
         await SecureStore.setItemAsync(priceKey, "300");
       } else if (rarityRand > 50) {
         this.setState({
@@ -275,6 +264,7 @@ export default class Shop extends Component {
           [priceKey]: "225",
           [picKey]: "welcomeUncommon",
         });
+        await SecureStore.setItemAsync(picKey, "welcomeUncommon");
         await SecureStore.setItemAsync(priceKey, "225");
       } else {
         this.setState({
@@ -282,6 +272,7 @@ export default class Shop extends Component {
           [priceKey]: "150",
           [picKey]: "welcomeCommon",
         });
+        await SecureStore.setItemAsync(picKey, "welcomeCommon");
         await SecureStore.setItemAsync(priceKey, "150");
       }
     }
