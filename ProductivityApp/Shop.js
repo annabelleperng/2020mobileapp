@@ -218,7 +218,7 @@ export default class Shop extends Component {
         console.log("WHY THE FUCK ARE YOU HERE YO");
         await SecureStore.setItemAsync("rolled_today", this.state.rolled);
         await SecureStore.setItemAsync("event_countdown", "0");
-        await SecureStore.setItemAsync("event_name", "");
+        await SecureStore.setItemAsync("event_name", "" + this.state.eventName);
         await SecureStore.setItemAsync("bought8", "" + this.state.bought8);
         await SecureStore.setItemAsync("bought9", "" + this.state.bought9);
         await SecureStore.setItemAsync("bought10", "" + this.state.bought10);
