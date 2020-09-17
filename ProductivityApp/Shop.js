@@ -428,7 +428,7 @@ export default class Shop extends Component {
               <View style={{ flex: 1, alignItems: "flex-end" }}>
                 <Image
                   style={styles.smallButton}
-                  source={require("./assets/gem.png")}
+                  source={require("./assets/newicons/newgemplain.png")}
                 />
               </View>
             </View>
@@ -531,7 +531,7 @@ export default class Shop extends Component {
                 <TouchableOpacity onPress={() => this.buy(3)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/fertilizer.png")}
+                    source={require("./assets/newicons/newfertilizer.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -744,7 +744,7 @@ export default class Shop extends Component {
                 <TouchableOpacity onPress={() => this.buy(7)}>
                   <Image
                     style={styles.items}
-                    source={require("./assets/elixir.png")}
+                    source={require("./assets/newicons/newelixir.png")}
                   />
                 </TouchableOpacity>
               )}
@@ -1103,11 +1103,11 @@ export default class Shop extends Component {
             >
               <Image
                 style={styles.menuIcons}
-                source={require("./assets/shoplogo.png")}
+                source={require("./assets/newicons/newhouse.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.setGems()}
+              onPress={() => this.props.navigation.navigate("Garden2")}
               activeOpacity={0.5}
             >
               <Image
@@ -1116,21 +1116,21 @@ export default class Shop extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Shop")}
+              onPress={() => this.props.navigation.navigate("GemShop")}
               activeOpacity={0.5}
             >
               <Image
                 style={styles.menuIcons2}
-                source={require("./assets/shoplogo.png")}
+                source={require("./assets/newicons/newgem.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("GardenTesting")}
+              onPress={() => this.props.navigation.navigate("Almanac")}
               activeOpacity={0.5}
             >
               <Image
                 style={styles.menuIcons2}
-                source={require("./assets/shoplogo.png")}
+                source={require("./assets/newicons/newalmanac.png")}
               />
             </TouchableOpacity>
           </View>

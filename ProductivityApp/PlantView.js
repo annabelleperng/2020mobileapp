@@ -1241,7 +1241,7 @@ export default class GardenTesting extends Component {
           >
             <Image
               source={require("./assets/newicons/newfertilizer.png")}
-              style={styles.menuIcons}
+              style={styles.menuIcons2}
             ></Image>
           </TouchableOpacity>
         </View>
@@ -2275,8 +2275,8 @@ export default class GardenTesting extends Component {
                 // inventory item: water
                 > */}
                 <Image
-                  source={require("./assets/largewater.png")}
-                  style={styles.menuIcons}
+                  source={require("./assets/newicons/newwater.png")}
+                  style={styles.menuIcons2}
                 ></Image>
                 {/* </TouchableOpacity> */}
               </View>
