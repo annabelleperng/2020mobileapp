@@ -921,7 +921,7 @@ export default class GardenTesting extends Component {
 
       //   setTimeout(() => {
       //     this.setState({ inventory_set_check: true });
-      //   }, 3000);
+      //   }, 30000);
 
       this.setState({ inventory_set_check: true }); // for render to check
     }

@@ -77,7 +77,7 @@ export default class Details extends Component {
 
     let valuesSet = await SecureStore.getItemAsync("first_time_set");
     if (valuesSet == "true") {
-      //   return;
+      return;
     }
     await SecureStore.setItemAsync("first_time_set", "true");
 

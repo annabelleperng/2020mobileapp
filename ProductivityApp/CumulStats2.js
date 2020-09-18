@@ -104,6 +104,9 @@ export default class CumulStats2 extends React.Component {
       return <View></View>;
     }
 
+    // console.log(" morning countttt" + this.state.morning_count);
+    // console.log("mtp   " + this.state.morning_total_productivity);
+
     return (
       <View style={styles.container}>
         <TouchableOpacity style={{ marginTop: screen.height / 40 }}>

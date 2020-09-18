@@ -143,7 +143,7 @@ export default class CumulativeStats extends React.Component {
 
     return (
       <View style={styles.container}>
-        {this.state.sprint_count >= 0 ? (
+        {this.state.sprint_count <= 0 ? (
           <View>
             <Text style={styles.noSprints}>No data to show yet.</Text>
             <Text style={styles.noSprints}>

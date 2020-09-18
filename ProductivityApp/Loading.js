@@ -44,7 +44,7 @@ export default class Loading extends Component {
   pickAdvice() {
     let randNum = Math.floor(Math.random() * advice.length);
     let adv = advice[randNum];
-    return <Text style={{ color: "#fca", fontSize: 20 }}>{adv}</Text>;
+    return <Text style={{ color: "#dadada", fontSize: 20 }}>{adv}</Text>;
   }
 
   render() {
@@ -53,12 +53,12 @@ export default class Loading extends Component {
         <View
           style={{
             flex: 18,
-            backgroundColor: "#000",
+            backgroundColor: "#0c0c0c",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Text style={{ color: "#fca", fontSize: 30 }}>
+          <Text style={{ color: "#dadada", fontSize: 25 }}>
             Loading Components...
           </Text>
         </View>
@@ -70,10 +70,10 @@ export default class Loading extends Component {
             justifyContent: "center",
           }}
         >
-          <ActivityIndicator size="large" color="#ffc375" />
+          {/* <ActivityIndicator size="large" color="#ffbb39" /> */}
           <Image
             style={styles.loading_logo}
-            source={require("./assets/loadinglogo1.png")}
+            source={require("./assets/newicons/newloading.png")}
           />
         </View>
         <View
@@ -86,6 +86,14 @@ export default class Loading extends Component {
         >
           {this.pickAdvice()}
         </View>
+        <View
+          style={{
+            flex: 3,
+            backgroundColor: "#000",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        ></View>
       </View>
     );
   }

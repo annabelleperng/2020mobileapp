@@ -493,7 +493,7 @@ export default class Shop extends Component {
         </View> */}
         <View
           style={{
-            backgroundColor: "#334E33",
+            backgroundColor: "#000", //334E33
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -511,7 +511,7 @@ export default class Shop extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#334E33",
+                backgroundColor: "#000", //334E33
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -1260,12 +1260,12 @@ export default class Shop extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.toggleBees()}
+                onPress={() => this.props.navigation.navigate("Garden2")}
                 activeOpacity={0.5}
               >
                 <Image
-                  style={styles.menuIcons2}
-                  source={require("./assets/largebee.png")}
+                  style={styles.menuIcons35}
+                  source={require("./assets/newicons/newgarden.png")}
                 />
               </TouchableOpacity>
               <Text style={styles.smallWhiteText}>
@@ -1274,15 +1274,14 @@ export default class Shop extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Shop")}
+                onPress={() => this.props.navigation.navigate("GemShop")}
                 activeOpacity={0.5}
               >
                 <Image
                   style={styles.menuIcons2}
-                  source={require("./assets/largeshop34.png")}
+                  source={require("./assets/newicons/newgemplain.png")}
                 />
               </TouchableOpacity>
-              {/* <Text style={styles.smallWhiteText}>SHOP</Text> */}
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
@@ -1319,6 +1318,16 @@ const styles = StyleSheet.create({
     height: screen.width / 9,
     // marginLeft: screen.width / 10,
   },
+  menuIcons3: {
+    width: screen.width / 7.5,
+    height: screen.width / 7.5,
+    // marginLeft: screen.width / 10,
+  },
+  menuIcons35: {
+    width: screen.width / 8,
+    height: screen.width / 8,
+    // marginLeft: screen.width / 10,
+  },
   pinkButton: {
     borderWidth: 2,
     borderColor: "#ff576d",
@@ -1331,6 +1340,9 @@ const styles = StyleSheet.create({
   smallButton: {
     width: screen.height / 28,
     height: screen.height / 28,
+  },
+  leftTimesSmol: {
+    color: "#fff",
   },
   roll: {
     width: "80%",
