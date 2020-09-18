@@ -951,7 +951,7 @@ export default class Garden extends Component {
               <View style={{ flex: 1, alignItems: "flex-end" }}>
                 <Image
                   style={styles.smallButton}
-                  source={require("./assets/newicons/newgem.png")}
+                  source={require("./assets/newicons/newgemplain.png")}
                 />
               </View>
             </View>

@@ -1929,7 +1929,7 @@ export default class GardenTesting extends Component {
                   <View style={{ flex: 1, alignItems: "flex-end" }}>
                     <Image
                       style={styles.smallButton}
-                      source={require("./assets/gem.png")}
+                      source={require("./assets/newicons/newgemplain.png")}
                     />
                   </View>
                   <View style={{ flex: 1.5, alignItems: "flex-start" }}>
@@ -2198,7 +2198,7 @@ export default class GardenTesting extends Component {
               <View style={{ flex: 1, alignItems: "flex-end" }}>
                 <Image
                   style={styles.smallButton}
-                  source={require("./assets/gem.png")}
+                  source={require("./assets/newicons/newgemplain.png")}
                 />
               </View>
             </View>

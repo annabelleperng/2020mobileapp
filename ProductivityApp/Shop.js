@@ -1186,17 +1186,8 @@ export default class Shop extends Component {
         </View>
 
         <View style={{ flex: 1.3, backgroundColor: "#57423e" }}></View>
-        {/* <View
-          style={{
-            flex: 0.7,
-            backgroundColor: "#333333",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {console.log("gold: " + this.state.gold)}
-          <Text style={{ color: "#ffffff" }}> gold: {this.state.gold}</Text>
-        </View> */}
+
+        {/* 
         <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
           <View
             style={{
@@ -1243,6 +1234,69 @@ export default class Shop extends Component {
               />
             </TouchableOpacity>
           </View>
+        </View> */}
+
+        <View style={{ flex: 3, backgroundColor: "#0e0e0e" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
+              marginTop: (screen.height * 3) / 22 - screen.width / 4,
+              //   marginLeft: screen.width / 14,
+            }} // navigation icons
+          >
+            <View style={{ flex: 0.4 }}></View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Home")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons}
+                  source={require("./assets/newicons/newhouse.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.toggleBees()}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons2}
+                  source={require("./assets/largebee.png")}
+                />
+              </TouchableOpacity>
+              <Text style={styles.smallWhiteText}>
+                {this.state.inventory_bees}
+              </Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Shop")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons2}
+                  source={require("./assets/largeshop34.png")}
+                />
+              </TouchableOpacity>
+              {/* <Text style={styles.smallWhiteText}>SHOP</Text> */}
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Almanac")}
+                activeOpacity={0.5}
+              >
+                <Image
+                  style={styles.menuIcons3}
+                  source={require("./assets/newicons/newalmanac.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 0.4 }}></View>
+          </View>
         </View>
       </View>
     );
@@ -1257,13 +1311,13 @@ const styles = StyleSheet.create({
     height: screen.width / 7,
   },
   menuIcons: {
-    width: screen.width / 9,
-    height: screen.width / 9,
+    width: screen.width / 8.5,
+    height: screen.width / 8.5,
   },
   menuIcons2: {
     width: screen.width / 9,
     height: screen.width / 9,
-    marginLeft: screen.width / 10,
+    // marginLeft: screen.width / 10,
   },
   pinkButton: {
     borderWidth: 2,

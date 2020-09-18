@@ -63,6 +63,7 @@ export default class Settings extends React.Component {
     if (this.state.motivationUpdated == "0") {
       this.updateMotivation();
     }
+    const { navigate } = this.props.navigation;
 
     return (
       //music? colors?
@@ -123,9 +124,23 @@ export default class Settings extends React.Component {
           </View>
           <View style={{ flex: 0.1 }}></View>
         </View>
-        <View
-          style={{ flexDirection: "row", flex: 0.7, alignItems: "center" }}
-        ></View>
+        <View style={{ flexDirection: "row", flex: 0.7, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => navigate("Home")}>
+            <View
+              style={[
+                styles.pinkButton2,
+                {
+                  height:
+                    Platform.OS == "android"
+                      ? screen.width / 12
+                      : screen.width / 10,
+                },
+              ]}
+            >
+              <Text style={styles.smallWhiteText}>HOME</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -184,5 +199,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontSize: 20,
+  },
+  pinkButton2: {
+    borderWidth: 2,
+    borderColor: "#979797", //"#ff576d",
+    width: screen.width / 2.7,
+    height: screen.width / 12,
+    borderRadius: screen.width / 2,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: screen.width / 15,
   },
 });
