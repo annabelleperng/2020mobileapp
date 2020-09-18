@@ -130,7 +130,7 @@ export default class CumulStats2 extends React.Component {
           <VictoryAxis
             tickFormat={["Morning", "Afternoon", "Evening", "Night"]}
           />
-          <VictoryAxis dependentAxis tickFormat={(x) => `${x}%`} />
+          <VictoryAxis dependentAxis tickFormat={(x) => `${x}`} />
           <VictoryBar
             style={{
               data: { fill: (d) => "#83E130" },
@@ -188,7 +188,7 @@ export default class CumulStats2 extends React.Component {
           <VictoryAxis
             tickFormat={["Morning", "Afternoon", "Evening", "Night"]}
           />
-          <VictoryAxis dependentAxis tickFormat={(x) => `${x}%`} />
+          <VictoryAxis dependentAxis tickFormat={(x) => `${x}`} />
           <VictoryBar
             style={{
               data: { fill: (d) => "#83E130" },
