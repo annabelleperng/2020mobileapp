@@ -987,7 +987,7 @@ export default class Shop extends Component {
               <View style={{ textAlign: "center" }}>
                 <Text style={styles.event}>
                   {this.state.eventCountdown +
-                    " days left of the " +
+                    " days left for the " +
                     this.state.eventName.substring(0, 1).toUpperCase() +
                     this.state.eventName.substring(1) +
                     " event!"}
@@ -1221,7 +1221,7 @@ export default class Shop extends Component {
             >
               <Image
                 style={styles.menuIcons2}
-                source={require("./assets/largebee.png")}
+                source={require("./assets/newicons/newgarden.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
