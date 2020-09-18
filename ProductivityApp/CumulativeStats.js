@@ -143,12 +143,26 @@ export default class CumulativeStats extends React.Component {
 
     return (
       <View style={styles.container}>
-        {this.state.sprint_count <= 0 ? (
+        {this.state.sprint_count >= 0 ? (
           <View>
             <Text style={styles.noSprints}>No data to show yet.</Text>
             <Text style={styles.noSprints}>
               Start sprinting to get your statistics!
             </Text>
+            <View style={{ height: screen.height / 10 }}></View>
+            <TouchableOpacity
+              style={{
+                marginTop: screen.height / 40,
+                width: screen.width / 2,
+                alignSelf: "center",
+              }}
+            >
+              <Button
+                onPress={() => this.props.navigation.navigate("Home")}
+                title="HOME"
+                color="#35F2E9"
+              />
+            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.container}>
@@ -322,7 +336,8 @@ export default class CumulativeStats extends React.Component {
                     evening_total_happiness: this.state.evening_total_happiness,
                     night_total_happiness: this.state.night_total_happiness,
                     night_count: this.state.night_count,
-                    morning_total_productivity: this.state.total_productivity,
+                    morning_total_productivity: this.state
+                      .morning_total_productivity,
                     afternoon_total_productivity: this.state
                       .afternoon_total_productivity,
                     evening_total_productivity: this.state
