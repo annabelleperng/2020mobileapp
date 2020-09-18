@@ -111,6 +111,7 @@ export default class Details extends Component {
     await SecureStore.setItemAsync("afternoon_total_happiness", "0");
     await SecureStore.setItemAsync("evening_total_happiness", "0");
     await SecureStore.setItemAsync("night_total_happiness", "0");
+    await SecureStore.setItemAsync("total_productivity", "0");
     await SecureStore.setItemAsync("morning_total_productivity", "0");
     await SecureStore.setItemAsync("afternoon_total_productivity", "0");
     await SecureStore.setItemAsync("evening_total_productivity", "0");
