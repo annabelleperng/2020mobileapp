@@ -36,24 +36,24 @@ export default class CumulativeStats extends React.Component {
 
     this.state = {
       refreshed: 0,
-      longest_streak: -1,
+      longest_streak: 0,
       sprint_count: -1,
       morning_count: -1,
       afternoon_count: -1,
       evening_count: -1,
       night_count: -1,
-      total_unpaused: -1,
-      total_paused: -1,
-      total_happiness: -1,
-      morning_total_happiness: -1,
-      afternoon_total_happiness: -1,
-      evening_total_happiness: -1,
-      night_total_happiness: -1,
-      total_productivity: -1,
-      morning_total_productivity: -1,
-      afternoon_total_productivity: -1,
-      evening_total_productivity: -1,
-      night_total_productivity: -1,
+      total_unpaused: 0,
+      total_paused: 0,
+      total_happiness: 0,
+      morning_total_happiness: 0,
+      afternoon_total_happiness: 0,
+      evening_total_happiness: 0,
+      night_total_happiness: 0,
+      total_productivity: 0,
+      morning_total_productivity: 0,
+      afternoon_total_productivity: 0,
+      evening_total_productivity: 0,
+      night_total_productivity: 0,
     };
   }
 
@@ -143,9 +143,18 @@ export default class CumulativeStats extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>Total Sprints: {this.state.sprint_count}</Text>
-        <Text>Longest Streak: {this.state.longest_streak}</Text>
-        {/* <VictoryChart
+        {this.state.sprint_count <= 0 ? (
+          <View>
+            <Text style={styles.noSprints}>No data to show yet.</Text>
+            <Text style={styles.noSprints}>
+              Start sprinting to get your statistics!
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <Text>Total Sprints: {this.state.sprint_count}</Text>
+            <Text>Longest Streak: {this.state.longest_streak}</Text>
+            {/* <VictoryChart
           domainPadding={{
             x: [100, 100],
             y: [300, 300],
@@ -261,76 +270,80 @@ export default class CumulativeStats extends React.Component {
             y="time"
           />
         </VictoryChart> */}
-        <Text>
-          Average Focus Time Per Sprint:{" "}
-          {this.state.total_unpaused / this.state.sprint_count} minutes
-        </Text>
-        <Text>
-          Average Break Time Per Sprint:{" "}
-          {this.state.total_paused / this.state.sprint_count} minutes
-        </Text>
-        <Text>
-          Average Happiness During Sprints:{" "}
-          {this.state.total_happiness / this.state.sprint_count}
-        </Text>
-        <Text>
-          Average Productivity During Sprints:{" "}
-          {this.state.total_productivity / this.state.sprint_count}
-        </Text>
-        <VictoryPie
-          startAngle={-90}
-          endAngle={90}
-          animate={{
-            duration: 2000,
-            onLoad: { duration: 1000 },
-          }}
-          colorScale={["gold", "orange", "tomato", "navy"]}
-          data={[
-            { x: "Morning", y: this.state.morning_count },
-            { x: "Afternoon", y: this.state.afternoon_count },
-            { x: "Evening", y: this.state.evening_count },
-            { x: "Night", y: this.state.night_count },
-          ]}
-          // data={[
-          //   { x: "Morning", y: 3 },
-          //   { x: "Afternoon", y: 5 },
-          //   { x: "Evening", y: 2 },
-          //   { x: "Night", y: 8 },
-          // ]}
-          labels={({ datum }) => (datum.y > 0 ? `${datum.x}` : ``)}
-        />
-        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
-          <Button
-            onPress={() =>
-              this.props.navigation.navigate("CumulStats2", {
-                morning_count: this.state.morning_count,
-                afternoon_count: this.state.afternoon_count,
-                evening_count: this.state.evening_count,
-                night_count: this.state.night_count,
-                morning_total_happiness: this.state.morning_total_happiness,
-                afternoon_total_happiness: this.state.afternoon_total_happiness,
-                evening_total_happiness: this.state.evening_total_happiness,
-                night_total_happiness: this.state.night_total_happiness,
-                night_count: this.state.night_count,
-                morning_total_productivity: this.state.total_productivity,
-                afternoon_total_productivity: this.state
-                  .afternoon_total_productivity,
-                evening_total_productivity: this.state
-                  .evening_total_productivity,
-                night_total_productivity: this.state.night_total_productivity,
-              })
-            }
-            title="Details"
-            color="#35F2E9"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
-          <Button
-            onPress={() => this.props.navigation.navigate("Home")}
-            title="HOME"
-            color="#35F2E9"
-          />
-        </TouchableOpacity>
+            <Text>
+              Average Focus Time Per Sprint:{" "}
+              {this.state.total_unpaused / this.state.sprint_count} minutes
+            </Text>
+            <Text>
+              Average Break Time Per Sprint:{" "}
+              {this.state.total_paused / this.state.sprint_count} minutes
+            </Text>
+            <Text>
+              Average Happiness During Sprints:{" "}
+              {this.state.total_happiness / this.state.sprint_count}
+            </Text>
+            <Text>
+              Average Productivity During Sprints:{" "}
+              {this.state.total_productivity / this.state.sprint_count}
+            </Text>
+            <VictoryPie
+              startAngle={-90}
+              endAngle={90}
+              animate={{
+                duration: 2000,
+                onLoad: { duration: 1000 },
+              }}
+              colorScale={["gold", "orange", "tomato", "navy"]}
+              data={[
+                { x: "Morning", y: this.state.morning_count },
+                { x: "Afternoon", y: this.state.afternoon_count },
+                { x: "Evening", y: this.state.evening_count },
+                { x: "Night", y: this.state.night_count },
+              ]}
+              // data={[
+              //   { x: "Morning", y: 3 },
+              //   { x: "Afternoon", y: 5 },
+              //   { x: "Evening", y: 2 },
+              //   { x: "Night", y: 8 },
+              // ]}
+              labels={({ datum }) => (datum.y > 0 ? `${datum.x}` : ``)}
+            />
+            <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+              <Button
+                onPress={() =>
+                  this.props.navigation.navigate("CumulStats2", {
+                    morning_count: this.state.morning_count,
+                    afternoon_count: this.state.afternoon_count,
+                    evening_count: this.state.evening_count,
+                    night_count: this.state.night_count,
+                    morning_total_happiness: this.state.morning_total_happiness,
+                    afternoon_total_happiness: this.state
+                      .afternoon_total_happiness,
+                    evening_total_happiness: this.state.evening_total_happiness,
+                    night_total_happiness: this.state.night_total_happiness,
+                    night_count: this.state.night_count,
+                    morning_total_productivity: this.state.total_productivity,
+                    afternoon_total_productivity: this.state
+                      .afternoon_total_productivity,
+                    evening_total_productivity: this.state
+                      .evening_total_productivity,
+                    night_total_productivity: this.state
+                      .night_total_productivity,
+                  })
+                }
+                title="Details"
+                color="#35F2E9"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: screen.height / 40 }}>
+              <Button
+                onPress={() => this.props.navigation.navigate("Home")}
+                title="HOME"
+                color="#35F2E9"
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
@@ -338,7 +351,7 @@ export default class CumulativeStats extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 0,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -378,5 +391,10 @@ const styles = StyleSheet.create({
     color: "#74D130",
     fontSize: 15,
     marginTop: 3,
+  },
+  noSprints: {
+    textAlign: "center",
+    color: "#4AEAED",
+    fontSize: 40,
   },
 });
