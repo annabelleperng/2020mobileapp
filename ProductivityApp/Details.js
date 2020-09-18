@@ -106,6 +106,10 @@ export default class Details extends Component {
     // sprint statistics values
 
     await SecureStore.setItemAsync("sprint_count", "0");
+    await SecureStore.setItemAsync("morning_count", "0");
+    await SecureStore.setItemAsync("afternoon_count", "0");
+    await SecureStore.setItemAsync("evening_count", "0");
+    await SecureStore.setItemAsync("night_count", "0");
     await SecureStore.setItemAsync("total_happiness", "0");
     await SecureStore.setItemAsync("morning_total_happiness", "0");
     await SecureStore.setItemAsync("afternoon_total_happiness", "0");

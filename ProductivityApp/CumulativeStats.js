@@ -335,7 +335,6 @@ export default class CumulativeStats extends React.Component {
                       .afternoon_total_happiness,
                     evening_total_happiness: this.state.evening_total_happiness,
                     night_total_happiness: this.state.night_total_happiness,
-                    night_count: this.state.night_count,
                     morning_total_productivity: this.state
                       .morning_total_productivity,
                     afternoon_total_productivity: this.state
