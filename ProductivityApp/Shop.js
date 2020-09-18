@@ -141,6 +141,16 @@ export default class Shop extends Component {
       prevDay.isBefore(lastRefreshed)
     ) {
       console.log("REFRESHED TODAY!");
+      console.log("RARITY8: " + (await SecureStore.getItemAsync("rarity8")));
+      console.log("RARITY8 in state: " + this.state.rarity8);
+      console.log("RARITY9: " + (await SecureStore.getItemAsync("rarity9")));
+      console.log("RARITY9 in state: " + this.state.rarity9);
+      console.log("RARITY10: " + (await SecureStore.getItemAsync("rarity10")));
+      console.log("RARITY10 in state: " + this.state.rarity10);
+      console.log(
+        "MIRROR MIRROR ON THE WALL HOW MANY DAYS TIL DEATH: " +
+          (await SecureStore.getItemAsync("event_countdown"))
+      );
       // await SecureStore.setItemAsync("rolled_today", "0"); //for testing purposes
       // this.eventChance(); //for testing purposes
       let r = await SecureStore.getItemAsync("rolled_today");
