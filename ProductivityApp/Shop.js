@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
-  Alert,
+  Alert
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import RewardUtils from "./RewardUtils";
@@ -27,7 +27,7 @@ const rewardUtils = new RewardUtils();
 let eventPics = {
   welcomeCommon: require("./assets/newicons/newwelcomec.png"),
   welcomeUncommon: require("./assets/newicons/newwelcomeu.png"),
-  welcomeRare: require("./assets/newicons/newwelcomer.png"),
+  welcomeRare: require("./assets/newicons/newwelcomer.png")
 };
 
 export default class Shop extends Component {
@@ -75,7 +75,7 @@ export default class Shop extends Component {
       rarity10: "",
       eventPic8: null,
       eventPic9: null,
-      eventPic10: null,
+      eventPic10: null
     };
   }
 
@@ -105,7 +105,7 @@ export default class Shop extends Component {
       day: localTime.day,
       hour: 0,
       minute: 0,
-      second: 0,
+      second: 0
       // zone: localZone
     });
     console.log("local midnight: " + localMidnight.toISO());
@@ -128,7 +128,7 @@ export default class Shop extends Component {
         eventName: await SecureStore.getItemAsync("event_name"),
         eventCountdown: Number.parseInt(
           await SecureStore.getItemAsync("event_countdown")
-        ),
+        )
       });
     }
 
@@ -176,7 +176,7 @@ export default class Shop extends Component {
         bought10: await SecureStore.getItemAsync("bought10"),
         rarity8: await SecureStore.getItemAsync("rarity8"),
         rarity9: await SecureStore.getItemAsync("rarity9"),
-        rarity10: await SecureStore.getItemAsync("rarity10"),
+        rarity10: await SecureStore.getItemAsync("rarity10")
       });
       console.log("INITIALIZATION ROLL VALUE: " + this.state.rolled);
     }
@@ -264,7 +264,7 @@ export default class Shop extends Component {
         this.setState({
           [rarityKey]: "rare",
           [priceKey]: "300",
-          [picKey]: "welcomeRare",
+          [picKey]: "welcomeRare"
         });
         await SecureStore.setItemAsync(picKey, "welcomeRare");
         await SecureStore.setItemAsync(priceKey, "300");
@@ -272,7 +272,7 @@ export default class Shop extends Component {
         this.setState({
           [rarityKey]: "uncommon",
           [priceKey]: "225",
-          [picKey]: "welcomeUncommon",
+          [picKey]: "welcomeUncommon"
         });
         await SecureStore.setItemAsync(picKey, "welcomeUncommon");
         await SecureStore.setItemAsync(priceKey, "225");
@@ -280,7 +280,7 @@ export default class Shop extends Component {
         this.setState({
           [rarityKey]: "common",
           [priceKey]: "150",
-          [picKey]: "welcomeCommon",
+          [picKey]: "welcomeCommon"
         });
         await SecureStore.setItemAsync(picKey, "welcomeCommon");
         await SecureStore.setItemAsync(priceKey, "150");
@@ -321,7 +321,7 @@ export default class Shop extends Component {
     // }
   };
 
-  buy = async (pos) => {
+  buy = async pos => {
     console.log("buying");
     var boughtVar = "bought" + pos;
     console.log("boughtVar: " + this.state[boughtVar]);
@@ -353,8 +353,8 @@ export default class Shop extends Component {
         "Congratulations!\nA new common seed has been added to your inventory.",
         [
           {
-            text: "OKAY",
-          },
+            text: "OKAY"
+          }
         ],
         { cancelable: false }
       );
@@ -383,8 +383,8 @@ export default class Shop extends Component {
         "Congratulations!\nOne elixir potion has been added to your inventory.",
         [
           {
-            text: "OKAY",
-          },
+            text: "OKAY"
+          }
         ],
         { cancelable: false }
       );
@@ -474,7 +474,7 @@ export default class Shop extends Component {
         style={{
           flex: 1,
           backgroundColor: "#57423e",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         {/* <View
@@ -495,7 +495,7 @@ export default class Shop extends Component {
           style={{
             backgroundColor: "#000", //334E33
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           {console.log("STATE GEMS: " + this.state.gems)}
@@ -513,7 +513,7 @@ export default class Shop extends Component {
               style={{
                 backgroundColor: "#000", //334E33
                 flexDirection: "row",
-                alignItems: "center",
+                alignItems: "center"
               }}
             >
               <View style={{ flex: 2, alignItems: "flex-end" }}>
@@ -545,7 +545,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center",
+              alignItems: "center"
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -572,7 +572,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0,
+              marginTop: 0
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -646,7 +646,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -758,7 +758,7 @@ export default class Shop extends Component {
             style={{
               flexDirection: "row",
               flex: 1,
-              alignItems: "center",
+              alignItems: "center"
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -785,7 +785,7 @@ export default class Shop extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: 0,
+              marginTop: 0
               //   marginLeft: screen.width / 14,
             }}
           >
@@ -860,7 +860,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -961,7 +961,7 @@ export default class Shop extends Component {
             style={{
               flex: 5,
               backgroundColor: "#57423e",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
             <TouchableOpacity
@@ -980,7 +980,7 @@ export default class Shop extends Component {
             style={{
               flex: 5,
               backgroundColor: "#57423e",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
             {this.state.eventName != "" && this.state.eventName != null ? (
@@ -1001,7 +1001,7 @@ export default class Shop extends Component {
                 style={{
                   flexDirection: "row",
                   flex: 1,
-                  alignItems: "center",
+                  alignItems: "center"
                   //   marginLeft: screen.width / 14,
                 }}
               >
@@ -1037,7 +1037,7 @@ export default class Shop extends Component {
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: 0,
+                  marginTop: 0
                   //   marginLeft: screen.width / 14,
                 }}
               >
@@ -1103,7 +1103,7 @@ export default class Shop extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <View style={{ flex: 0.2 }}></View>
@@ -1242,7 +1242,7 @@ export default class Shop extends Component {
               flexDirection: "row",
               justifyContent: "center",
               //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
-              marginTop: (screen.height * 3) / 22 - screen.width / 4,
+              marginTop: (screen.height * 3) / 22 - screen.width / 4
               //   marginLeft: screen.width / 14,
             }} // navigation icons
           >
@@ -1307,25 +1307,25 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: screen.height / 80,
     width: screen.width / 7,
-    height: screen.width / 7,
+    height: screen.width / 7
   },
   menuIcons: {
     width: screen.width / 8.5,
-    height: screen.width / 8.5,
+    height: screen.width / 8.5
   },
   menuIcons2: {
     width: screen.width / 9,
-    height: screen.width / 9,
+    height: screen.width / 9
     // marginLeft: screen.width / 10,
   },
   menuIcons3: {
     width: screen.width / 7.5,
-    height: screen.width / 7.5,
+    height: screen.width / 7.5
     // marginLeft: screen.width / 10,
   },
   menuIcons35: {
     width: screen.width / 8,
-    height: screen.width / 8,
+    height: screen.width / 8
     // marginLeft: screen.width / 10,
   },
   pinkButton: {
@@ -1335,14 +1335,17 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28,
+    height: screen.height / 28
   },
   leftTimesSmol: {
-    color: "#fff",
+    color: "#fff"
+  },
+  leftTimesSmol: {
+    color: "#fff"
   },
   roll: {
     width: "80%",
@@ -1350,40 +1353,40 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 7,
-    marginTop: 10,
+    marginTop: 10
   },
   comingSoon: {
     color: "#74D130",
     fontSize: 40,
-    marginTop: screen.height / 16,
+    marginTop: screen.height / 16
   },
   event: {
     color: "#74D130",
     fontSize: 20,
-    marginTop: screen.height / 45,
+    marginTop: screen.height / 45
   },
   prices: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 16
   },
   poor: {
     color: "#F5493D",
-    fontSize: 16,
+    fontSize: 16
   },
   bought: {
     color: "#B9C4C4",
-    fontSize: 16,
+    fontSize: 16
   },
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
     marginTop: screen.height / 50,
-    textAlign: "center",
+    textAlign: "center"
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
     marginBottom: screen.height / 70,
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });

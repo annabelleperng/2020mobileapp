@@ -22,6 +22,7 @@ import {
 import SeedUtils from "./SeedUtils";
 import SeedUtils2 from "./SeedUtils2";
 import RewardUtils from "./RewardUtils";
+import AlmanacUtils from "./AlmanacUtils";
 
 import Loading from "./Loading";
 
@@ -35,6 +36,7 @@ import { getNativeSourceAndFullInitialStatusForLoadAsync } from "expo-av/build/A
 
 const screen = Dimensions.get("window");
 const seedUtils = new SeedUtils2();
+const almanacUtils = new AlmanacUtils();
 
 let images = {
   plantpot: require("./assets/plantpotlarge.png"),
@@ -295,7 +297,6 @@ let index = {
   c28: "startrail_dandelion",
   c29: "stocky_corn",
   c30: "summer_cactus",
-  // c31: "tilted_rose2",
   c31: "undersea_pineapple",
   c32: "white_cupcake",
   c33: "white_frostflower",
@@ -353,7 +354,12 @@ export default class Garden extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { myPlants: seedUtils.getMyPlants() };
+    this.assureRefresh();
+    this.state = {
+      myPlants: "",
+      plantsInitialized: false,
+      plantsInitialized2: false
+    };
   }
 
   getIndex = r => {
@@ -373,7 +379,36 @@ export default class Garden extends Component {
     return index;
   };
 
+  assureRefresh = () => {
+    //empty
+  };
+
+  initializePlants = async () => {
+    almanacUtils.createAlmanac();
+    this.setState({
+      plantsInitialized: true,
+      myPlants: SecureStore.getItemAsync("almanac"),
+      plantsInitialized2: true
+    });
+  };
+
+  renderLoading() {
+    return <Loading />;
+  }
+
   render() {
+    // console.log("rendering!!");
+    this.assureRefresh();
+    if (this.state.plantsInitialized == false) this.initializePlants();
+    if (this.state.plantsInitialized2 == false) {
+      return this.renderLoading();
+    } else {
+      return this.renderNormal();
+    }
+  }
+
+  renderNormal() {
+    // this.assureRefresh();
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
     return (
       <SafeAreaView>
@@ -402,7 +437,9 @@ export default class Garden extends Component {
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.myPlants[index[this.getIndex("c")]] > 0 ? (
+                  {this.state.myPlants["none"]["common"]["yellow_pinwheel"][
+                    "count"
+                  ] > 0 ? (
                     <Image
                       style={styles.plants}
                       source={images[index[currentIndex]]}
