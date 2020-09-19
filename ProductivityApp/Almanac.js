@@ -384,10 +384,9 @@ export default class Garden extends Component {
   };
 
   initializePlants = async () => {
-    almanacUtils.createAlmanac();
     this.setState({
       plantsInitialized: true,
-      myPlants: SecureStore.getItemAsync("almanac"),
+      myPlants: await SecureStore.getItemAsync("almanac"),
       plantsInitialized2: true
     });
   };
