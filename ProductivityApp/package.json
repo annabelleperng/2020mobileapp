@@ -36,7 +36,8 @@
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.9",
     "victory": "^34.3.5",
-    "victory-native": "^34.3.0"
+    "victory-native": "^34.3.0",
+    "expo-font": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
