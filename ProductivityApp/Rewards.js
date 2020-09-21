@@ -201,7 +201,7 @@ export default class Rewards extends React.Component {
               style={styles.tinyLogoCenter}
               source={require("./assets/water.png")}
             />
-            <Text style={{ textAlign: "center" }}>
+            <Text style={{ textAlign: "center", color: "#ffa959" }}>
               {"+" + this.state.water + " water"}
             </Text>
           </View>
@@ -216,7 +216,7 @@ export default class Rewards extends React.Component {
               style={styles.tinyLogoCenter}
               source={require("./assets/bee.png")}
             />
-            <Text style={{ textAlign: "center" }}>
+            <Text style={{ textAlign: "center", color: "#ffa959" }}>
               {"+" + this.state.bees + " bees"}
             </Text>
           </View>
@@ -231,13 +231,15 @@ export default class Rewards extends React.Component {
               style={styles.tinyLogoCenter}
               source={require("./assets/gold.png")}
             />
-            <Text style={{ textAlign: "center" }}>
+            <Text style={{ textAlign: "center", color: "#ffa959" }}>
               {"+" + this.state.gold + " gold"}
             </Text>
           </View>
           {/* </View> */}
         </View>
-        <Text>{this.state.timeTilBee + " minutes 'til your next bee!"}</Text>
+        <Text style={{ color: "#ffa959" }}>
+          {this.state.timeTilBee + " minutes 'til your next bee!"}
+        </Text>
 
         <TouchableOpacity style={{ marginTop: screen.width / 4 }}>
           <Button
@@ -246,8 +248,8 @@ export default class Rewards extends React.Component {
                 refresh: true,
               })
             }
-            title="Go back home"
-            color="#35F2E9" //button bg for android, text for ios
+            title="Back to Home"
+            color="#ff3d74" //button bg for android, text for ios
           />
         </TouchableOpacity>
       </View>
@@ -260,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#46DC46",
+    backgroundColor: "#222",
   },
   tinyLogoCenter: {
     width: screen.width / 15,
@@ -283,14 +285,16 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginTop: 3,
     marginBottom: 25,
-    color: "#CA3DD4",
+    color: "#73bed9",
     textAlign: "center",
+    fontFamily: "Raleway-Regular", //"Quicksand-Medium",
   },
   yay: {
     fontSize: 20,
     marginTop: 5,
-    color: "#CA3DD4",
+    color: "#74d130",
     textAlign: "center",
+    fontFamily: "NanumGothic-Regular",
   },
   norm: {
     fontSize: 15,

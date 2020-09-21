@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontSize: 20,
+    fontFamily: "Assistant-SemiBold",
   },
   counterText: {
     fontSize: 50,
@@ -266,10 +267,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
     justifyContent: "center",
+    fontFamily: "SignikaNegative-Regular",
   },
   red: {
     color: "#ff3d74",
     fontSize: 20,
+    fontFamily: "SignikaNegative-Regular",
   },
   containerChopped: {
     flex: 1,

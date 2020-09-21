@@ -1373,6 +1373,7 @@ const styles = StyleSheet.create({
   },
   comingSoon: {
     color: "#74D130",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 40,
     marginTop: screen.height / 16,
   },
@@ -1380,6 +1381,7 @@ const styles = StyleSheet.create({
     color: "#74D130",
     fontSize: 20,
     marginTop: screen.height / 45,
+    fontFamily: "SignikaNegative-Regular",
   },
   prices: {
     color: "#FFFFFF",
@@ -1396,12 +1398,14 @@ const styles = StyleSheet.create({
   itemName1: {
     color: "#FFFFFF",
     fontSize: 15,
+    fontFamily: "SignikaNegative-Regular",
     marginTop: screen.height / 50,
     textAlign: "center",
   },
   itemName2: {
     color: "#FFFFFF",
     fontSize: 15,
+    fontFamily: "SignikaNegative-Regular",
     marginBottom: screen.height / 70,
     textAlign: "center",
   },

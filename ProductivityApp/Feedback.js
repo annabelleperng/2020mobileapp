@@ -187,7 +187,7 @@ export default class Feedback extends Component {
                   })
                 }
                 title="Submit!"
-                color="#35F2E9" //button bg for android, text for ios
+                color="#ffa959" //button bg for android, text for ios
               />
             </TouchableOpacity>
           </View>
@@ -202,13 +202,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#46DC46",
+    backgroundColor: "#222",
   },
   welcome: {
     fontSize: 20,
     textAlign: "center",
-    color: "#CA3DD4",
+    color: "#ff3d74",
     margin: 10,
+    fontFamily: "Quicksand-Medium",
   },
   instructions: {
     textAlign: "center",

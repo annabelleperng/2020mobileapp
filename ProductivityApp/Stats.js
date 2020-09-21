@@ -348,11 +348,32 @@ export default class App extends React.Component {
             x={180}
             y={30}
             textAnchor="middle"
+            style={{ fill: "white" }}
           />
-          <VictoryAxis tickFormat={["Sprint time", "Break time"]} />
-          <VictoryAxis dependentAxis tickFormat={(x) => `${x}\nmins`} />
+
+          <VictoryAxis
+            tickFormat={["Sprint time", "Break time"]}
+            style={{
+              axis: { stroke: "white" },
+              axisLabel: { padding: 5, fill: "white" },
+              ticks: { stroke: "white", size: 5 },
+              tickLabels: { padding: 5, fill: "white" },
+            }}
+          />
+
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(x) => `${x}\nmins`}
+            style={{
+              axis: { stroke: "white" },
+              axisLabel: { padding: 5, fill: "white" },
+              ticks: { stroke: "white", size: 5 },
+              tickLabels: { padding: 5, fill: "white" },
+            }}
+          />
+
           <VictoryBar
-            style={{ data: { fill: (d) => "#74D130" } }}
+            style={{ data: { fill: (d) => "#ff3d74" } }}
             animate={{
               duration: 2000,
               onLoad: { duration: 1000 },
@@ -411,7 +432,7 @@ export default class App extends React.Component {
               })
             }
             title="Okay!"
-            color="#35F2E9" //button bg for android, text for ios
+            color="#d9d9d9" //button bg for android, text for ios
           />
         </TouchableOpacity>
       </View>
@@ -425,41 +446,46 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5fcff",
+    backgroundColor: "#222222",
   },
   leftTimes: {
     textAlign: "left",
-    color: "#CA3DD4",
-    fontSize: 30,
+    color: "#ffbb00",
+    fontSize: 25,
     fontWeight: "bold",
     marginBottom: 5,
+    fontFamily: "SignikaNegative-Regular",
   },
   rightTimes: {
     textAlign: "right",
-    color: "#CA3DD4",
-    fontSize: 30,
+    color: "#ffbb00",
+    fontSize: 25,
     fontWeight: "bold",
     marginBottom: 1,
+    fontFamily: "SignikaNegative-Regular",
   },
   leftTimesSmol: {
     textAlign: "left",
-    color: "#4AEAED",
+    color: "#74d130",
     fontSize: 25,
     marginBottom: 1,
+    fontFamily: "SignikaNegative-Regular",
   },
   rightTimesSmol: {
     textAlign: "right",
-    color: "#4AEAED",
+    color: "#74d130",
     fontSize: 25,
     marginBottom: 5,
+    fontFamily: "SignikaNegative-Regular",
   },
   pic: {
     width: screen.width / 10,
     height: screen.width / 10,
   },
   encourage: {
-    color: "#74D130",
-    fontSize: 15,
+    color: "#ff4f7d",
+    fontFamily: "Quicksand-Medium",
+    fontSize: 20,
     marginTop: 3,
   },
 });

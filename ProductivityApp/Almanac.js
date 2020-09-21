@@ -17,7 +17,7 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  Modal
+  Modal,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import SeedUtils2 from "./SeedUtils2";
@@ -263,7 +263,7 @@ let images = {
   blue_daisyA: require("./assets/almanac/blue_daisyA.png"),
 
   amethyst_spikeplant: require("./assets/plants/amethyst_spikeplant2.png"),
-  amethyst_spikeplantA: require("./assets/almanac/amethyst_spikeplantA.png")
+  amethyst_spikeplantA: require("./assets/almanac/amethyst_spikeplantA.png"),
 };
 
 let index = {
@@ -342,7 +342,7 @@ let index = {
   r10: "conchy_flower",
   r11: "blue_dames-rocket",
   r12: "blue_daisy",
-  r13: "amethyst_spikeplant"
+  r13: "amethyst_spikeplant",
 };
 
 let ic = 1;
@@ -370,11 +370,11 @@ export default class Garden extends Component {
       uncommons: 25,
       rares: 13,
 
-      bigDick: 0
+      bigDick: 0,
     };
   }
 
-  getIndex = r => {
+  getIndex = (r) => {
     if (ic > this.state.commons) ic = 1;
     if (iu > this.state.uncommons) iu = 1;
     if (ir > this.state.rares) ir = 1;
@@ -395,18 +395,17 @@ export default class Garden extends Component {
     return index;
   };
 
-  getIndex2 = r => {
+  getIndex2 = (r) => {
     if (ic2 > this.state.commons) ic2 = 1;
     if (iu2 > this.state.uncommons) iu2 = 1;
     if (ir2 > this.state.rares) ir2 = 1;
 
     let index = "";
     if (r == "c") {
-      
       index = r + ic2;
-      console.log("INDEX BEFORE " + index)
+      console.log("INDEX BEFORE " + index);
       ic2++;
-      console.log("INDEX AFTER " + index)
+      console.log("INDEX AFTER " + index);
     } else if (r == "u") {
       index = r + iu2;
       iu2++;
@@ -432,8 +431,9 @@ export default class Garden extends Component {
     // console.log(JSON.stringify(plants));
     this.setState({
       myPlants: plants,
-      plantsInitialized2: true
+      plantsInitialized2: true,
     });
+    // console.log(this.state);
   };
 
   renderLoading() {
@@ -450,16 +450,13 @@ export default class Garden extends Component {
     }
   }
 
-  
   renderNormal() {
     // this.assureRefresh();
     const margin = (screen.height * 4) / 22 - screen.width / 3.5;
 
-    
-    if(this.state.bigDick ==0)
-    {
+    if (this.state.bigDick == 0) {
       i = this.getIndex2("c");
-      this.setState({bigDick: 1})
+      this.setState({ bigDick: 1 });
     }
     return (
       <SafeAreaView>
@@ -468,14 +465,14 @@ export default class Garden extends Component {
             style={{
               flex: 1,
               backgroundColor: "#57423e",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <View
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View style={{ flex: 0.1, marginTop: 10 }}>
@@ -483,7 +480,7 @@ export default class Garden extends Component {
               </View>
               <View
                 style={{
-                  flexDirection: "row"
+                  flexDirection: "row",
                   // marginTop: margin
                 }} // first row of plants
               >
@@ -554,33 +551,33 @@ export default class Garden extends Component {
               style={{
                 flex: 2,
                 backgroundColor: "#000000",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }}
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  {console.log("CAN'T TAKE BIG DICK " + this.state.myPlants["none"]["common"][
-                        index[i]]["first_obtained"])}
-                  {console.log("I AINT FUCKIN WIT A PUSSY "  + i)}
                   {console.log(
-                    "bad bitch put the pussy on me " + index[i]
+                    "CAN'T TAKE BIG DICK " +
+                      this.state.myPlants["none"]["common"][index[i]][
+                        "first_obtained"
+                      ]
                   )}
+                  {console.log("I AINT FUCKIN WIT A PUSSY " + i)}
+                  {console.log("bad bitch put the pussy on me " + index[i])}
                   <Text style={{ color: "#ffffff" }}>
                     {
-                      this.state.myPlants["none"]["common"][
-                        index[i]]["first_obtained"]
+                      this.state.myPlants["none"]["common"][index[i]][
+                        "first_obtained"
+                      ]
                     }
                   </Text>
                   <Text style={{ color: "#ffffff" }}>
-                    {
-                      this.state.myPlants["none"]["common"][
-                        index[i]]["count"]
-                    }
+                    {this.state.myPlants["none"]["common"][index[i]]["count"]}
                   </Text>
                 </View>
               </View>
@@ -590,13 +587,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -666,13 +663,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -741,89 +738,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
-                }} // first row of plants
-              >
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.myPlants["none"]["common"][
-                    index[this.getIndex("c")]
-                  ]["count"] > 0 ? (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex]]}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex] + "A"]}
-                    />
-                  )}
-                </View>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.myPlants["none"]["common"][
-                    index[this.getIndex("c")]
-                  ]["count"] > 0 ? (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex]]}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex] + "A"]}
-                    />
-                  )}
-                </View>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.myPlants["none"]["common"][
-                    index[this.getIndex("c")]
-                  ]["count"] > 0 ? (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex]]}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex] + "A"]}
-                    />
-                  )}
-                </View>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  {this.state.myPlants["none"]["common"][
-                    index[this.getIndex("c")]
-                  ]["count"] > 0 ? (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex]]}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.plants}
-                      source={images[index[currentIndex] + "A"]}
-                    />
-                  )}
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flex: 4,
-                backgroundColor: "#57423e",
-                alignItems: "center"
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -893,13 +814,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -969,13 +890,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1045,13 +966,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1121,13 +1042,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1197,7 +1118,83 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: margin,
+                }} // first row of plants
+              >
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.myPlants["none"]["common"][
+                    index[this.getIndex("c")]
+                  ]["count"] > 0 ? (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex]]}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex] + "A"]}
+                    />
+                  )}
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.myPlants["none"]["common"][
+                    index[this.getIndex("c")]
+                  ]["count"] > 0 ? (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex]]}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex] + "A"]}
+                    />
+                  )}
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.myPlants["none"]["common"][
+                    index[this.getIndex("c")]
+                  ]["count"] > 0 ? (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex]]}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex] + "A"]}
+                    />
+                  )}
+                </View>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  {this.state.myPlants["none"]["common"][
+                    index[this.getIndex("c")]
+                  ]["count"] > 0 ? (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex]]}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.plants}
+                      source={images[index[currentIndex] + "A"]}
+                    />
+                  )}
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 4,
+                backgroundColor: "#57423e",
+                alignItems: "center",
               }}
             >
               <View style={{ flex: 0.1, marginTop: 20 }}>
@@ -1205,7 +1202,7 @@ export default class Garden extends Component {
               </View>
               <View
                 style={{
-                  flexDirection: "row"
+                  flexDirection: "row",
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1275,13 +1272,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1351,13 +1348,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1427,13 +1424,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1503,13 +1500,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1579,13 +1576,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1655,13 +1652,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1731,7 +1728,7 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View style={{ flex: 0.1, marginTop: 20 }}>
@@ -1739,7 +1736,7 @@ export default class Garden extends Component {
               </View>
               <View
                 style={{
-                  flexDirection: "row"
+                  flexDirection: "row",
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1809,13 +1806,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1885,13 +1882,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -1961,13 +1958,13 @@ export default class Garden extends Component {
               style={{
                 flex: 4,
                 backgroundColor: "#57423e",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: margin
+                  marginTop: margin,
                 }} // first row of plants
               >
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -2041,7 +2038,7 @@ export default class Garden extends Component {
                   flexDirection: "row",
                   justifyContent: "center",
                   //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
-                  marginTop: (screen.height * 3) / 22 - screen.width / 4
+                  marginTop: (screen.height * 3) / 22 - screen.width / 4,
                   //   marginLeft: screen.width / 14,
                 }} // navigation icons
               >
@@ -2094,15 +2091,15 @@ export default class Garden extends Component {
 const styles = StyleSheet.create({
   plants: {
     width: screen.width / 3.5,
-    height: screen.width / 3.5
+    height: screen.width / 3.5,
   },
   menuIcons: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
   },
   menuIcons2: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
     // marginLeft: screen.width / 10,
   },
   pinkButton: {
@@ -2112,24 +2109,24 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
   },
   notif: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
     // marginBottom: 25
   },
   hidden: {
     width: 0,
-    height: 0
+    height: 0,
   },
   whiteText: {
     color: "#000",
-    fontSize: 26
+    fontSize: 26,
   },
   pinkButton2: {
     borderWidth: 2,
@@ -2141,12 +2138,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fca",
     // color: "#fff",
     // fontSize: 30,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   tinyWhiteText: {
     // color: "#ff547c",
@@ -2157,7 +2154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -2168,25 +2165,25 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
