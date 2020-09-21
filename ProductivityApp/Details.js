@@ -22,6 +22,8 @@ import {
 
 import DateTime from "luxon/src/datetime.js";
 import SeedUtils2 from "./SeedUtils2";
+import Loading from "./Loading";
+import * as Font from "expo-font";
 
 import * as SecureStore from "expo-secure-store";
 import AlmanacUtils from "./AlmanacUtils";
@@ -47,6 +49,7 @@ export default class Details extends Component {
       totalTime: 0,
       unpausedRatio: 0,
       pausedRatio: 0,
+      fontsLoaded: false,
     };
   }
 
@@ -216,6 +219,43 @@ export default class Details extends Component {
     await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
   };
 
+  loadAllFonts = () => {
+    if (this.state.fontsLoaded == true) return;
+    Font.loadAsync({
+      "AlegreyaSansSC-Medium": require("./assets/fonts/AlegreyaSansSC-Medium.ttf"),
+      "AlegreyaSansSC-MediumItalic": require("./assets/fonts/AlegreyaSansSC-MediumItalic.ttf"),
+      "AlegreyaSansSC-Regular": require("./assets/fonts/AlegreyaSansSC-Regular.ttf"),
+
+      "Assistant-Light": require("./assets/fonts/Assistant-Light.ttf"),
+      "Assistant-SemiBold": require("./assets/fonts/Assistant-SemiBold.ttf"),
+      "Assistant-Regular": require("./assets/fonts/Assistant-Regular.ttf"),
+
+      Dosis: require("./assets/fonts/Dosis.ttf"),
+
+      JosefinSans: require("./assets/fonts/JosefinSans.ttf"),
+      "JosefinSans-Italic": require("./assets/fonts/JosefinSans-Italic.ttf"),
+
+      "NanumGothic-Bold": require("./assets/fonts/NanumGothic-Bold.ttf"),
+      "NanumGothic-ExtraBold": require("./assets/fonts/NanumGothic-ExtraBold.ttf"),
+      "NanumGothic-Regular": require("./assets/fonts/NanumGothic-Regular.ttf"),
+
+      "Quicksand-Bold": require("./assets/fonts/Quicksand-Bold.ttf"),
+      "Quicksand-Light": require("./assets/fonts/Quicksand-Light.ttf"),
+      "Quicksand-Medium": require("./assets/fonts/Quicksand-Medium.ttf"),
+      "Quicksand-Regular": require("./assets/fonts/Quicksand-Regular.ttf"),
+      "Quicksand-SemiBold": require("./assets/fonts/Quicksand-SemiBold.ttf"),
+
+      Raleway: require("./assets/fonts/Raleway.ttf"),
+      "Raleway-Light": require("./assets/fonts/Raleway-Light.ttf"),
+      "Raleway-Regular": require("./assets/fonts/Raleway-Regular.ttf"),
+      "Raleway-Italic": require("./assets/fonts/Raleway-Italic.ttf"),
+      "Raleway-Medium": require("./assets/fonts/Raleway-Medium.ttf"),
+
+      "SignikaNegative-Regular": require("./assets/fonts/SignikaNegative-Regular.ttf"),
+      "SignikaNegative-Light": require("./assets/fonts/SignikaNegative-Light.ttf"),
+    }).then(() => this.setState({ fontsLoaded: true }));
+  };
+
   getStats = async () => {
     if (this.state.ltStats == false) {
       this.setState({ ltStats: true });
@@ -274,6 +314,10 @@ export default class Details extends Component {
   render() {
     this.getStats();
     const { navigate } = this.props.navigation;
+    this.loadAllFonts();
+    if (!this.state.fontsLoaded) {
+      return <Loading />;
+    }
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
         <View
@@ -292,15 +336,17 @@ export default class Details extends Component {
               style={{
                 textAlign: "center",
                 fontSize: 30,
+                fontFamily: "Raleway-Medium",
               }}
             >
-              Time to get grinding!{" "}
+              Time to get grinding!
             </Text>
             <Text></Text>
             <Text
               style={{
                 textAlign: "center",
                 fontSize: 18,
+                fontFamily: "Raleway-Medium",
               }}
             >
               Start a sprint now or
@@ -309,6 +355,7 @@ export default class Details extends Component {
               style={{
                 textAlign: "center",
                 fontSize: 18,
+                fontFamily: "Raleway-Medium",
               }}
             >
               view your past statistics!
@@ -349,9 +396,20 @@ export default class Details extends Component {
             <View style={{ flex: 1 }}>
               <TouchableOpacity onPress={this.letsGo}>
                 <View style={styles.openButton}>
-                  <Text>Let's go!</Text>
+                  <Text style={{ fontFamily: "SignikaNegative-Regular" }}>
+                    Let's go!
+                  </Text>
                 </View>
               </TouchableOpacity>
+              {/* Start */}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Loading")}
+              >
+                <View style={styles.openButton}>
+                  <Text>loading page</Text>
+                </View>
+              </TouchableOpacity>
+              {/* End */}
             </View>
           </View>
 
@@ -366,7 +424,12 @@ export default class Details extends Component {
             <View style={{ flex: 1, backgroundColor: "#64A0B1" }}>
               <View style={{ flex: 0.6 }}></View>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.smallText, { fontSize: 23 }]}>
+                <Text
+                  style={[
+                    styles.smallText,
+                    { fontSize: 23, fontFamily: "AlegreyaSansSC-Medium" },
+                  ]}
+                >
                   QUICK STATS
                 </Text>
                 <Text style={styles.smallText}></Text>
@@ -404,6 +467,7 @@ export default class Details extends Component {
                       color: "#09495c",
                       fontSize: 20,
                       marginLeft: screen.width / 15,
+                      fontFamily: "SignikaNegative-Regular",
                     }}
                   >
                     See more stats!
@@ -561,6 +625,7 @@ const styles = StyleSheet.create({
   },
   openButton: {
     backgroundColor: "#979797",
+    alignItems: "center",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -584,11 +649,14 @@ const styles = StyleSheet.create({
     color: "#f0ecc5",
     fontSize: 20,
     marginTop: 5,
+    fontFamily: "SignikaNegative-Regular",
+    //
   },
   smallText: {
     color: "#000000",
     fontSize: 20,
     marginLeft: screen.width / 15,
+    fontFamily: "Assistant-Regular", //"SignikaNegative-Light",
   },
   smallLinkText: {
     color: "#09495c",
