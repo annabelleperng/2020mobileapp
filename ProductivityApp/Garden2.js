@@ -40,7 +40,7 @@ let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
   "color ": require("./assets/largebee.png"),
-  "notif ": require("./assets/newicons/newnotif.png"),
+  "notif ": require("./assets/newicons/newnotif2.png"),
 };
 
 let images1 = {
@@ -52,7 +52,7 @@ let images1 = {
 };
 
 let images = {
-  plantpot: require("./assets/plantpotlarge.png"),
+  plantpot: require("./assets/plants/empty_c.png"),
   invis: require("./assets/invis.png"),
   growing: require("./assets/growinglarge.png"),
 
@@ -924,7 +924,7 @@ export default class Garden extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Image
               style={styles.smallButton}
-              source={require("./assets/gold.png")}
+              source={require("./assets/newicons/newgold.png")}
             />
           </View>
           <View
@@ -949,7 +949,7 @@ export default class Garden extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>

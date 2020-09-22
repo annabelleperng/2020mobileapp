@@ -2192,7 +2192,7 @@ export default class GardenTesting extends Component {
       >
         <View
           style={{
-            backgroundColor: "#34eb44",
+            backgroundColor: "#000",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -2201,7 +2201,7 @@ export default class GardenTesting extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Image
               style={styles.smallButton}
-              source={require("./assets/gold.png")}
+              source={require("./assets/newicons/newgold.png")}
             />
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -2210,7 +2210,7 @@ export default class GardenTesting extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#34eb4f",
+                backgroundColor: "#000",
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -2221,7 +2221,7 @@ export default class GardenTesting extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>
@@ -2448,6 +2448,9 @@ const styles = StyleSheet.create({
     width: screen.width / 10, // 9
     height: screen.width / 10, // 9
     // marginLeft: screen.width / 10,
+  },
+  leftTimesSmol: {
+    color: "#ffffff",
   },
   menuIcons3: {
     width: screen.width / 9.3,
