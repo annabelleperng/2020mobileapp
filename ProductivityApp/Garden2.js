@@ -15,7 +15,7 @@ import {
   Dimensions,
   TextInput,
   Alert,
-  Modal
+  Modal,
 } from "react-native";
 import SeedUtils from "./SeedUtils";
 import SeedUtils2 from "./SeedUtils2";
@@ -40,7 +40,7 @@ let bees = {
   "invis ": require("./assets/invis.png"),
   "bw ": require("./assets/largebeebw.png"),
   "color ": require("./assets/largebee.png"),
-  "notif ": require("./assets/newicons/newnotif.png")
+  "notif ": require("./assets/newicons/newnotif.png"),
 };
 
 let images1 = {
@@ -48,7 +48,7 @@ let images1 = {
   growing: require("./assets/growinglarge.png"),
   plantpot: require("./assets/plantpotlarge.png"),
   ferns: require("./assets/fernsbig.png"),
-  tulips: require("./assets/tulipsbig.png")
+  tulips: require("./assets/tulipsbig.png"),
 };
 
 let images = {
@@ -358,7 +358,7 @@ let images = {
 
   amethyst_spikeplant2: require("./assets/plants/amethyst_spikeplant2.png"),
   amethyst_spikeplant3: require("./assets/plants/amethyst_spikeplant3.png"),
-  amethyst_spikeplant4: require("./assets/plants/amethyst_spikeplant4.png")
+  amethyst_spikeplant4: require("./assets/plants/amethyst_spikeplant4.png"),
 };
 
 export default class Garden extends Component {
@@ -413,7 +413,7 @@ export default class Garden extends Component {
       plantsInitialized2: false,
 
       gold: -1,
-      gems: -1
+      gems: -1,
     };
   }
 
@@ -460,33 +460,33 @@ export default class Garden extends Component {
         rarity: "R",
         species: "stardust_nightshroom",
         date_planted: "",
-        price: "550"
+        price: "550",
       },
       zero: { zero_image: "plantpot" },
       one: {
         one_image: "growing_rs",
         grow_start: "",
         grow_offset: 0,
-        grow_streak_length: 2
+        grow_streak_length: 2,
       },
       two: {
         two_image: "stardust_nightshroom2",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-09-07T17:52:25.437-07:00"
+        water_end: "2020-09-07T17:52:25.437-07:00",
       },
       three: {
         three_image: "stardust_nightshroom3",
         wilt_start: "",
-        wilt_end: "2020-09-10T17:52:25.437-07:00"
+        wilt_end: "2020-09-10T17:52:25.437-07:00",
       },
-      four: { four_image: "stardust_nightshroom4" }
+      four: { four_image: "stardust_nightshroom4" },
     };
 
     let seeds2 = {
       none: { C: 8, U: 50, R: 50 },
       christmas: { C: 0, U: 0, R: 0 },
-      valentines: { C: 0, U: 0, R: 0 }
+      valentines: { C: 0, U: 0, R: 0 },
     };
     let seedsString2 = JSON.stringify(seeds2);
 
@@ -509,7 +509,7 @@ export default class Garden extends Component {
     this.showNotifs();
   }
 
-  updateStuff = async plant => {
+  updateStuff = async (plant) => {
     const localTime = DateTime.local();
 
     const gardenLastUpdated = DateTime.fromISO(
@@ -521,7 +521,7 @@ export default class Garden extends Component {
       day: gardenLastUpdated.day,
       hour: 0,
       minute: 0,
-      second: 0
+      second: 0,
       // zone: localZone,
     });
     // console.log("garden last updated: " + gardenLastUpdated);
@@ -565,7 +565,7 @@ export default class Garden extends Component {
         secondParent: 0,
         selectedParents: 0,
         modalVisible: true,
-        acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed."
+        acquiredSeed: "ERROR\n\nCould not breed plants!\n\nNo bees consumed.",
       });
       this.hideBees();
       return;
@@ -587,7 +587,7 @@ export default class Garden extends Component {
       secondParent: 0,
       selectedParents: 0,
       modalVisible: true,
-      acquiredSeed: resString
+      acquiredSeed: resString,
     });
     await this.syncInventory();
     this.hideBees();
@@ -677,7 +677,7 @@ export default class Garden extends Component {
       // bee9: "invis ",
       firstParent: 0,
       secondParent: 0,
-      selectedParents: 0
+      selectedParents: 0,
     });
 
     this.showNotifs();
@@ -719,7 +719,7 @@ export default class Garden extends Component {
         inventorySynced: true,
         inventory_bees: bees,
         gold: gold,
-        gems: gems
+        gems: gems,
       });
       //   console.log("bees = " + bees);
     }
@@ -747,7 +747,7 @@ export default class Garden extends Component {
         plant6: plant6,
         plant7: plant7,
         plant8: plant8,
-        plant9: plant9
+        plant9: plant9,
       });
 
       this.initializePlant(plant1);
@@ -769,7 +769,7 @@ export default class Garden extends Component {
         plant_image_6: this.determineImage(plant6),
         plant_image_7: this.determineImage(plant7),
         plant_image_8: this.determineImage(plant8),
-        plant_image_9: this.determineImage(plant9)
+        plant_image_9: this.determineImage(plant9),
       });
 
       //   this.state.plant1["status"] = 2;
@@ -857,7 +857,7 @@ export default class Garden extends Component {
     else this.setState({ bee9: "invis " });
   };
 
-  determineImage = plant => {
+  determineImage = (plant) => {
     if (plant["status"] == 4) {
       return plant["four"]["four_image"];
     } else if (plant["status"] == 3) {
@@ -871,7 +871,7 @@ export default class Garden extends Component {
     }
   };
 
-  initializePlant = plant => {};
+  initializePlant = (plant) => {};
 
   refreshPlants = () => {
     this.setState({ plantsInitialized: false });
@@ -909,15 +909,15 @@ export default class Garden extends Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#57423e",
-          justifyContent: "center"
+          backgroundColor: "#000",
+          justifyContent: "center",
         }}
       >
         <View
           style={{
-            backgroundColor: "#334E33",
+            backgroundColor: "#000",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           {console.log("STATE GEMS: " + this.state.gems)}
@@ -927,15 +927,20 @@ export default class Garden extends Component {
               source={require("./assets/gold.png")}
             />
           </View>
-          <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "flex-start",
+            }}
+          >
             <Text style={styles.leftTimesSmol}>{this.state.gold}</Text>
           </View>
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#334E33",
+                backgroundColor: "#000",
                 flexDirection: "row",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <View style={{ flex: 2, alignItems: "flex-end" }}>
@@ -966,7 +971,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // first row of plants
           >
@@ -977,7 +982,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 1,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -993,7 +998,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 2,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1009,7 +1014,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 3,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1028,7 +1033,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
           // first row of bees
         >
@@ -1100,7 +1105,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // second row of plants
           >
@@ -1111,7 +1116,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 4,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1127,7 +1132,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 5,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1143,7 +1148,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 6,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1189,7 +1194,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }} // second row of bees
         >
           <View style={{ flex: 0.2 }}></View>
@@ -1246,7 +1251,7 @@ export default class Garden extends Component {
           <View
             style={{
               flexDirection: "row",
-              marginTop: margin
+              marginTop: margin,
               //   marginLeft: screen.width / 14,
             }} // third row of plants
           >
@@ -1257,7 +1262,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 7,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1273,7 +1278,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 8,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1289,7 +1294,7 @@ export default class Garden extends Component {
                   this.props.navigation.navigate("PlantView", {
                     position: 9,
                     event: "",
-                    rarity: ""
+                    rarity: "",
                   })
                 }
               >
@@ -1308,7 +1313,7 @@ export default class Garden extends Component {
             backgroundColor: "#472b25",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }} // third row of bees
         >
           <View style={{ flex: 0.2 }}></View>
@@ -1364,7 +1369,7 @@ export default class Garden extends Component {
             flex: 2,
             backgroundColor: "#57423e",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
           }} // breed / cancel buttons
         >
           {this.state.selectedParents == 2 ? (
@@ -1404,7 +1409,7 @@ export default class Garden extends Component {
               flexDirection: "row",
               justifyContent: "center",
               //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
-              marginTop: (screen.height * 3) / 22 - screen.width / 4
+              marginTop: (screen.height * 3) / 22 - screen.width / 4,
               //   marginLeft: screen.width / 14,
             }} // navigation icons
           >
@@ -1468,20 +1473,24 @@ export default class Garden extends Component {
 const styles = StyleSheet.create({
   plants: {
     width: screen.width / 3.5,
-    height: screen.width / 3.5
+    height: screen.width / 3.5,
+  },
+  leftTimesSmol: {
+    color: "#ffffff",
+    // fontFamily: "SignikaNegative-Regular",
   },
   menuIcons: {
     width: screen.width / 8.5,
-    height: screen.width / 8.5
+    height: screen.width / 8.5,
   },
   menuIcons2: {
     width: screen.width / 9,
-    height: screen.width / 9
+    height: screen.width / 9,
     // marginLeft: screen.width / 10,
   },
   menuIcons3: {
     width: screen.width / 7.5,
-    height: screen.width / 7.5
+    height: screen.width / 7.5,
     // marginLeft: screen.width / 10,
   },
   pinkButton: {
@@ -1491,24 +1500,24 @@ const styles = StyleSheet.create({
     height: screen.width / 25,
     borderRadius: screen.width / 25,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallButton: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
   },
   notif: {
     width: screen.height / 28,
-    height: screen.height / 28
+    height: screen.height / 28,
     // marginBottom: 25
   },
   hidden: {
     width: 0,
-    height: 0
+    height: 0,
   },
   whiteText: {
     color: "#000",
-    fontSize: 26
+    fontSize: 26,
   },
   pinkButton2: {
     borderWidth: 2,
@@ -1520,12 +1529,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fca",
     // color: "#fff",
     // fontSize: 30,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   smallWhiteText: {
     color: "#ebbd34",
     fontSize: 15,
-    marginTop: 5
+    marginTop: 5,
   },
   tinyWhiteText: {
     // color: "#ff547c",
@@ -1536,7 +1545,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -1547,25 +1556,25 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

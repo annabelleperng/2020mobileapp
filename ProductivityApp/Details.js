@@ -147,12 +147,13 @@ export default class Details extends Component {
     await SecureStore.setItemAsync("event_name", "welcome");
     await SecureStore.setItemAsync("event_countdown", "7");
     await SecureStore.setItemAsync("rolled", "0");
-    await SecureStore.setItemAsync("eventPic8", "");
-    await SecureStore.setItemAsync("eventPic9", "");
-    await SecureStore.setItemAsync("eventPic10", "");
-    await SecureStore.setItemAsync("rarity8", "");
-    await SecureStore.setItemAsync("rarity9", "");
-    await SecureStore.setItemAsync("rarity10", "");
+    // NOTICE !!! commented for testing; uncomment these 6 lines later
+    // await SecureStore.setItemAsync("eventPic8", "");
+    // await SecureStore.setItemAsync("eventPic9", "");
+    // await SecureStore.setItemAsync("eventPic10", "");
+    // await SecureStore.setItemAsync("rarity8", "");
+    // await SecureStore.setItemAsync("rarity9", "");
+    // await SecureStore.setItemAsync("rarity10", "");
 
     // creates almanac
 
@@ -197,12 +198,12 @@ export default class Details extends Component {
         two_image: "stardust_nightshroom2",
         current_waters: 8,
         water_start: "",
-        water_end: "2020-09-16T17:52:25.437-07:00",
+        water_end: "2020-09-21T17:52:25.437-07:00",
       },
       three: {
         three_image: "stardust_nightshroom3",
         wilt_start: "",
-        wilt_end: "2020-09-18T17:52:25.437-07:00",
+        wilt_end: "2020-09-23T17:52:25.437-07:00",
       },
       four: { four_image: "stardust_nightshroom4" },
     };
@@ -217,6 +218,7 @@ export default class Details extends Component {
 
     let hardcoded_plant_str = JSON.stringify(hardcoded_plant);
     await SecureStore.setItemAsync("1_plant", hardcoded_plant_str);
+    await SecureStore.setItemAsync("2_plant", hardcoded_plant_str);
   };
 
   loadAllFonts = () => {

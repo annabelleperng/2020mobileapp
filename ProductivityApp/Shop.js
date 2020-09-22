@@ -538,7 +538,7 @@ export default class Shop extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>

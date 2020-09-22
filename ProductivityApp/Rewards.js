@@ -199,7 +199,7 @@ export default class Rewards extends React.Component {
           <View style={{ flex: 1 }}>
             <Image
               style={styles.tinyLogoCenter}
-              source={require("./assets/water.png")}
+              source={require("./assets/newicons/newwater.png")}
             />
             <Text style={{ textAlign: "center", color: "#ffa959" }}>
               {"+" + this.state.water + " water"}
@@ -214,7 +214,7 @@ export default class Rewards extends React.Component {
           <View style={{ flex: 1 }}>
             <Image
               style={styles.tinyLogoCenter}
-              source={require("./assets/bee.png")}
+              source={require("./assets/largebee.png")}
             />
             <Text style={{ textAlign: "center", color: "#ffa959" }}>
               {"+" + this.state.bees + " bees"}
