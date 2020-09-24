@@ -403,6 +403,8 @@ export default class GardenTesting extends Component {
 
       gold: -1,
       gems: -1,
+
+      confirmSell: false,
     };
 
     // console.log(this.props);
@@ -1209,7 +1211,12 @@ export default class GardenTesting extends Component {
     } else if (this.state.plant_status == 2) {
       return (
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={[styles.smallWhiteText, { color: "#cf8165" }]}>
+          <Text
+            style={[
+              styles.smallWhiteText,
+              { color: this.state.confirmSell ? "#ff3d61" : "#cf8165" },
+            ]}
+          >
             SELL
           </Text>
 
@@ -1967,6 +1974,29 @@ export default class GardenTesting extends Component {
   };
 
   sellThisPlant = async () => {
+    if (this.state.confirmSell == false) {
+      Alert.alert(
+        "Sell Plant",
+        "\nAre you sure you wish to sell this plant?\n\n Click Yes, " +
+          "then click the sell button again to confirm.",
+        [
+          {
+            text: "Yes",
+            onPress: () => this.setState({ confirmSell: true }),
+            // this.props.navigation.navigate("PlantView", {
+            //   position: this.state.plant_position,
+            //   event: e,
+            //   rarity: r
+            // })
+            // this.setState({ quitConfirm: true }),
+          },
+          { text: "Cancel" },
+        ],
+        { cancelable: false }
+      );
+      return;
+    }
+
     await su.sellPlant(this.state.plant);
 
     Alert.alert(
@@ -2162,7 +2192,7 @@ export default class GardenTesting extends Component {
       >
         <View
           style={{
-            backgroundColor: "#34eb44",
+            backgroundColor: "#000",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -2171,7 +2201,7 @@ export default class GardenTesting extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Image
               style={styles.smallButton}
-              source={require("./assets/gold.png")}
+              source={require("./assets/newicons/newgold.png")}
             />
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -2180,7 +2210,7 @@ export default class GardenTesting extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#34eb4f",
+                backgroundColor: "#000",
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -2191,7 +2221,7 @@ export default class GardenTesting extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>
@@ -2418,6 +2448,9 @@ const styles = StyleSheet.create({
     width: screen.width / 10, // 9
     height: screen.width / 10, // 9
     // marginLeft: screen.width / 10,
+  },
+  leftTimesSmol: {
+    color: "#ffffff",
   },
   menuIcons3: {
     width: screen.width / 9.3,

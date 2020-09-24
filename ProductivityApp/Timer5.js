@@ -36,6 +36,7 @@ export default class StopWatch extends Component {
         "This is your note to yourself! You'll see it every time you " +
         "start a sprint. You can edit what it says in Settings.",
       motivationSet: false,
+      quitConfirm: false,
     };
   }
 
@@ -131,6 +132,27 @@ export default class StopWatch extends Component {
     console.log("I am");
   };
 
+  quitSprint = () => {
+    Alert.alert(
+      "Quit Sprint",
+      "\nAre you sure you wish to quit this sprint?\n\n Your progress " +
+        "so far will be lost.",
+      [
+        {
+          text: "Quit",
+          onPress: () => this.props.navigation.navigate("Home"),
+          // this.props.navigation.navigate("PlantView", {
+          //   position: this.state.plant_position,
+          //   event: e,
+          //   rarity: r
+          // })
+          // this.setState({ quitConfirm: true }),
+        },
+        { text: "Cancel" },
+      ],
+      { cancelable: false }
+    );
+  };
   setMotivation = async () => {
     let motivation = await SecureStore.getItemAsync("motivation");
     if (motivation == null || motivation.trim() == "") {
@@ -212,7 +234,7 @@ export default class StopWatch extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={this.quitSprint}
             activeOpacity={0.5}
             style={[
               styles.button,

@@ -518,7 +518,7 @@ export default class Shop extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Image
               style={styles.smallButton}
-              source={require("./assets/gold.png")}
+              source={require("./assets/newicons/newgold.png")}
             />
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -538,7 +538,7 @@ export default class Shop extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>
@@ -670,7 +670,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought0 == 1 ? (
                 <View>
@@ -702,7 +702,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought1 == 1 ? (
                 <View>
@@ -724,7 +724,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought2 == 1 ? (
                 <View>
@@ -746,7 +746,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought3 == 1 ? (
                 <View>
@@ -884,7 +884,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought4 == 1 ? (
                 <View>
@@ -906,7 +906,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought5 == 1 ? (
                 <View>
@@ -928,7 +928,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought6 == 1 ? (
                 <View>
@@ -950,7 +950,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.bought7 == 1 ? (
                 <View>
@@ -1127,7 +1127,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.rolled == "0" ? (
                 <View>
@@ -1152,7 +1152,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.rolled == "0" ? (
                 <View>
@@ -1177,7 +1177,7 @@ export default class Shop extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 style={[styles.smallButton]}
-                source={require("./assets/gold.png")}
+                source={require("./assets/newicons/newgold.png")}
               />
               {this.state.rolled == "0" ? (
                 <View>
