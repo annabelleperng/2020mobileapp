@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DBDBD6",
   },
   openButton: {
-    backgroundColor: "#979797",
+    backgroundColor: "#78a6bf",
     alignItems: "center",
     borderRadius: 20,
     padding: 10,

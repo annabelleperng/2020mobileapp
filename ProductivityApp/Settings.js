@@ -71,14 +71,22 @@ export default class Settings extends React.Component {
         <View style={{ flexDirection: "row", flex: 0.4, alignItems: "center" }}>
           <View style={{ flex: 0.1 }}></View>
           <View style={{ flex: 0.3 }}>
-            <Text>Edit your personal motivational quote here!</Text>
+            <Text
+              style={{
+                color: "#fff",
+                fontFamily: "NanumGothic-Regular",
+                fontSize: 15,
+              }}
+            >
+              Edit your personal motivational quote here!
+            </Text>
           </View>
           <View style={{ flex: 0.05 }}></View>
           <View style={{ flex: 0.6 }}>
             <TextInput
               style={{
                 width: screen.width / 2,
-                borderColor: "gray",
+                borderColor: "#d1d1d1",
                 borderWidth: 1,
                 alignSelf: "center",
                 padding: screen.width / 50,
@@ -90,18 +98,28 @@ export default class Settings extends React.Component {
               maxLength={140}
               multiline={true}
               returnKeyType="done"
+              selectionColor="#ff455e"
+              color="#fff"
             />
             <TouchableOpacity
               onPress={this.storeMotivationalQuote}
               style={[
                 styles.button,
                 {
-                  backgroundColor: "#36F5F5",
+                  backgroundColor: "#ff455e",
                   alignSelf: "center",
                 },
               ]}
             >
-              <Text style={{ textAlign: "center" }}>Set quote!</Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Assistant-Regular",
+                  fontSize: 17,
+                }}
+              >
+                Set quote!
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={{ flex: 0.1 }}></View>
@@ -109,13 +127,21 @@ export default class Settings extends React.Component {
         <View style={{ flexDirection: "row", flex: 0.2, alignItems: "center" }}>
           <View style={{ flex: 0.1 }}></View>
           <View style={{ flex: 0.3 }}>
-            <Text>Sound</Text>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 15,
+                fontFamily: "NanumGothic-Regular",
+              }}
+            >
+              Sound
+            </Text>
           </View>
           <View style={{ flex: 0.05 }}></View>
           <View style={{ flex: 0.6 }}>
             <Switch
-              trackColor={{ false: "#777777", true: "#818181" }}
-              thumbColor={"#000000"}
+              trackColor={{ false: "#777777", true: "#bdbdbd" }}
+              thumbColor={"#ff3d5a"}
               value={this.state.value}
               onValueChange={(value) => {
                 this.setState({ value: value });
@@ -124,22 +150,117 @@ export default class Settings extends React.Component {
           </View>
           <View style={{ flex: 0.1 }}></View>
         </View>
-        <View style={{ flexDirection: "row", flex: 0.7, alignItems: "center" }}>
-          <TouchableOpacity onPress={() => navigate("Home")}>
-            <View
-              style={[
-                styles.pinkButton2,
-                {
-                  height:
-                    Platform.OS == "android"
-                      ? screen.width / 12
-                      : screen.width / 10,
-                },
-              ]}
+        <View style={{ flex: 0.7 }}>
+          <View style={{ flex: 0.13 }}></View>
+          <View style={{ flex: 0.3, alignItems: "center" }}>
+            <TouchableOpacity onPress={() => navigate("Home")}>
+              <View
+                style={[
+                  styles.pinkButton2,
+                  {
+                    height:
+                      Platform.OS == "android"
+                        ? screen.width / 12
+                        : screen.width / 10,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    color: "#dddddd",
+                    fontFamily: "Assistant-Regular",
+                    fontSize: 17,
+                  }}
+                >
+                  HOME
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flex: 0.3,
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+            }}
+          >
+            <Text
+              style={{
+                color: "#ffffff",
+
+                fontFamily: "Assistant-Regular",
+                fontSize: 25,
+              }}
             >
-              <Text style={styles.smallWhiteText}>HOME</Text>
-            </View>
-          </TouchableOpacity>
+              Acknowledgements{"                 "}
+            </Text>
+            <Text></Text>
+            <Text
+              style={{
+                color: "#f0dd32",
+                fontFamily: "Assistant-Regular",
+                fontSize: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#f0dd32",
+                }}
+              >
+                ✦{" "}
+              </Text>
+              DK: type something here
+            </Text>
+            <Text
+              style={{
+                color: "#bacd3d",
+                fontFamily: "Assistant-Regular",
+                fontSize: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#bacd3d",
+                }}
+              >
+                ✦{" "}
+              </Text>
+              HY: type something here
+            </Text>
+            <Text
+              style={{
+                color: "#67bccb",
+                fontFamily: "Assistant-Regular",
+                fontSize: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#67bccb",
+                }}
+              >
+                ✦{" "}
+              </Text>
+              AP: type something here
+            </Text>
+            <Text></Text>
+            <Text
+              style={{
+                color: "#c09cd5",
+                fontFamily: "Assistant-Regular",
+                fontSize: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#c09cd5",
+                }}
+              >
+                ✦{" "}
+              </Text>
+              Thanks for using!
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -151,7 +272,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#46DC46",
+    backgroundColor: "#222222",
   },
   tinyLogoCenter: {
     width: screen.width / 15,
@@ -209,5 +330,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginLeft: screen.width / 15,
+    fontFamily: "Assistant-Regular",
   },
 });

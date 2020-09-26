@@ -1453,7 +1453,7 @@ export default class Garden extends Component {
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
               <TouchableOpacity
-                onPress={this.refreshPlants}
+                onPress={() => this.props.navigation.navigate("Almanac")}
                 activeOpacity={0.5}
               >
                 <Image
