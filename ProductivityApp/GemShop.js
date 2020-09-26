@@ -29,20 +29,34 @@ export default class GemShop extends Component {
     super(props);
     this.state = {
       gems: -1,
+      gold: 0,
+      allPrepared: false,
     };
   }
 
+  prepareAll = async () => {
+    if (this.state.allPrepared) {
+      return;
+    }
+    this.setState({ allPrepared: true });
+    this.setState({
+      gold: await SecureStore.getItemAsync("inventory_gold"),
+      gems: await SecureStore.getItemAsync("inventory_gems"),
+    });
+  };
+
   render() {
+    this.prepareAll();
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: "#57423e",
+          backgroundColor: "#222",
         }}
       >
         <View
           style={{
-            backgroundColor: "#334E33",
+            backgroundColor: "#000",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -51,7 +65,7 @@ export default class GemShop extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Image
               style={styles.smallButton}
-              source={require("./assets/gold.png")}
+              source={require("./assets/newicons/newgold.png")}
             />
           </View>
           <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -60,7 +74,7 @@ export default class GemShop extends Component {
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <View
               style={{
-                backgroundColor: "#334E33",
+                backgroundColor: "#000",
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -71,14 +85,14 @@ export default class GemShop extends Component {
                 >
                   <Image
                     style={styles.smallButton}
-                    source={require("./assets/plus.png")}
+                    source={require("./assets/newicons/newplus.png")}
                   />
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 1, alignItems: "flex-end" }}>
                 <Image
                   style={styles.smallButton}
-                  source={require("./assets/gem.png")}
+                  source={require("./assets/newicons/newgemplain.png")}
                 />
               </View>
             </View>
@@ -87,6 +101,9 @@ export default class GemShop extends Component {
             <Text style={styles.leftTimesSmol}>{this.state.gems}</Text>
           </View>
         </View>
+        <View style={{ backgroundColor: "#fec", flex: 0.5 }}></View>
+        <View style={{ backgroundColor: "#ffdced", flex: 0.5 }}></View>
+        <View style={{ backgroundColor: "#fff127", flex: 0.5 }}></View>
       </View>
     );
   }
@@ -149,5 +166,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: screen.height / 70,
     textAlign: "center",
+  },
+  leftTimesSmol: {
+    color: "#ffffff",
+    // fontFamily: "SignikaNegative-Regular",
   },
 });

@@ -36,7 +36,7 @@ let images1 = {
 };
 
 let images = {
-  plantpot: require("./assets/plantpotlarge.png"),
+  plantpot: require("./assets/plants/empty_c.png"),
   invis: require("./assets/invis.png"),
   growing: require("./assets/growinglarge.png"),
 
@@ -1976,7 +1976,7 @@ export default class GardenTesting extends Component {
   sellThisPlant = async () => {
     if (this.state.confirmSell == false) {
       Alert.alert(
-        "Sell Plant",
+        "Sell Plant for " + this.state.plant_price + " Gold",
         "\nAre you sure you wish to sell this plant?\n\n Click Yes, " +
           "then click the sell button again to confirm.",
         [
@@ -2001,7 +2001,7 @@ export default class GardenTesting extends Component {
 
     Alert.alert(
       "SUCCESS",
-      "Plant sold!",
+      "Plant sold! " + this.state.plant_price + " Gold obtained.",
       [
         {
           text: "OK",
