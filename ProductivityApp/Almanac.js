@@ -3764,7 +3764,8 @@ export default class Garden extends Component {
                   flexDirection: "row",
                   justifyContent: "center",
                   //   marginTop: (screen.height * 3) / 22 - screen.width / 5,
-                  marginTop: (screen.height * 3) / 22 - screen.width / 4
+                  marginTop: (screen.height * 3) / 22 - screen.width / 4,
+                  marginBottom: (screen.height * 3) / 22 - screen.width / 4
                   //   marginLeft: screen.width / 14,
                 }} // navigation icons
               >
@@ -3795,7 +3796,7 @@ export default class Garden extends Component {
                 </View>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <TouchableOpacity
-                    onPress={this.refreshPlants}
+                    onPress={() => this.props.navigation.navigate("Garden2")}
                     activeOpacity={0.5}
                   >
                     <Image
